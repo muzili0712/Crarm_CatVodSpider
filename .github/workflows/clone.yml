@@ -1,4 +1,4 @@
-name: Spider Jar Gen CI
+name: clone lushunming/AndroidCatVodSpider
 
 on:
   #push:
