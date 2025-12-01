@@ -20,10 +20,9 @@ jobs:
         
     - name: Clone project
       run: |
-        ls -l
-        #git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider project
-        #cp -rf ./project ./
-        #rm -rf ./project
+        git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider project
+        cp -rf ./project/* ./
+        rm -rf ./project
 
     - name: Add & Commit
       uses: EndBug/add-and-commit@v9.1.4
