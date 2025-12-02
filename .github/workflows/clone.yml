@@ -22,11 +22,11 @@ jobs:
         
     - name: Clone project
       run: |
-        rm -rf ./app 
-        rm -rf ./gradle 
-        rm -rf ./jar 
-        rm -rf ./json 
-        rm -rf ./tools
+        rm -rf ./app/*
+        rm -rf ./gradle/* 
+        rm -rf ./jar/*
+        rm -rf ./json/*
+        rm -rf ./tools/*
         git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider project
         cp -rf ./project/* ./
         rm -rf ./project
