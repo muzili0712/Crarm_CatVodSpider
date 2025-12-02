@@ -54,7 +54,6 @@ public class Jable extends Spider {
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        return 
         List<Vod> list = new ArrayList<>();
         String target = cateUrl + tid + "/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=" + String.format(Locale.getDefault(), "%02d", Integer.parseInt(pg)) + "&_=" + System.currentTimeMillis();
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
