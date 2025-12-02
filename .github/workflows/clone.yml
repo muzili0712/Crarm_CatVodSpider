@@ -20,7 +20,7 @@ jobs:
         
     - name: Clone project
       run: |
-        rm -rf ./app ./gradle ./jar ./json ./tools
+        rm -rf app gradle jar json tools
         git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider ./
         #cp -rf ./project/* ./
         #rm -rf ./project
