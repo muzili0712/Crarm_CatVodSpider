@@ -54,18 +54,19 @@ public class Jable extends Spider {
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
+        return 
         List<Vod> list = new ArrayList<>();
         String target = cateUrl + tid + "/?mode=async&function=get_block&block_id=list_videos_common_videos_list&sort_by=post_date&from=" + String.format(Locale.getDefault(), "%02d", Integer.parseInt(pg)) + "&_=" + System.currentTimeMillis();
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         for (Element element : doc.select("div.video-img-box")) {
-            String pic = element.select("img").attr("data-src");
+            String pic = element.select("img").attr("src");
             String url = element.select("a").attr("href");
-            String name = element.select("div.detail > h6").text();
+            String name = element.select(""h6.title").text();
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
-        Integer total = (Integer.parseInt(pg)+1)*20;
-        return Result.string(Integer.parseInt(pg),Integer.parseInt(pg)+1,20,total,list);
+        Integer total = (Integer.parseInt(pg)+1)*24;
+        return Result.string(Integer.parseInt(pg),Integer.parseInt(pg)+1,24,total,list);
     }
 
     @Override
