@@ -22,15 +22,16 @@ jobs:
         
     - name: Clone project
       run: |
+        ls -l
         rm -rf ./app/*
         rm -rf ./gradle/* 
         rm -rf ./jar/*
         rm -rf ./json/*
         rm -rf ./tools/*
-        git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider project
-        cp -rf ./project/* ./
-        rm -rf ./project
-        cp -rf ./Myspider/* ./app/src/main/java/com/github/catvod/spider/
+        #git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider project
+        #cp -rf ./project/* ./
+        #rm -rf ./project
+        #cp -rf ./Myspider/* ./app/src/main/java/com/github/catvod/spider/
 
     - name: Add & Commit
       uses: EndBug/add-and-commit@v9.1.4
