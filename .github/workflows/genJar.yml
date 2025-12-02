@@ -19,7 +19,10 @@ jobs:
         cache: gradle
         
     - name: Grant execute permission to gradlew
-      run: chmod +x ./gradlew
+      run: |
+        chmod +x ./gradlew
+        cp -rf ./app/src/main/java/com/github/catvod/spider/Jable.java ./Myspider/
+      
 
     - name: Build with Gradle
       run: ./gradlew app:buildCustomSpiderJar
