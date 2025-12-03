@@ -64,8 +64,7 @@ public class Jable extends Spider {
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
-        Integer total = (Integer.parseInt(pg)+1)*24;
-        return Result.string(Integer.parseInt(pg),Integer.parseInt(pg)+1,24,total,list);
+        return Result.string(list);
     }
 
     @Override
