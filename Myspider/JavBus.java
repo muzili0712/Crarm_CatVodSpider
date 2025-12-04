@@ -91,17 +91,17 @@ public class JavBus extends Spider {
         String pattern = "var\\s+uul\\s*=\\s*'([^']+\\$[^']+)'";
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(text);
-		String urlall = "";
-        while(matcher.find()) {
-            urlall.concat(matcher.group(1)).concat("#");
-        }
-        url = urlall.substring(0, urlall.length() - 1);
+		#String urlall = "";
+        #if (matcher.find()) {
+         #   urlall.concat(matcher.group(1)).concat("#");
+        #}
+        #url = urlall.substring(0, urlall.length() - 1);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("JavBus");
-        vod.setVodPlayUrl(url);
+        vod.setVodPlayUrl(matcher.group(1));
         return Result.string(vod);
     }
 
