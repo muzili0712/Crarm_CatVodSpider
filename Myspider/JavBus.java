@@ -83,7 +83,7 @@ public class JavBus extends Spider {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat("/"), getHeaders()));
-        String name = doc.select("h1.title]").text();
+        String name = doc.select("h1.title").text();
         String pic = doc.select("img.lazyload").attr("data-original");
 		String url = doc.select("div.myui-content__operate").attr("href");
 		doc = Jsoup.parse(OkHttp.string(siteUrl.concat(url), getHeaders()));
