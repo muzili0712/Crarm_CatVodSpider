@@ -101,7 +101,7 @@ public class JavBus extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("JavBus");
-        vod.setVodPlayUrl("https://epg-1.iill.top/v/444.mp4");
+        vod.setVodPlayUrl("播放$https://epg-1.iill.top/v/444.mp4");
         return Result.string(vod);
     }
 
