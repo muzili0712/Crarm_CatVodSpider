@@ -59,7 +59,7 @@ public class Jable extends Spider {
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         List<Vod> list = new ArrayList<>();
 		if (tid == "all"){
-			String target = siteUrl "vod/show/id/all/page/" + Integer.parseInt(pg)+ "/";
+			String target = siteUrl + "vod/show/id/all/page/" + Integer.parseInt(pg)+ "/";
 			Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
 			for (Element element : doc.select("div.myui-vodlist__box")) {
 				String pic = element.select("a.myui-vodlist__thumb").attr("data-original");
