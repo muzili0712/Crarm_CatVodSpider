@@ -87,22 +87,22 @@ public class JavBus extends Spider {
         String pic = doc.select("img.lazyload").attr("data-original");
 		String url = doc.select("div.myui-content__operate > a").attr("href");
 		doc = Jsoup.parse(OkHttp.string(siteUrl.concat(url), getHeaders()));
-		String text = String.valueOf(doc);
-        String pattern = "var\\s+uul\\s*=\\s*'([^']+\\$[^']+)'";
-        Pattern regex = Pattern.compile(pattern);
-        Matcher matcher = regex.matcher(text);
+		//String text = String.valueOf(doc);
+        //String pattern = "var\\s+uul\\s*=\\s*'([^']+\\$[^']+)'";
+        //Pattern regex = Pattern.compile(pattern);
+        //Matcher matcher = regex.matcher(text);
 		//String urlall = "";
         //if (matcher.find()) {
          //   urlall.concat(matcher.group(1)).concat("#");
         //}
         //url = urlall.substring(0, urlall.length() - 1);
-		//url =  Util.getVar(doc.html(), "uul")
+		url =  Util.getVar(doc.html(), "uul")
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("JavBus");
-        vod.setVodPlayUrl(matcher.group(1));
+        vod.setVodPlayUrl(url);
         return Result.string(vod);
     }
 
