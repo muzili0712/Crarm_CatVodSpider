@@ -90,7 +90,7 @@ public class Jable extends Spider {
 		String url = doc.select("div.myui-content__operate").attr("href");
 		doc = Jsoup.parse(OkHttp.string(siteUrl.concat(url), getHeaders()));
 		String text = String.valueOf(doc);
-        String pattern = "'([^']+?\$https://vostrely\.com[^']+)";
+        String pattern = "var\\s+uul\\s*=\\s*'([^']+\\$[^']+)'";
         Pattern regex = Pattern.compile(pattern);
         Matcher matcher = regex.matcher(text);
 		String urlall = "";
