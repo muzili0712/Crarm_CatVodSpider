@@ -1,0 +1,11 @@
+com.github.catvod.app-lifecycle-runtime-2.3.1-0 /home/runner/.gradle/caches/8.8/transforms/51cf1c19205db8e07b2df96915938168/transformed/lifecycle-runtime-2.3.1/res
+com.github.catvod.app-core-1.10.1-1 /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/res
+com.github.catvod.app-jetified-annotation-experimental-1.3.0-2 /home/runner/.gradle/caches/8.8/transforms/80aab65de4255df41c2a5a64db37e5a2/transformed/jetified-annotation-experimental-1.3.0/res
+com.github.catvod.app-jetified-core-ktx-1.10.1-3 /home/runner/.gradle/caches/8.8/transforms/cb32ccf22c7ec837f04de13fb4cd6129/transformed/jetified-core-ktx-1.10.1/res
+com.github.catvod.app-pngs-4 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/generated/res/pngs/release
+com.github.catvod.app-resValues-5 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/generated/res/resValues/release
+com.github.catvod.app-packageReleaseResources-6 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/intermediates/incremental/release/packageReleaseResources/merged.dir
+com.github.catvod.app-packageReleaseResources-7 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/intermediates/incremental/release/packageReleaseResources/stripped.dir
+com.github.catvod.app-release-8 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/intermediates/merged_res/release/mergeReleaseResources
+com.github.catvod.app-main-9 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/res
+com.github.catvod.app-release-10 /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/release/res

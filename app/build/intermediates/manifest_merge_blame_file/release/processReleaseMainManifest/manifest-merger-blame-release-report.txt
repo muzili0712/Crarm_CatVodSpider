@@ -1,0 +1,61 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.github.catvod.demo" >
+4
+5    <uses-sdk
+5-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:5:5-65
+6        android:minSdkVersion="16"
+7        android:targetSdkVersion="34" />
+8
+9    <uses-permission android:name="android.permission.INTERNET" />
+9-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:7:5-67
+9-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:7:22-64
+10    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+10-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:8:5-80
+10-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:8:22-77
+11    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+11-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:9:5-81
+11-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:9:22-78
+12
+13    <permission
+13-->[androidx.core:core:1.10.1] /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/AndroidManifest.xml:22:5-24:47
+14        android:name="com.github.catvod.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+14-->[androidx.core:core:1.10.1] /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/AndroidManifest.xml:23:9-81
+15        android:protectionLevel="signature" />
+15-->[androidx.core:core:1.10.1] /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/AndroidManifest.xml:24:9-44
+16
+17    <uses-permission android:name="com.github.catvod.demo.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+17-->[androidx.core:core:1.10.1] /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/AndroidManifest.xml:26:5-97
+17-->[androidx.core:core:1.10.1] /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/AndroidManifest.xml:26:22-94
+18
+19    <application
+19-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:11:5-24:19
+20        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+20-->[androidx.core:core:1.10.1] /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/AndroidManifest.xml:28:18-86
+21        android:extractNativeLibs="true"
+22        android:icon="@mipmap/ic_launcher"
+22-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:12:9-43
+23        android:label="@string/app_name"
+23-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:13:9-41
+24        android:usesCleartextTraffic="true" >
+24-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:14:9-44
+25        <activity
+25-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:16:9-23:20
+26            android:name="com.github.catvod.debug.MainActivity"
+26-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:17:13-47
+27            android:exported="true" >
+27-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:18:13-36
+28            <intent-filter>
+28-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:19:13-22:29
+29                <action android:name="android.intent.action.MAIN" />
+29-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:20:17-69
+29-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:20:25-66
+30
+31                <category android:name="android.intent.category.LAUNCHER" />
+31-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:21:17-77
+31-->/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/src/main/AndroidManifest.xml:21:27-74
+32            </intent-filter>
+33        </activity>
+34    </application>
+35
+36</manifest>

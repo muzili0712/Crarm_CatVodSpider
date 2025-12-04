@@ -1,0 +1,281 @@
+# The proguard configuration file for the following section is /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/proguard-rules.pro
+# Merge
+-flattenpackagehierarchy com.github.catvod.spider.merge
+-dontwarn org.slf4j.impl.StaticLoggerBinder
+
+# Spider
+-keep class com.github.catvod.js.* { *; }
+-keep class com.github.catvod.crawler.* { *; }
+-keep class com.github.catvod.spider.* { public <methods>; }
+-keep class com.github.catvod.parser.* { public <methods>; }
+
+# AndroidX
+-keep class androidx.core.** { *; }
+
+# Gson
+-keep class com.google.gson.** { *; }
+
+# OkHttp
+-dontwarn okhttp3.**
+-keep class okio.** { *; }
+-keep class okhttp3.** { *; }
+
+# Logger
+-keep class com.orhanobut.logger.** { *; }
+
+# QuickJS
+-keep class com.whl.quickjs.** { *; }
+
+# Sardine
+-keep class com.thegrizzlylabs.sardineandroid.** { *; }
+
+# Smbj
+-dontwarn org.xmlpull.v1.**
+-dontwarn android.content.res.**
+-keep class com.hierynomus.** { *; }
+-keep class net.engio.mbassy.** { *; }
+
+# Zxing
+-keep class com.google.zxing.** { *; }
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}
+
+# Please add these rules to your existing keep rules in order to suppress warnings.
+# This is generated automatically by the Android Gradle plugin.
+-dontwarn org.bouncycastle.jce.provider.BouncyCastleProvider
+
+
+
+-keepattributes SourceFile,LineNumberTable
+
+
+
+# 禁用代码混淆
+#-dontobfuscate
+# End of content from /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/proguard-rules.pro
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/proguard.txt
+# Never inline methods, but allow shrinking and obfuscation.
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.ViewCompat$Api* {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.view.WindowInsetsCompat$*Impl* {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.app.NotificationCompat$*$Api*Impl {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.os.UserHandleCompat$Api*Impl {
+  <methods>;
+}
+-keepclassmembernames,allowobfuscation,allowshrinking class androidx.core.widget.EdgeEffectCompat$Api*Impl {
+  <methods>;
+}
+
+# End of content from /home/runner/.gradle/caches/8.8/transforms/7a642bae0e20580829c61d42f8389d06/transformed/core-1.10.1/proguard.txt
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/bba6ead20369a15be1229ced3160dba8/transformed/rules/lib/META-INF/com.android.tools/r8/coroutines.pro
+# When editing this file, update the following files as well:
+# - META-INF/proguard/coroutines.pro
+# - META-INF/com.android.tools/proguard/coroutines.pro
+
+# Most of volatile fields are updated with AFU and should not be mangled
+-keepclassmembers class kotlinx.coroutines.** {
+    volatile <fields>;
+}
+
+# Same story for the standard library's SafeContinuation that also uses AtomicReferenceFieldUpdater
+-keepclassmembers class kotlin.coroutines.SafeContinuation {
+    volatile <fields>;
+}
+
+# These classes are only required by kotlinx.coroutines.debug.AgentPremain, which is only loaded when
+# kotlinx-coroutines-core is used as a Java agent, so these are not needed in contexts where ProGuard is used.
+-dontwarn java.lang.instrument.ClassFileTransformer
+-dontwarn sun.misc.SignalHandler
+-dontwarn java.lang.instrument.Instrumentation
+-dontwarn sun.misc.Signal
+
+# Only used in `kotlinx.coroutines.internal.ExceptionsConstructor`.
+# The case when it is not available is hidden in a `try`-`catch`, as well as a check for Android.
+-dontwarn java.lang.ClassValue
+
+# An annotation used for build tooling, won't be directly accessed.
+-dontwarn org.codehaus.mojo.animal_sniffer.IgnoreJRERequirement
+# End of content from /home/runner/.gradle/caches/8.8/transforms/bba6ead20369a15be1229ced3160dba8/transformed/rules/lib/META-INF/com.android.tools/r8/coroutines.pro
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/12029bc45d28f013426819f8205b98ea/transformed/versionedparcelable-1.1.1/proguard.txt
+-keep class * implements androidx.versionedparcelable.VersionedParcelable
+-keep public class android.support.**Parcelizer { *; }
+-keep public class androidx.**Parcelizer { *; }
+-keep public class androidx.versionedparcelable.ParcelImpl
+
+# End of content from /home/runner/.gradle/caches/8.8/transforms/12029bc45d28f013426819f8205b98ea/transformed/versionedparcelable-1.1.1/proguard.txt
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/51cf1c19205db8e07b2df96915938168/transformed/lifecycle-runtime-2.3.1/proguard.txt
+-keepattributes *Annotation*
+
+-keepclassmembers enum androidx.lifecycle.Lifecycle$Event {
+    <fields>;
+}
+
+-keep !interface * implements androidx.lifecycle.LifecycleObserver {
+}
+
+-keep class * implements androidx.lifecycle.GeneratedAdapter {
+    <init>(...);
+}
+
+-keepclassmembers class ** {
+    @androidx.lifecycle.OnLifecycleEvent *;
+}
+
+# this rule is need to work properly when app is compiled with api 28, see b/142778206
+# Also this rule prevents registerIn from being inlined.
+-keepclassmembers class androidx.lifecycle.ReportFragment$LifecycleCallbacks { *; }
+# End of content from /home/runner/.gradle/caches/8.8/transforms/51cf1c19205db8e07b2df96915938168/transformed/lifecycle-runtime-2.3.1/proguard.txt
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/9d0564d12eee76405e110ca9d21593cb/transformed/rules/lib/META-INF/proguard/androidx-annotations.pro
+-keep,allowobfuscation @interface androidx.annotation.Keep
+-keep @androidx.annotation.Keep class * {*;}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <methods>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <fields>;
+}
+
+-keepclasseswithmembers class * {
+    @androidx.annotation.Keep <init>(...);
+}
+
+-keepclassmembers,allowobfuscation class * {
+  @androidx.annotation.DoNotInline <methods>;
+}
+
+# End of content from /home/runner/.gradle/caches/8.8/transforms/9d0564d12eee76405e110ca9d21593cb/transformed/rules/lib/META-INF/proguard/androidx-annotations.pro
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/b46072ac2eeb06baa519231c5ebfda34/transformed/jetified-sardine-android-0.9/proguard.txt
+
+## SimpleXml
+-dontwarn org.simpleframework.xml.stream.**
+-keep class org.simpleframework.xml.**{ *; }
+-keepclassmembers,allowobfuscation class * {
+    @org.simpleframework.xml.* <fields>;
+    @org.simpleframework.xml.* <init>(...);
+}
+
+## Sardine Android model classes: needed for XML serialization
+-keep class com.thegrizzlylabs.sardineandroid.model.**{ *; }
+
+## OkHTTP
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+-dontwarn org.simpleframework.xml.Element
+-dontwarn org.simpleframework.xml.ElementList
+-dontwarn org.simpleframework.xml.ElementListUnion
+-dontwarn org.simpleframework.xml.Namespace
+-dontwarn org.simpleframework.xml.Root
+-dontwarn org.simpleframework.xml.convert.Converter
+# End of content from /home/runner/.gradle/caches/8.8/transforms/b46072ac2eeb06baa519231c5ebfda34/transformed/jetified-sardine-android-0.9/proguard.txt
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/18513dea7bbad826e0d6e5ed5995de4b/transformed/jetified-wrapper-android-2.0.0/proguard.txt
+-keepclasseswithmembers class * {
+    native <methods>;
+}
+-keep class com.whl.quickjs.**{*;}
+# End of content from /home/runner/.gradle/caches/8.8/transforms/18513dea7bbad826e0d6e5ed5995de4b/transformed/jetified-wrapper-android-2.0.0/proguard.txt
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/465dbf7a1afc8f39324e3244f0787da3/transformed/rules/lib/META-INF/proguard/okhttp3.pro
+# JSR 305 annotations are for embedding nullability information.
+-dontwarn javax.annotation.**
+
+# A resource is loaded with a relative path so the package of this class must be preserved.
+-keepnames class okhttp3.internal.publicsuffix.PublicSuffixDatabase
+
+# Animal Sniffer compileOnly dependency to ensure APIs are compatible with older versions of Java.
+-dontwarn org.codehaus.mojo.animal_sniffer.*
+
+# OkHttp platform used only on JVM and when Conscrypt dependency is available.
+-dontwarn okhttp3.internal.platform.ConscryptPlatform
+
+# End of content from /home/runner/.gradle/caches/8.8/transforms/465dbf7a1afc8f39324e3244f0787da3/transformed/rules/lib/META-INF/proguard/okhttp3.pro
+# The proguard configuration file for the following section is /home/runner/.gradle/caches/8.8/transforms/fe28ad7df7ae55d14db5f2a3e18bd74f/transformed/rules/lib/META-INF/proguard/gson.pro
+### Gson ProGuard and R8 rules which are relevant for all users
+### This file is automatically recognized by ProGuard and R8, see https://developer.android.com/build/shrink-code#configuration-files
+###
+### IMPORTANT:
+### - These rules are additive; don't include anything here which is not specific to Gson (such as completely
+###   disabling obfuscation for all classes); the user would be unable to disable that then
+### - These rules are not complete; users will most likely have to add additional rules for their specific
+###   classes, for example to disable obfuscation for certain fields or to keep no-args constructors
+###
+
+# Keep generic signatures; needed for correct type resolution
+-keepattributes Signature
+
+# Keep Gson annotations
+# Note: Cannot perform finer selection here to only cover Gson annotations, see also https://stackoverflow.com/q/47515093
+-keepattributes RuntimeVisibleAnnotations,AnnotationDefault
+
+### The following rules are needed for R8 in "full mode" which only adheres to `-keepattribtues` if
+### the corresponding class or field is matches by a `-keep` rule as well, see
+### https://r8.googlesource.com/r8/+/refs/heads/main/compatibility-faq.md#r8-full-mode
+
+# Keep class TypeToken (respectively its generic signature) if present
+-if class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation class com.google.gson.reflect.TypeToken
+
+# Keep any (anonymous) classes extending TypeToken
+-keep,allowobfuscation class * extends com.google.gson.reflect.TypeToken
+
+# Keep classes with @JsonAdapter annotation
+-keep,allowobfuscation,allowoptimization @com.google.gson.annotations.JsonAdapter class *
+
+# Keep fields with any other Gson annotation
+# Also allow obfuscation, assuming that users will additionally use @SerializedName or
+# other means to preserve the field names
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.Expose <fields>;
+  @com.google.gson.annotations.JsonAdapter <fields>;
+  @com.google.gson.annotations.Since <fields>;
+  @com.google.gson.annotations.Until <fields>;
+}
+
+# Keep no-args constructor of classes which can be used with @JsonAdapter
+# By default their no-args constructor is invoked to create an adapter instance
+-keepclassmembers class * extends com.google.gson.TypeAdapter {
+  <init>();
+}
+-keepclassmembers class * implements com.google.gson.TypeAdapterFactory {
+  <init>();
+}
+-keepclassmembers class * implements com.google.gson.JsonSerializer {
+  <init>();
+}
+-keepclassmembers class * implements com.google.gson.JsonDeserializer {
+  <init>();
+}
+
+# Keep fields annotated with @SerializedName for classes which are referenced.
+# If classes with fields annotated with @SerializedName have a no-args
+# constructor keep that as well. Based on
+# https://issuetracker.google.com/issues/150189783#comment11.
+# See also https://github.com/google/gson/pull/2420#discussion_r1241813541
+# for a more detailed explanation.
+-if class *
+-keepclasseswithmembers,allowobfuscation class <1> {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-if class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+-keepclassmembers,allowobfuscation,allowoptimization class <1> {
+  <init>();
+}
+
+# End of content from /home/runner/.gradle/caches/8.8/transforms/fe28ad7df7ae55d14db5f2a3e18bd74f/transformed/rules/lib/META-INF/proguard/gson.pro
+# The proguard configuration file for the following section is /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/intermediates/aapt_proguard_file/release/processReleaseResources/aapt_rules.txt
+-keep class androidx.core.app.CoreComponentFactory { <init>(); }
+-keep class com.github.catvod.debug.MainActivity { <init>(); }
+
+# End of content from /home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/intermediates/aapt_proguard_file/release/processReleaseResources/aapt_rules.txt
+# The proguard configuration file for the following section is <unknown>
+
+# End of content from <unknown>

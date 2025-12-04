@@ -1,0 +1,4 @@
+#Thu Dec 04 15:39:09 UTC 2025
+base.0=/home/runner/work/MyCatVodSpider/MyCatVodSpider/app/build/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

@@ -42,7 +42,7 @@ public class Jable extends Spider {
         }
         doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element : doc.select("div.video-img-box")) {
-            String pic = element.select("img").attr("src");
+            String pic = element.select("img").attr("data-src");
             String url = element.select("a").attr("href");
             String name = element.select("div.detail > h6").text();
             if (pic.endsWith(".gif") || name.isEmpty()) continue;
@@ -64,8 +64,7 @@ public class Jable extends Spider {
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
-        Integer total = (Integer.parseInt(pg)+1)*24;
-        return Result.string(Integer.parseInt(pg),Integer.parseInt(pg)+1,24,total,list);
+        return Result.string(list);
     }
 
     @Override
