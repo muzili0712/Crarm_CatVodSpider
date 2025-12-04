@@ -96,7 +96,7 @@ public class JavBus extends Spider {
          //   urlall.concat(matcher.group(1)).concat("#");
         //}
         //url = urlall.substring(0, urlall.length() - 1);
-		url =  Util.getVar(doc.html(), "uul")
+		url =  Util.getVar(doc.html(), "uul");
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
