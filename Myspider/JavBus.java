@@ -24,7 +24,7 @@ public class JavBus extends Spider {
     private static final String siteUrl = "https://javbus.sbs";
     private static final String cateUrl = siteUrl + "/vod/type/id/";
     private static final String detailUrl = siteUrl + "/vod/detail/id/";
-    private static final String searchUrl = siteUrl + "/search/";
+    private static final String searchUrl = siteUrl + "/vod/search/?wd=";
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
@@ -70,7 +70,8 @@ public class JavBus extends Spider {
 			}			
 		} else {
 			String target = cateUrl + tid + "/page/" + Integer.parseInt(pg)+ "/";
-			Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+			Document doca = Jsoup.parse(OkHttp.string(target, getHeaders()));
+			Document doc = Jsoup.parse(doca.select("ul.myui-vodlist.clearfix").first().outerHtml());
 			for (Element element : doc.select("div.myui-vodlist__box")) {
 				String pic = element.select("a.myui-vodlist__thumb").attr("data-original");
 				String url = element.select("a.myui-vodlist__thumb").attr("href");
@@ -112,11 +113,11 @@ public class JavBus extends Spider {
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/"), getHeaders()));
-        for (Element element : doc.select("div.video-img-box")) {
-            String pic = element.select("img").attr("data-src");
-            String url = element.select("a").attr("href");
-            String name = element.select("div.detail > h6").text();
+        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/").concat("&submit="), getHeaders()));
+        for (Element element : doc.select("li.active.clearfix")) {
+            String pic = element.select("div.thumb > a").attr("data-original");
+            String url = element.select("div.thumb > a").attr("href");
+            String name = element.select("div.thumb > a").attr("title");
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
