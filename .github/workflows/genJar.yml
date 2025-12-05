@@ -34,4 +34,4 @@ jobs:
       with:
         default_author: github_actions
         message: 'update spider'
-        add: "['./jar/custom_spider.jar', './jar/custom_spider.jar.md5','./app/src/main/java/com/github/catvod/spider/*']"
+        add: "['./jar/custom_spider.jar', './jar/custom_spider.jar.md5']"
