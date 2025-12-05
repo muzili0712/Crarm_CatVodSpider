@@ -59,7 +59,7 @@ public class ROU223 extends Spider {
         List<Vod> list = new ArrayList<>();
         String target = "";
         int totlepg = 0;
-        Document doc = "";
+        Document doc = null;
         if (pg == "1") {
             target = siteUrl + tid + "index.html";
             doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
