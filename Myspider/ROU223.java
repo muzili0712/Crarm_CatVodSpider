@@ -60,16 +60,16 @@ public class ROU223 extends Spider {
         String target = "";
         int totlepg = 0;
         Document doc = null;
-        //if (pg == "1") {
+        if (pg.isEmpty() || pg.equals("1")) {
             target = siteUrl + tid + "index.html";
             doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
             String nextpage = doc.select("div.pagination > span > a").first().attr("href").replace(tid,"").replace("list_","").replace(".html","");
             totlepg = 1 + Integer.parseInt(nextpage);
-        //}// else {
-         //   String nextpg = String.valueOf( totlepg - Integer.parseInt(pg) + 1);
-         //   target = siteUrl + tid + "list_" + nextpg + ".html";
-         //   doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-        //}
+        } else {
+            String nextpg = String.valueOf( totlepg - Integer.parseInt(pg) + 1);
+            target = siteUrl + tid + "list_" + nextpg + ".html";
+            doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+        }
         for (Element element : doc.select("ul.row.col5.clearfix li")) {
             try {
                 String pic = element.select("img").attr("data-original");
