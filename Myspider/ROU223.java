@@ -68,12 +68,13 @@ public class ROU223 extends Spider {
         } else {
             String nextpg = String.valueOf( totlepg - Integer.parseInt(pg));
             target = siteUrl + tid + "list_" + nextpg + ".html";
+            doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         }
-        for (Element element : doc.select("ul.row.col5.clearfix li a")) {
+        for (Element element : doc.select("ul.row.col5.clearfix li")) {
             try {
                 String pic = element.select("img").attr("data-original");
-                String url = element.attr("href");
-                String name = element.attr("title");
+                String url = element.select("a").attr("href");
+                String name = element.select("a").attr("title");
                 String id = url;
                 list.add(new Vod(id, name, siteUrl + pic));
             } catch (Exception e) {
