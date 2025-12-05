@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class JavDb extends Spider {
 
-    private static String siteUrl = "https://javdb523.com";
+    private static String siteUrl = "https://javdb561.com";
 
     @Override
     public void init(Context context, String extend) throws Exception {
