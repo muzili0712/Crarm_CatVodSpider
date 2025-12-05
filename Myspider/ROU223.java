@@ -108,7 +108,7 @@ public class ROU223 extends Spider {
             try {
                 String pic = element.select("img").attr("src");
                 String url = element.select("div.sui-result__image > a").attr("href");
-                String name = element.select("div.sui-result__image > a").attr("title").replace("<em>","").replace("</em>,"");
+                String name = element.select("div.sui-result__image > a").attr("title").replace("<em>","").replace("</em>","");
                 String id = url.replace(siteUrl,"");
                 list.add(new Vod(id, name,pic));
             } catch (Exception e) {
