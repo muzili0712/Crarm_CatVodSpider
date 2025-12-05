@@ -44,8 +44,8 @@ public class JavDb extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-        List<String> typeIds = Arrays.asList("", "censored", "uncensored", "western");
-        List<String> typeNames = Arrays.asList("全部", "有码", "无码", "欧美");
+        List<String> typeIds = Arrays.asList("", "censored",  "western");
+        List<String> typeNames = Arrays.asList("全部", "有码",  "欧美");
         for (int i = 0; i < typeIds.size(); i++) classes.add(new Class(typeIds.get(i), typeNames.get(i)));
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeader()));
         List<Vod> list = new ArrayList<>();
