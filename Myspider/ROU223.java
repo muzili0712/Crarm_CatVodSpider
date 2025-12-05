@@ -14,8 +14,6 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ROU223 extends Spider {
 
@@ -35,7 +33,7 @@ public class ROU223 extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         Integer count = 0;
         for (Element element : doc.select("div.menu.clearfix dl dd")) {
-            if ( count >= 0 && count <= 16){
+            if ( count >= 0 && count <= 15){
                 String href = element.select("a").attr("href").replace("index.html","");
                 String text = element.text();
                 classes.add(new Class(href, text));
@@ -59,9 +57,19 @@ public class ROU223 extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         List<Vod> list = new ArrayList<>();
-        String target = siteUrl + tid + "list_" + pg + ".html";
-        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-        for (Element element : doc.select("div.row.col5.clearfix dt a")) {
+        String target = "";
+        int totlepg = 0;
+        Document doc = "";
+        if (pg == "1") {
+            target = siteUrl + tid + "index.html";
+            doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+            String nextpg = doc.select("div.pagination > span > a").first().attr("href").replace("/","").replace(tid,"").replace("list_","").replace(".html","");
+            totlepg = 1 + Integer.parseInt(nextpg);
+        } else {
+            String nextpg = String.valueOf( totlepg - Integer.parseInt(pg));
+            target = siteUrl + tid + "list_" + nextpg + ".html";
+        }
+        for (Element element : doc.select("ul.row.col5.clearfix li a")) {
             try {
                 String pic = element.select("img").attr("data-original");
                 String url = element.attr("href");
@@ -80,26 +88,9 @@ public class ROU223 extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders()));
         String name = doc.select("title").text().split("-")[0];
-        String regex = "playUrl=\"(.*?)m3u8\";";
-
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(doc.html());
-        String url = "";
-        if (matcher.find()) {
-            url = matcher.group(1);
-            url = url.replace("\\/","/") + "m3u8";
-        }
-
-        String regex2 = "posterImg=\"(.*?)\";";
-
-        Pattern pattern2 = Pattern.compile(regex2);
-        Matcher matcher2 = pattern2.matcher(doc.html());
-        String pic = "";
-        if (matcher2.find()) {
-            pic = matcher2.group(1);
-            pic = pic.replace("\\/","/");
-        }
-
+        String url =  Util.getVar(doc.html(), "playUrl").replace("+@movivecom@+","vmyjhl.com");
+        String pic = doc.select("div.player-poster.clickable").attr("style").split("\"")[1];
+            
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodName(name);
