@@ -19,18 +19,18 @@ import java.util.List;
 public class Eighteen extends Spider {
 
     private final String url = "https://mjv002.com/zh/";
+    pribate final String starturl = "https://mjv002.com/zh/chinese_IamOverEighteenYearsOld/19/index.html";
 
     @Override
     public void init(Context context, String extend) throws Exception {
-        Response response = OkHttp.newCall("https://mjv002.com/zh/chinese_IamOverEighteenYearsOld/19/index.html").execute();
-        response.close();
+        OkHttp.newCall(starturl)close();
     }
 
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(url));
+        Document doc = Jsoup.parse(OkHttp.string(starturl));
         for (Element a : doc.select("li.animenu__nav_transparent")) {
             String typeName = a.select("a").text();
             String typeId = a.select("a").attr("href").replace(url, "");
