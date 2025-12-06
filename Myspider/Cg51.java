@@ -39,11 +39,11 @@ public class Cg51 extends Spider {
     }
 
 
-    private String Base64ToImage(String ccc) {
-        List<Vod> list = new ArrayList<>();
+   // private String Base64ToImage(String ccc) {
+     //   List<Vod> list = new ArrayList<>();
 
-        return list;
-    }
+     //   return list;
+   // }
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
