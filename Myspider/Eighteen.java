@@ -14,7 +14,6 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.*;
-import okhttp3.Response;
 
 public class Eighteen extends Spider {
 	
@@ -40,14 +39,14 @@ public class Eighteen extends Spider {
             }
             headers.put("Cookie", cookieBuilder.toString().trim());
         }
+        
         return headers;
     }
 
     @Override
     public void init(Context context, String extend) throws Exception {
 		
-		okhttp3.Response response = OkHttp.newCall(starturl,getHeaders());
-		List<String> setCookieHeaders = response.headers("Set-Cookie");
+		List<String> setCookieHeaders = OkHttp.string(starturl,getHeaders()).headers("Set-Cookie");
 		for (String header : setCookieHeaders) {
             try {
                 // 解析 Cookie：name=value; expires=...; path=...; domain=...
@@ -68,7 +67,7 @@ public class Eighteen extends Spider {
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(url),getHeaders());
+        Document doc = Jsoup.parse(OkHttp.string(url,getHeaders()));
         for (Element a : doc.select("ul.animenu__nav > li > a")) {
             String typeName = a.text();
             String typeId = a.attr("href").replace(url, "");
@@ -91,7 +90,7 @@ public class Eighteen extends Spider {
         List<Vod> list = new ArrayList<>();
         tid = tid.replace("random", "list");
         tid = tid.replace("index", pg);
-        Document doc = Jsoup.parse(OkHttp.string(url + tid),getHeaders());
+        Document doc = Jsoup.parse(OkHttp.string(url + tid,getHeaders()));
         for (Element div : doc.select("div.post")) {
             String id = div.select("a").attr("href").replace(url, "");
             String name = div.select("h3").text();
@@ -104,7 +103,7 @@ public class Eighteen extends Spider {
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(url + ids.get(0)),getHeaders());
+        Document doc = Jsoup.parse(OkHttp.string(url + ids.get(0),getHeaders()));
         Element wrap = doc.select("div.video-wrap").get(0);
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
