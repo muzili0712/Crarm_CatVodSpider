@@ -104,7 +104,7 @@ private int fetchTotalPages(String tid) {
         // 方法1：通过分页链接获取最后一页的页码
         Element paginationLinks = doc.select("div.pagination > span > a");
         if (!paginationLinks.isEmpty()) {
-            Element lastPageLink = paginationLinks.first();
+            Elements lastPageLink = paginationLinks.first();
             String href = lastPageLink.attr("href");
             
             // 提取页码数字
