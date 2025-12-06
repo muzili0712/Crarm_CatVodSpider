@@ -31,7 +31,7 @@ public class Eighteen extends Spider {
         List<Class> classes = new ArrayList<>();
         List<Vod> list = new ArrayList<>();
         Document doc = Jsoup.parse(OkHttp.string(starturl));
-        for (Element a : doc.select("li.animenu__nav_transparent > a")) {
+        for (Element a : doc.select("ul.animenu__nav > li > a")) {
             String typeName = a.text();
             String typeId = a.attr("href").replace(url, "");
             if (!typeId.contains("random/all/")) continue;
