@@ -10,6 +10,7 @@ import com.github.catvod.utils.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -101,7 +102,7 @@ private int fetchTotalPages(String tid) {
         Document doc = Jsoup.parse(OkHttp.string(firstPageUrl, getHeaders()));
         
         // 方法1：通过分页链接获取最后一页的页码
-        Elements paginationLinks = doc.select("div.pagination > span > a");
+        Element paginationLinks = doc.select("div.pagination > span > a");
         if (!paginationLinks.isEmpty()) {
             Element lastPageLink = paginationLinks.first();
             String href = lastPageLink.attr("href");
