@@ -58,27 +58,42 @@ public class ROU223 extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         List<Vod> list = new ArrayList<>();
-    	int totalPage = 0;
-    
-    	// 1. 先获取第一页来确定总页数
-    	String firstPageUrl = siteUrl + tid + "index.html";
-    	Document firstPageDoc = Jsoup.parse(OkHttp.string(firstPageUrl, getHeaders()));
-    
-    	// 安全地获取总页数
-    	Elements paginationLinks = firstPageDoc.select("div.pagination > span > a");
-    	if (!paginationLinks.isEmpty()) {
-        	String href = paginationLinks.first().attr("href");
-        	String pageNum = href.replace(tid, "")
-                            	.replace("list_", "")
-                            	.replace(".html", "");
+    	
+		Integer totalPages = null;
+    	if (extend != null && extend.containsKey("total_pages_" + tid)) {
         	try {
-            	totalPage = Integer.parseInt(pageNum) + 1;
+            	totalPages = Integer.parseInt(extend.get("total_pages_" + tid));
         	} catch (NumberFormatException e) {
-            	totalPage = 1; // 默认值
+            	totalPages = null;
         	}
-    	} else {
-        	totalPage = 1;
     	}
+    
+    	// 如果没有缓存，重新获取
+    	if (totalPages == null) {
+    		// 安全地获取总页数
+			String firstPageUrl = siteUrl + tid + "index.html";
+    		Document firstPageDoc = Jsoup.parse(OkHttp.string(firstPageUrl, getHeaders()));
+    		Elements paginationLinks = firstPageDoc.select("div.pagination > span > a");
+    		if (!paginationLinks.isEmpty()) {
+        		String href = paginationLinks.first().attr("href");
+        		String pageNum = href.replace(tid, "")
+                            		.replace("list_", "")
+                            		.replace(".html", "");
+        		try {
+            		totalPages = Integer.parseInt(pageNum) + 1;
+        		} catch (NumberFormatException e) {
+            		totalPages = 1; // 默认值
+        		}
+    		} else {
+        		totalPages = 1;
+    		}
+        	//totalPages = fetchTotalPages(tid);
+        	if (extend != null) {
+           	 	extend.put("total_pages_" + tid, String.valueOf(totalPages));
+        	}
+    	}
+		
+
 	    // 2. 根据请求的页码获取对应页面
     	int currentPage = pg.isEmpty() ? 1 : Integer.parseInt(pg);
     	String targetUrl;
@@ -87,7 +102,7 @@ public class ROU223 extends Spider {
         	targetUrl = siteUrl + tid + "index.html";
     	} else {
         	// 计算反向页码（根据你的逻辑）
-        	int reversePage = totalPage - currentPage + 1;
+        	int reversePage = totalPages - currentPage + 1;
         	targetUrl = siteUrl + tid + "list_" + reversePage + ".html";
     	}
     	Document doc = Jsoup.parse(OkHttp.string(targetUrl, getHeaders()));
