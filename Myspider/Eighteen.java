@@ -30,7 +30,7 @@ public class Eighteen extends Spider {
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(starturl));
+        Document doc = Jsoup.parse(OkHttp.string(url));
         for (Element a : doc.select("ul.animenu__nav > li > a")) {
             String typeName = a.text();
             String typeId = a.attr("href").replace(url, "");
