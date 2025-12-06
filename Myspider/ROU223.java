@@ -19,6 +19,7 @@ public class ROU223 extends Spider {
 
     private static final String siteUrl = "http://223rou.com";
     private static final String searchUrl = siteUrl + "/search.html?q=";
+    private int totlepg = 0;
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
@@ -56,30 +57,57 @@ public class ROU223 extends Spider {
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        List<Vod> list = new ArrayList<>();
-        String target = "";
-        int totlepg = 0;
-        Document doc = null;
-        if (pg.isEmpty() || pg.equals("1")) {
-            target = siteUrl + tid + "index.html";
-            doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-            String nextpage = doc.select("div.pagination > span > a").first().attr("href").replace(tid,"").replace("list_","").replace(".html","");
-            totlepg = 1 + Integer.parseInt(nextpage);
-        } else {
-            String nextpg = String.valueOf( totlepg - Integer.parseInt(pg) + 1);
-            target = siteUrl + tid + "list_" + nextpg + ".html";
-            doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+    List<Vod> list = new ArrayList<>();
+    Document doc = null;
+    
+    // 1. 总是先获取第一页来确定总页数
+    String firstPageUrl = siteUrl + tid + "index.html";
+    Document firstPageDoc = Jsoup.parse(OkHttp.string(firstPageUrl, getHeaders()));
+    
+    // 计算总页数（每次都重新计算，避免线程问题）
+    Elements paginationLinks = firstPageDoc.select("div.pagination > span > a");
+    int totalPages = 1;  // 默认1页
+    if (!paginationLinks.isEmpty()) {
+        String href = paginationLinks.first().attr("href");
+        String pageNum = href.replace(tid, "").replace("list_", "").replace(".html", "");
+        try {
+            totalPages = Integer.parseInt(pageNum) +1 ;
+        } catch (NumberFormatException e) {
+            totalPages = 1;
         }
-        for (Element element : doc.select("ul.row.col5.clearfix li")) {
-            try {
-                String pic = element.select("img").attr("data-original");
-                String url = element.select("a").attr("href");
-                String name = element.select("a").attr("title");
-                String id = url;
-                list.add(new Vod(id, name, siteUrl + pic));
-            } catch (Exception e) {
+    }
+    
+    // 2. 根据请求的页码计算目标页
+    int currentPage = pg.isEmpty() || pg.equals("1") ? 1 : Integer.parseInt(pg);
+    String targetUrl;
+    
+    if (currentPage == 1) {
+        targetUrl = firstPageUrl;
+        doc = firstPageDoc;  // 重用已获取的第一页文档
+    } else {
+        // 计算反向页码
+        int targetPage = totalPages - currentPage + 1;
+        targetUrl = siteUrl + tid + "list_" + targetPage + ".html";
+        doc = Jsoup.parse(OkHttp.string(targetUrl, getHeaders()));
+    }
+    
+    // 3. 解析数据
+    for (Element element : doc.select("ul.row.col5.clearfix li")) {
+        try {
+            String pic = element.select("img").attr("data-original");
+            String url = element.select("a").attr("href");
+            String name = element.select("a").attr("title");
+            
+            // 处理URL（确保完整）
+            if (!pic.startsWith("http")) {
+                pic = siteUrl + (pic.startsWith("/") ? pic.substring(1) : pic);
             }
+            
+            list.add(new Vod(url, name, pic));
+        } catch (Exception e) {
+            e.printStackTrace();  // 不要空catch
         }
+    }
 
         return Result.string(list);
     }
