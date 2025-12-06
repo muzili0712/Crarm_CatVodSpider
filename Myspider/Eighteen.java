@@ -108,12 +108,15 @@ public class Eighteen extends Spider {
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
 		String url = "https" + wrap.select("div.mvspan_2 > div > iframe").attr("src");
+		String urltext = Jsoup.parse(OkHttp.string(url,getHeaders())).html();
+		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
+        Matcher matcher = pattern.matcher(urltext);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
-        vod.setVodPlayUrl("播放$" + url);
+        vod.setVodPlayUrl("播放$" + matcher.group(1));
         return Result.string(vod);
     }
 
