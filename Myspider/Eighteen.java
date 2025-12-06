@@ -12,26 +12,62 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import okhttp3.Response;
 
 public class Eighteen extends Spider {
-
+	
+    private static Map<String, String> cookies = new HashMap<>();
     private final String url = "https://mjv002.com/zh/";
     private final String starturl = "https://mjv002.com/zh/chinese_IamOverEighteenYearsOld/19/index.html";
 
+    /**
+     * 获取请求头（包含 Cookie）
+     */
+    private HashMap<String, String> getHeaders() {
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put("User-Agent", Util.CHROME);
+        
+        // 添加 Cookie
+        if (!cookies.isEmpty()) {
+            StringBuilder cookieBuilder = new StringBuilder();
+            for (Map.Entry<String, String> entry : cookies.entrySet()) {
+                cookieBuilder.append(entry.getKey())
+                           .append("=")
+                           .append(entry.getValue())
+                           .append("; ");
+            }
+            headers.put("Cookie", cookieBuilder.toString().trim());
+        }
+        return headers;
+    }
+
     @Override
     public void init(Context context, String extend) throws Exception {
-        OkHttp.newCall(starturl).close();
+		
+		okhttp3.Response response = OkHttp.newCall(starturl,getHeaders());
+		List<String> setCookieHeaders = response.headers("Set-Cookie");
+		for (String header : setCookieHeaders) {
+            try {
+                // 解析 Cookie：name=value; expires=...; path=...; domain=...
+                String[] parts = header.split(";");
+                String[] nameValue = parts[0].split("=", 2);
+                if (nameValue.length == 2) {
+                    String name = nameValue[0].trim();
+                    String value = nameValue[1].trim();
+                    cookies.put(name, value);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
         List<Vod> list = new ArrayList<>();
-        Document docstart = Jsoup.parse(OkHttp.string(starturl));
-        Document doc = Jsoup.parse(OkHttp.string(url));
+        Document doc = Jsoup.parse(OkHttp.string(url),getHeaders());
         for (Element a : doc.select("ul.animenu__nav > li > a")) {
             String typeName = a.text();
             String typeId = a.attr("href").replace(url, "");
@@ -54,7 +90,7 @@ public class Eighteen extends Spider {
         List<Vod> list = new ArrayList<>();
         tid = tid.replace("random", "list");
         tid = tid.replace("index", pg);
-        Document doc = Jsoup.parse(OkHttp.string(url + tid));
+        Document doc = Jsoup.parse(OkHttp.string(url + tid),getHeaders());
         for (Element div : doc.select("div.post")) {
             String id = div.select("a").attr("href").replace(url, "");
             String name = div.select("h3").text();
@@ -67,7 +103,7 @@ public class Eighteen extends Spider {
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(url + ids.get(0)));
+        Document doc = Jsoup.parse(OkHttp.string(url + ids.get(0)),getHeaders());
         Element wrap = doc.select("div.video-wrap").get(0);
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
@@ -100,7 +136,7 @@ public class Eighteen extends Spider {
         params.put("search_keyword", key);
         params.put("search_type", "fc");
         params.put("op", "search");
-        String res = OkHttp.post(url + "searchform_search/all/" + pg + ".html", params);
+        String res = OkHttp.post(url + "searchform_search/all/" + pg + ".html", params,getHeaders());
         List<Vod> list = new ArrayList<>();
         for (Element div : Jsoup.parse(res).select("div.post")) {
             String id = div.select("a").attr("href").replace(url, "");
