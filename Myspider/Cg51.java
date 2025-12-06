@@ -1,3 +1,4 @@
+
 package com.github.catvod.spider;
 
 import com.github.catvod.bean.Class;
@@ -5,7 +6,6 @@ import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
-import com.github.catvod.utils.CgImageUtil;
 import com.github.catvod.utils.Util;
 
 import org.json.JSONObject;
@@ -38,69 +38,10 @@ public class Cg51 extends Spider {
         return headers;
     }
 
-//    private List<Vod> parseVods(Document doc) {
-//        List<Vod> list = new ArrayList<>();
-//        for (Element element : doc.select("article")) {
-//            String pic = String.valueOf(element.select("script"));
-//            String pattern = "'(https?://[^']+)";
-//            Pattern regex = Pattern.compile(pattern);
-//            Matcher matcher = regex.matcher(pic);
-//            String PicAddress = "";
-//            if (matcher.find()) {
-//                PicAddress = proxyImgUrl + matcher.group(1);
-//            } else {
-//            }
-//            String url = element.select("a").attr("href");
-//            String name = element.select(".post-card-title").text();
-//            String id = url.split("/")[2];
-//            if (name != "" && url != ""){
-//                list.add(new Vod(id, name, PicAddress));
-//            }
-//        }
-//        return list;
-//    }
 
-    private List<Vod> parseVods(Document doc) {
+    private String Base64ToImage(String ) {
         List<Vod> list = new ArrayList<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个线程池，最大并发数为10
 
-        List<Callable<String>> tasks = new ArrayList<>(); // 用于存储所有的任务
-
-        for (Element element : doc.select("article")) {
-            String pic = String.valueOf(element.select("script"));
-            String pattern = "'(https?://[^']+)";
-            Pattern regex = Pattern.compile(pattern);
-            Matcher matcher = regex.matcher(pic);
-            String PicAddress = "";
-
-            if (matcher.find()) {
-                String imageUrl = matcher.group(1);
-                tasks.add(() -> CgImageUtil.loadBackgroundImage(imageUrl)); // 创建一个任务，并将其添加到任务列表中
-            }
-
-            String url = element.select("a").attr("href");
-            String name = element.select(".post-card-title").text();
-            String id = url.split("/")[2];
-            if (!name.isEmpty() && !url.isEmpty()) {
-                list.add(new Vod(id, name, PicAddress));
-            }
-        }
-        try {
-            // 执行所有的任务，并获取结果
-            List<Future<String>> futures = executorService.invokeAll(tasks);
-
-            // 遍历任务结果，并将结果设置到对应的Vod对象中
-            for (int i = 0; i < futures.size(); i++) {
-                if (i < list.size()) { // 确保索引不超出列表范围
-                    Vod vod = list.get(i);
-                    String result = futures.get(i).get();
-                    vod.setVodPic(result);
-                }
-            }
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
-        executorService.shutdown(); // 关闭线程池
         return list;
     }
     @Override
@@ -112,22 +53,39 @@ public class Cg51 extends Spider {
             classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        List<Vod> list = parseVods(doc);
+        List<Vod> list;
+        for (Element element : doc.select("article")) {
+            if( element.select("a").attr("onclick").isEmpty() ){
+				String pic = element.select("div.blog-background").attr("style").replace("background-image: url(\"","").replace("\");","");
+				String url = element.select("a").attr("href");
+				String name = element.select("h2.post-card-title").text();
+				String id = url.split("/")[2];
+				list.add(new Vod(id, name, pic));
+			}
+        }
         return Result.string(classes, list);
     }
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        String target = cateUrl + tid + "/" + pg + "/";
+        String target = cateUrl + tid + "/" + pg + "/"; 
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-        List<Vod> list = parseVods(doc);
-        Integer total = (Integer.parseInt(pg)+1)*20;
-        return Result.string(Integer.parseInt(pg),Integer.parseInt(pg)+1,20,total,list);
+        List<Vod> list;
+        for (Element element : doc.select("article")) {
+            if( element.select("a").attr("onclick").isEmpty() ){
+				String pic = element.select("div.blog-background").attr("style").replace("background-image: url(\"","").replace("\");","");
+				String url = element.select("a").attr("href");
+				String name = element.select("h2.post-card-title").text();
+				String id = url.split("/")[2];
+				list.add(new Vod(id, name, pic));
+			}
+        }
+        return Result.string(list);
     }
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat("/"), getHeaders()));
         String playUrl = "";
         int index = 1;
         for (Element element : doc.select("div.dplayer")) {
@@ -141,9 +99,9 @@ public class Cg51 extends Spider {
             }
             index++;
         }
-        String name = doc.select("meta[property=og:title]").attr("content");
-        String pic = doc.select("meta[property=og:image]").attr("content");
-        String year = doc.select("meta[property=video:release_date]").attr("content");
+        String name = doc.select("meta[itemprop=headline]").attr("content");
+        String pic = doc.select("meta[itemprop=image]").attr("content");
+        String year = doc.select("meta[itemprop=datePublished]").attr("content");
 
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
