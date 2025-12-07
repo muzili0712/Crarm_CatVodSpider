@@ -92,13 +92,15 @@ public class JavBus extends Spider {
 		String url = doc.select("div.myui-content__operate > a").attr("href");
 		doc = Jsoup.parse(OkHttp.string(siteUrl.concat(url), getHeaders()));
 		url =  Util.getVar(doc.html(), "uul");
+		if(!url.contains("$http")){
+			url = "播放$" + url;
+		}
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("JavBus");
         vod.setVodPlayUrl(url);
-		vod.setVodContent(url);
         return Result.string(vod);
     }
 
