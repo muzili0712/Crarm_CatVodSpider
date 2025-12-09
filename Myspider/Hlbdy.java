@@ -47,7 +47,7 @@ public class Hlbdy extends Spider {
         for (Element element : doc.select("article > a")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
-			if (picurl.indexOf(".gif") || name.isEmpty()) continue;
+			if (picurl.indexOf(".gif") >-1 || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
@@ -68,7 +68,7 @@ public class Hlbdy extends Spider {
         for (Element element : doc.select("article > a")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
-            if (picurl.indexOf(".gif") || name.isEmpty()) continue;
+            if (picurl.indexOf(".gif") > -1 || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
