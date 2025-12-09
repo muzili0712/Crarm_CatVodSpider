@@ -29,9 +29,6 @@ public class Jrkl extends Spider {
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
 	
-	private static final String keyString = "f5d965df75336270";
-	private static final String ivString = "97b60394abc2fbe1";
-	private static final String trans = AESEncryption.CBC_PKCS_7_PADDING;
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
