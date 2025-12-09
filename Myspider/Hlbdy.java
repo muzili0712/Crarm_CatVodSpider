@@ -23,7 +23,7 @@ import java.util.regex.Pattern;
 public class Hlbdy extends Spider {
 
     private static final String siteUrl = "https://across.odrepgn.cc";
-    private static final String cateUrl = siteUrl + "/categories/";
+    private static final String cateUrl = siteUrl + "/category/";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
 
