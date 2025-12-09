@@ -81,12 +81,9 @@ public class Jrkl extends Spider {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat("/"), getHeaders()));
-        String name = doc.select("h1.post-title").text();
+        String name = doc.select("h1.post-title ").text();
         String pic = siteUrl + doc.select("meta[itemprop=image]").attr("content");
         String html = doc.html();
-        // 打印 HTML 到控制台
-//        System.out.println(html);
-        // 2. 正则提取 window.$avdt 的 JSON 内容
         Pattern pattern = Pattern.compile("\"url\"\\s*:\\s*\"([^\"]+)\"");
         Matcher matcher =  pattern.matcher(html);
 
