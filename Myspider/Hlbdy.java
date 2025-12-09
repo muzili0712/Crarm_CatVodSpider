@@ -44,18 +44,18 @@ public class Hlbdy extends Spider {
             classes.add(new Class(typeId, typeName));
         }
         doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        for (Element element : doc.select("article > a")) {
+        for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
 			if (picurl.indexOf(".gif") >-1 || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
-			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
+			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
+			//String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, pic));
+            list.add(new Vod(id, name, picurl));
         }
         return Result.string(classes, list);
     }
@@ -64,19 +64,20 @@ public class Hlbdy extends Spider {
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception  {
         List<Vod> list = new ArrayList<>();
         String target = cateUrl + tid + "/";
+		if( !pg.equl("1")) target = cateUrl + tid + "/" + pg +"/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-        for (Element element : doc.select("article > a")) {
+        for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
             if (picurl.indexOf(".gif") > -1 || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
-			String pic= imagedecryptor.downloadAndDecryptImage(picurl);
+			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
+			//String pic= imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");	
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, pic));
+            list.add(new Vod(id, name, picurl));
         }
         return Result.string(list);
     }
