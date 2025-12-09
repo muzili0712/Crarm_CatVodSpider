@@ -62,7 +62,7 @@ public class Cg51 extends Spider {
 
     private List<Vod> parseVods(Document doc) {
         List<Vod> list = new ArrayList<>();
-        ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个线程池，最大并发数为10
+        ExecutorService executorService = Executors.newFixedThreadPool(20); // 创建一个线程池，最大并发数为20
 
         List<Callable<String>> tasks = new ArrayList<>(); // 用于存储所有的任务
 
