@@ -48,9 +48,9 @@ public class Hlbdy extends Spider {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
 			if (picurl.indexOf(".gif") >-1 || name.isEmpty()) continue;
-			//Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
-            //Matcher matcher = pattern.matcher(picurl);
-			//picurl = matcher.find() ? matcher.group(1) : "";
+			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
+            Matcher matcher = pattern.matcher(picurl);
+			picurl = matcher.find() ? matcher.group(1) : "";
 			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			//String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
@@ -72,11 +72,11 @@ public class Hlbdy extends Spider {
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
-			String pic= imagedecryptor.downloadAndDecryptImage(picurl);
+			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
+			//String pic= imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");	
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, pic));
+            list.add(new Vod(id, name, picurl));
         }
         return Result.string(list);
     }
