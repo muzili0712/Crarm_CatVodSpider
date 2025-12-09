@@ -13,7 +13,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -110,7 +109,7 @@ public class Jrkl extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(key), getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
