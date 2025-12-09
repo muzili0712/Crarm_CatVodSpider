@@ -34,7 +34,7 @@ public class Hlbdy extends Spider {
     }
 
     @Override
-    public String homeContent(boolean filter) {
+    public String homeContent(boolean filter)  throws Exception  {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
         Document doc = Jsoup.parse(OkHttp.string(cateUrl, getHeaders()));
@@ -61,7 +61,7 @@ public class Hlbdy extends Spider {
     }
 
     @Override
-    public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) {
+    public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception  {
         List<Vod> list = new ArrayList<>();
         String target = cateUrl + tid + "/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
@@ -73,7 +73,7 @@ public class Hlbdy extends Spider {
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
 			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
-			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
+			String pic= imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");	
             String id = url.split("/")[2].replace(".html","");
             list.add(new Vod(id, name, pic));
