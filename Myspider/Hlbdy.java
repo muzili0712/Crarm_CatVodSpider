@@ -37,12 +37,12 @@ public class Hlbdy extends Spider {
     private List<Vod> parseVods(Document doc) {
         List<Vod> list = new ArrayList<>();
         for (Element element : doc.select("article")) {
-            String pic = element.select("script").html();
+            String pic = element.html();
             String url = element.select("a").attr("href");
             String name = element.select("h2.post-card-title").text();
-            //if (pic.contains(".gif") || name.isEmpty()) continue;
+            if (pic.contains(".gif") || name.isEmpty()) continue;
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, "https://ts1.tc.mm.bing.net/th/id/OIP-C.9a4umpl2vucdEY3UAtgGWAHaGw?rs=1&pid=ImgDetMain&o=7&rm=3"));
+            list.add(new Vod(id, name, ""));
         }
         return list;
     }
