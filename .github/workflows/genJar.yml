@@ -21,9 +21,9 @@ jobs:
     - name: Grant execute permission to gradlew
       run: |
         chmod +x ./gradlew
+        mdkdir ./app/src/main/java/com/github/catvod/spider/tools
         cp -rf ./Myspider/*.java ./app/src/main/java/com/github/catvod/spider/
         cp -rf ./Myspider/tools/* ./app/src/main/java/com/github/catvod/spider/tools/
-        rm -rf ./app/src/main/java/com/github/catvod/spider/miss.java
         rm -rf ./app/src/main/java/com/github/catvod/spider/miss.java
       
 
