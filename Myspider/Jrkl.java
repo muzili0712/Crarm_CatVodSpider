@@ -97,7 +97,8 @@ public class Jrkl extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("Jrkl");
-        vod.setVodPlayUrl("播放$" + pic);
+        vod.setVodPlayUrl("播放$" + "name:" +name + "--pic:" + pic +"--vedio-url:" + playUrl);
+		vod.setVodContent("ids.get(0)"+ ids.get(0)+"--html:"html);
         return Result.string(vod);
     }
 
