@@ -20,6 +20,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//黑料不打烊
 public class Hlbdy extends Spider {
 
     private static final String siteUrl = "https://across.odrepgn.cc";
@@ -47,10 +48,10 @@ public class Hlbdy extends Spider {
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
-			if ( picurl.contains(".gif") || name.isEmpty()) continue;
-			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
-            Matcher matcher = pattern.matcher(picurl);
-			picurl = matcher.find() ? matcher.group(1) : "";
+			//if ( picurl.contains(".gif") || name.isEmpty()) continue;
+			//Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
+            //Matcher matcher = pattern.matcher(picurl);
+			/picurl = matcher.find() ? matcher.group(1) : "";
 			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			//String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
@@ -63,8 +64,8 @@ public class Hlbdy extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception  {
         List<Vod> list = new ArrayList<>();
-        String target = cateUrl + tid + "/";
-		if( !pg.equals("1")) target = cateUrl + tid + "/" + pg +"/";
+        String target = cateUrl + "/" + tid + "/";
+		if( !pg.equals("1")) target = cateUrl + "/" + tid + "/" + pg +"/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
