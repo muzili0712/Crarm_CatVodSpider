@@ -38,7 +38,7 @@ public class Hlbdy extends Spider {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
         Document doc = Jsoup.parse(OkHttp.string(cateUrl, getHeaders()));
-        for (Element element : doc.select("li.category-level-0.category-parent")) {
+        for (Element element : doc.select("div.category-list > ul > li")) {
             String typeId = element.select("a").attr("href").split("/")[2];
             String typeName = element.select("a").text();
             classes.add(new Class(typeId, typeName));
@@ -51,11 +51,11 @@ public class Hlbdy extends Spider {
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
-			//String pic = imagedecryptor.downloadAndDecryptImage(picurl);
+			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
+			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, picurl));
+            list.add(new Vod(id, name, pic));
         }
         return Result.string(classes, list);
     }
@@ -72,11 +72,11 @@ public class Hlbdy extends Spider {
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
-			//String pic= imagedecryptor.downloadAndDecryptImage(picurl);
+			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
+			String pic= imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");	
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, picurl));
+            list.add(new Vod(id, name, pic));
         }
         return Result.string(list);
     }
