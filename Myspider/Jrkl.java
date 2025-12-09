@@ -81,7 +81,7 @@ public class Jrkl extends Spider {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat("/"), getHeaders()));
-        String name = doc.select("h1.post-title ").text();
+        String name = doc.select("article.post > h1").text();
         String pic = siteUrl + doc.select("meta[itemprop=image]").attr("content");
         String html = doc.html();
         Pattern pattern = Pattern.compile("\"url\"\\s*:\\s*\"([^\"]+)\"");
@@ -97,7 +97,7 @@ public class Jrkl extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("Jrkl");
-        vod.setVodPlayUrl("播放$" + playUrl);
+        vod.setVodPlayUrl("播放$" + pic);
         return Result.string(vod);
     }
 
