@@ -6,6 +6,7 @@ import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Util;
+import com.github.catvod.utils.AESEncryption;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -27,11 +28,51 @@ public class Hlbdy extends Spider {
     private static final String cateUrl = siteUrl + "/category/";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
+	
+	private static final String keyString = "f5d965df75336270";
+	private static final String ivString = "97b60394abc2fbe1";
+	private static final String trans = AESEncryption.CBC_PKCS_7_PADDING;
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
         headers.put("User-Agent", Util.CHROME);
         return headers;
+    }
+	
+    /**
+     * 从URL获取文件扩展名
+     */
+    private static String getFileExtensionFromUrl(String url) {
+        if (url == null || url.isEmpty()) {
+            return "jpg";
+        }
+        
+        // 移除查询参数
+        String cleanUrl = url.split("\\?")[0];
+        
+        // 获取扩展名
+        String[] parts = cleanUrl.split("\\.");
+        if (parts.length > 1) {
+            return parts[parts.length - 1].toLowerCase();
+        }
+        
+        return "jpg"; // 默认
+    }
+
+	/**
+     * 根据扩展名获取MIME类型
+     */
+    private static String getMimeTypeFromExtension(String extension) {
+        Map<String, String> mimeTypes = new HashMap<>();
+        mimeTypes.put("jpg", "jpeg");
+        mimeTypes.put("jpeg", "jpeg");
+        mimeTypes.put("png", "png");
+        mimeTypes.put("gif", "gif");
+        mimeTypes.put("webp", "webp");
+        mimeTypes.put("bmp", "bmp");
+        mimeTypes.put("svg", "svg+xml");
+        
+        return mimeTypes.getOrDefault(extension.toLowerCase(), "jpeg");
     }
 
     private List<Vod> parseVods(Document doc) {
@@ -41,8 +82,26 @@ public class Hlbdy extends Spider {
             String url = element.select("a").attr("href");
             String name = element.select("h2.post-card-title").text();
             if (pic.contains(".gif") || name.isEmpty()) continue;
+			
+			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
+			Matcher matcher = pattern.matcher(pic);
+			String creptpicurl = matcher.find()?matcher.group(1):"";
+			
+			byte[] picbyte = null ; 
+			try{
+				picbyte =OkHttp.string(creptpicurl).getBytes();
+				String picBase64 = org.apache.commons.codec.binary.Base64.encodeBase64String(picbyte);
+				byte[] decreptPicbyte = AESEncryption.decrypt(picBase64, keyString, ivString,trans);
+				String decreptPicBase64 = org.apache.commons.codec.binary.Base64.encodeBase64String(decreptPicbyte);
+				String extension = getFileExtensionFromUrl(creptpicurl);
+				String mimeType = getMimeTypeFromExtension(extension);
+				pic = "data:image/" + mimeType + ";base64," + decreptPicBase64;
+			} else {
+				pic = "";
+			}
+			
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, ""));
+            list.add(new Vod(id, name, pic));
         }
         return list;
     }
