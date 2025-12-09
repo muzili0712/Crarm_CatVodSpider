@@ -49,7 +49,7 @@ public class Jrkl extends Spider {
 			Matcher matcher = pattern.matcher(pic);
 			String picurl = matcher.find()?matcher.group(1):"";
 
-            String id = url.split("/")[2].replace(".html","");
+            String id = url.split("/")[4];
             list.add(new Vod(id, name, siteUrl + picurl));
         }
         return list;
@@ -97,8 +97,7 @@ public class Jrkl extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("Jrkl");
-        vod.setVodPlayUrl("播放$" + "name:" +name + "--pic:" + pic +"--vedio-url:" + playUrl);
-		vod.setVodContent("ids.get(0)"+ ids.get(0)+ "--detailUrl:" + detailUrl.concat(ids.get(0)).concat("/") + "--html:" + html);
+        vod.setVodPlayUrl("播放$" +  playUrl);
         return Result.string(vod);
     }
 
