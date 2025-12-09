@@ -83,7 +83,7 @@ public class Jrkl extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat("/"), getHeaders()));
         String name = doc.select("article.post > h1").text();
         String pic = siteUrl + doc.select("meta[itemprop=image]").attr("content");
-        String html = doc.html();
+        String html = doc.toString();
         Pattern pattern = Pattern.compile("\"url\"\\s*:\\s*\"([^\"]+)\"");
         Matcher matcher =  pattern.matcher(html);
 
@@ -98,7 +98,7 @@ public class Jrkl extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("Jrkl");
         vod.setVodPlayUrl("播放$" + playUrl);
-		vod.setVodContent("ids.get(0):"+ ids.get(0)+ "--detailUrl:" + detailUrl.concat(ids.get(0)).concat("/") + "--playUrl:"+ playUrl+ "--html:" + html);
+		vod.setVodContent("ids.get(0):"+ ids.get(0)+ "\n--detailUrl:" + detailUrl.concat(ids.get(0)).concat("/") + "\n--playUrl:"+ playUrl+ "\n--html:" + html);
         return Result.string(vod);
     }
 
