@@ -51,7 +51,7 @@ public class Hlbdy extends Spider {
 			//if ( picurl.contains(".gif") || name.isEmpty()) continue;
 			//Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             //Matcher matcher = pattern.matcher(picurl);
-			/picurl = matcher.find() ? matcher.group(1) : "";
+			//picurl = matcher.find() ? matcher.group(1) : "";
 			//ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			//String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
