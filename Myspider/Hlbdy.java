@@ -17,6 +17,7 @@ import org.jsoup.nodes.Element;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
@@ -87,12 +88,11 @@ public class Hlbdy extends Spider {
 			Matcher matcher = pattern.matcher(pic);
 			String creptpicurl = matcher.find()?matcher.group(1):"";
 			
-			byte[] picbyte = null ; 
 			try{
-				picbyte =OkHttp.string(creptpicurl).getBytes();
+				byte[] picbyte = OkHttp.string(creptpicurl).getBytes();
 				String picBase64 = org.apache.commons.codec.binary.Base64.encodeBase64String(picbyte);
-				byte[] decreptPicbyte = AESEncryption.decrypt(picBase64, keyString, ivString,trans);
-				String decreptPicBase64 = org.apache.commons.codec.binary.Base64.encodeBase64String(decreptPicbyte);
+				String decreptPicbyte = AESEncryption.decrypt(picBase64, keyString, ivString,trans);
+				String decreptPicBase64 = org.apache.commons.codec.binary.Base64.encodeBase64String(decreptPicbyte.getBytes());
 				String extension = getFileExtensionFromUrl(creptpicurl);
 				String mimeType = getMimeTypeFromExtension(extension);
 				pic = "data:image/" + mimeType + ";base64," + decreptPicBase64;
