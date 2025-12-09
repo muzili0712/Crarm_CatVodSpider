@@ -22,6 +22,7 @@ jobs:
       run: |
         chmod +x ./gradlew
         cp -rf ./Myspider/*.java ./app/src/main/java/com/github/catvod/spider/
+        cp -rf ./Myspider/tools/* ./app/src/main/java/com/github/catvod/spider/tools/
         rm -rf ./app/src/main/java/com/github/catvod/spider/miss.java
         rm -rf ./app/src/main/java/com/github/catvod/spider/miss.java
       
