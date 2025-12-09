@@ -80,39 +80,26 @@ public class Jrkl extends Spider {
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)), getHeaders()));
-        String name = doc.select("meta[property=og:title]").attr("content");
-        String pic = doc.select("meta[property=og:image]").attr("content");
-        String year = doc.select("meta[property=video:release_date]").attr("content");
+        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0))concat("/"), getHeaders()));
+        String name = doc.select("h1.post-title").text();
+        String pic = siteUrl + doc.select("meta[itemprop=image]").attr("content");
         String html = doc.html();
         // 打印 HTML 到控制台
 //        System.out.println(html);
         // 2. 正则提取 window.$avdt 的 JSON 内容
-        Pattern pattern = Pattern.compile("window\\.\\$avdt\\s*=\\s*(\\{.*?\\})\\s*</script>", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(html);
+        Pattern pattern = Pattern.compile("\"url\"\\s*:\\s*\"([^\"]+)\"");
+        Matcher matcher =  pattern.matcher(html);
 
         String playUrl = "";
         if (matcher.find()) {
-            String json = matcher.group(1).replaceAll("\\\\/", "/");
-
-            JSONObject avdt = new JSONObject(json);
-            String hls = avdt.optString("hls");
-            JSONArray cdns = avdt.optJSONArray("cdns");
-
-            if (cdns != null && cdns.length() > 0) {
-                String cdn = cdns.getString(0);
-                playUrl = "https://" + cdn + hls;
-            }
-        } else {
-            System.out.println("❌ 未提取到 window.$avdt JSON");
+            playUrl = matcher.group(1).replace("\\/", "/");
         }
 
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
-        vod.setVodYear(year);
         vod.setVodName(name);
-        vod.setVodPlayFrom("Hlbdy");
+        vod.setVodPlayFrom("Jrkl");
         vod.setVodPlayUrl("播放$" + playUrl);
         return Result.string(vod);
     }
