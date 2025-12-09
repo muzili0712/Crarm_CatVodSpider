@@ -74,7 +74,7 @@ public class Jrkl extends Spider {
 		if( !pg.equals("1")) target = cateUrl + tid + "/" + pg +"/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
-
+        if ( !pg.equals("1") ) list.remove(0);
         return Result.string(list);
     }
 
