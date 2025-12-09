@@ -45,7 +45,8 @@ public class Hlbdy extends Spider {
         }
         doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element : doc.select("article > a")) {
-            String picurl = element.select("script");
+            String picurl = element.select("script").html();
+            String name = element.select("h2.post-card-title").text();
 			if (picurl.indexOf(".gif") || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
@@ -53,7 +54,6 @@ public class Hlbdy extends Spider {
 			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
-            String name = element.select("h2.post-card-title").text();
             String id = url.split("/")[2].replace(".html","");
             list.add(new Vod(id, name, pic));
         }
@@ -66,7 +66,8 @@ public class Hlbdy extends Spider {
         String target = cateUrl + tid + "/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         for (Element element : doc.select("article > a")) {
-            String picurl = element.select("script");
+            String picurl = element.select("script").html();
+            String name = element.select("h2.post-card-title").text();
             if (picurl.indexOf(".gif") || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
@@ -74,7 +75,6 @@ public class Hlbdy extends Spider {
 			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");	
-            String name = element.select("h2.post-card-title").text();
             String id = url.split("/")[2].replace(".html","");
             list.add(new Vod(id, name, pic));
         }
