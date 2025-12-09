@@ -27,13 +27,13 @@ public class ImageDecryptor {
 	
 	// 加密自定义配置
 	public static ImageDecryptor(String mode,String padding,String media_key,String media_iv,String key,String iv,String sign_key){
-        mode ? this.CRYPTO_DATA.put("mode",mode): ;
-        padding ? this.CRYPTO_DATA.put("padding", padding): ;
-        media_key ? this.CRYPTO_DATA.put("media_key", media_key): ;
-        media_iv ? this.CRYPTO_DATA.put("media_iv", media_iv): ;
-        key ? this.CRYPTO_DATA.put("key", key): ;
-        iv ? this.CRYPTO_DATA.put("iv", iv ): ;
-        sign_key ? this.CRYPTO_DATA.put("sign_key", sign_key): ;
+        if ( mode ) CRYPTO_DATA.put("mode",mode) ;
+        if ( padding ) CRYPTO_DATA.put("padding", padding) ;
+        if ( media_key ) CRYPTO_DATA.put("media_key", media_key) ;
+        if ( media_iv ) CRYPTO_DATA.put("media_iv", media_iv) ;
+        if ( key ) CRYPTO_DATA.put("key", key) ;
+        if ( iv ) CRYPTO_DATA.put("iv", iv ) ;
+        if ( sign_key ) CRYPTO_DATA.put("sign_key", sign_key) ;
 	}
     
     /**
