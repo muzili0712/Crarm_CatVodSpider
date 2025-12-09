@@ -50,7 +50,7 @@ public class Hlbdy extends Spider {
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			ImageDecryptor imagedecryptor = new ImageDecryptor(,,,,,,);
+			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");
             String name = element.select("h2.post-card-title").text();
@@ -71,7 +71,7 @@ public class Hlbdy extends Spider {
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
-			ImageDecryptor imagedecryptor = new ImageDecryptor(,,,,,,);
+			ImageDecryptor imagedecryptor = new ImageDecryptor("","","","","","","");
 			String pic = imagedecryptor.downloadAndDecryptImage(picurl);
             String url = element.attr("href");	
             String name = element.select("h2.post-card-title").text();
