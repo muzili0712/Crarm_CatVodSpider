@@ -40,9 +40,9 @@ public class Hlbdy extends Spider {
             String pic = element.select("script").html();
             String url = element.select("a").attr("href");
             String name = element.select("h2.post-card-title").text();
-            if (pic.contains(".gif") || name.isEmpty()) continue;
+            //if (pic.contains(".gif") || name.isEmpty()) continue;
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, "xxx"));
+            list.add(new Vod(id, name, "https://ts1.tc.mm.bing.net/th/id/OIP-C.9a4umpl2vucdEY3UAtgGWAHaGw?rs=1&pid=ImgDetMain&o=7&rm=3"));
         }
         return list;
     }
