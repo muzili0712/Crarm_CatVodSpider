@@ -16,7 +16,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,17 +27,12 @@ public class Hlbdy extends Spider {
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
 
-    private HashMap<String, String> getHeaders() {
-        HashMap<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", Util.CHROME);
-        return headers;
-    }
 
     @Override
     public String homeContent(boolean filter)  throws Exception  {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl+"/", getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl+"/"));
         for (Element element : doc.select("div.category-list > ul > li")) {
             String typeId = element.select("a").attr("href").split("/")[2];
             String typeName = element.select("a").text();
@@ -65,7 +59,7 @@ public class Hlbdy extends Spider {
         List<Vod> list = new ArrayList<>();
         String target = cateUrl  + tid + "/";
 		if( !pg.equals("1")) target = cateUrl + tid + "/" + pg +"/";
-        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(target));
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
@@ -84,7 +78,7 @@ public class Hlbdy extends Spider {
 
     @Override
     public String detailContent(List<String> ids) {
-        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat("/"), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)).concat(".html")));
         String name = doc.select("meta[property=og:title]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("span.inactive-color").get(0).text();
@@ -101,7 +95,7 @@ public class Hlbdy extends Spider {
     @Override
     public String searchContent(String key, boolean quick) {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/"), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/")));
         for (Element element : doc.select("div.video-img-box")) {
             String pic = element.select("img").attr("data-src");
             String url = element.select("a").attr("href");
