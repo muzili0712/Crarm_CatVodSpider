@@ -96,7 +96,7 @@ public class Hlbdy extends Spider {
 				String extension = getFileExtensionFromUrl(creptpicurl);
 				String mimeType = getMimeTypeFromExtension(extension);
 				pic = "data:image/" + mimeType + ";base64," + decreptPicBase64;
-			} else {
+			} catch {
 				pic = "";
 			}
 			
