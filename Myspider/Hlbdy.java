@@ -101,7 +101,7 @@ public class Hlbdy extends Spider {
 			}
 			
             String id = url.split("/")[2].replace(".html","");
-            list.add(new Vod(id, name, pic));
+            list.add(new Vod(id, pic, pic));
         }
         return list;
     }
