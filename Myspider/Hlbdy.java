@@ -6,7 +6,7 @@ import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Util;
-import com.github.catvod.spider.tools.ImageDecryptor;
+//import com.github.catvod.spider.tools.ImageDecryptor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -38,7 +38,7 @@ public class Hlbdy extends Spider {
     public String homeContent(boolean filter)  throws Exception  {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl+"/", getHeaders()));
         for (Element element : doc.select("div.category-list > ul > li")) {
             String typeId = element.select("a").attr("href").split("/")[2];
             String typeName = element.select("a").text();
@@ -63,8 +63,8 @@ public class Hlbdy extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception  {
         List<Vod> list = new ArrayList<>();
-        String target = cateUrl + "/" + tid + "/";
-		if( !pg.equals("1")) target = cateUrl + "/" + tid + "/" + pg +"/";
+        String target = cateUrl  + tid + "/";
+		if( !pg.equals("1")) target = cateUrl + tid + "/" + pg +"/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
