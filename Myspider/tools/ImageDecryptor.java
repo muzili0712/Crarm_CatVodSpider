@@ -26,14 +26,14 @@ public class ImageDecryptor {
     }};
 	
 	// 加密自定义配置
-	public static ImageDecryptor(String mode,String padding,String media_key,String media_iv,String key,String iv,String sign_key){
-        if ( mode ) CRYPTO_DATA.put("mode",mode) ;
-        if ( padding ) CRYPTO_DATA.put("padding", padding) ;
-        if ( media_key ) CRYPTO_DATA.put("media_key", media_key) ;
-        if ( media_iv ) CRYPTO_DATA.put("media_iv", media_iv) ;
-        if ( key ) CRYPTO_DATA.put("key", key) ;
-        if ( iv ) CRYPTO_DATA.put("iv", iv ) ;
-        if ( sign_key ) CRYPTO_DATA.put("sign_key", sign_key) ;
+	public ImageDecryptor(String mode,String padding,String media_key,String media_iv,String key,String iv,String sign_key){
+        if ( mode != null ) CRYPTO_DATA.put("mode",mode) ;
+        if ( padding != null ) CRYPTO_DATA.put("padding", padding) ;
+        if ( media_key != null  ) CRYPTO_DATA.put("media_key", media_key) ;
+        if ( media_iv != null  ) CRYPTO_DATA.put("media_iv", media_iv) ;
+        if ( key != null  ) CRYPTO_DATA.put("key", key) ;
+        if ( iv != null  ) CRYPTO_DATA.put("iv", iv ) ;
+        if ( sign_key != null  ) CRYPTO_DATA.put("sign_key", sign_key) ;
 	}
     
     /**
