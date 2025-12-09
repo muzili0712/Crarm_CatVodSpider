@@ -38,17 +38,16 @@ public class Hlbdy extends Spider {
     public String homeContent(boolean filter)  throws Exception  {
         List<Vod> list = new ArrayList<>();
         List<Class> classes = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(cateUrl, getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element : doc.select("div.category-list > ul > li")) {
             String typeId = element.select("a").attr("href").split("/")[2];
             String typeName = element.select("a").text();
             classes.add(new Class(typeId, typeName));
         }
-        doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
-			//if ( picurl.contains(".gif") || name.isEmpty()) continue;
+			if ( picurl.contains(".gif") || name.isEmpty()) continue;
 			//Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             //Matcher matcher = pattern.matcher(picurl);
 			//picurl = matcher.find() ? matcher.group(1) : "";
