@@ -47,7 +47,7 @@ public class Hlbdy extends Spider {
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
-			if (picurl.indexOf(".gif") >-1 || name.isEmpty()) continue;
+			if ( picurl.contains(".gif") || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
@@ -64,12 +64,12 @@ public class Hlbdy extends Spider {
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception  {
         List<Vod> list = new ArrayList<>();
         String target = cateUrl + tid + "/";
-		if( !pg.equl("1")) target = cateUrl + tid + "/" + pg +"/";
+		if( !pg.equals("1")) target = cateUrl + tid + "/" + pg +"/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         for (Element element : doc.select("article")) {
             String picurl = element.select("script").html();
             String name = element.select("h2.post-card-title").text();
-            if (picurl.indexOf(".gif") > -1 || name.isEmpty()) continue;
+            if (picurl.contains(".gif") || name.isEmpty()) continue;
 			Pattern pattern = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]");
             Matcher matcher = pattern.matcher(picurl);
 			picurl = matcher.find() ? matcher.group(1) : "";
