@@ -16,6 +16,7 @@ import org.jsoup.nodes.Element;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -25,6 +26,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
 
 public class Cg51 extends Spider {
     private static final String ivString = "97b60394abc2fbe1";
@@ -186,7 +188,7 @@ private List<Vod> processImagesInParallel(List<ArticleData> dataList,
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
-        List<Vod> list = parseVods(doc);
+        List<Vod> list = parseVods(doc, keyString, ivString);
         return Result.string(list);
     }
 
