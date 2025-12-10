@@ -181,7 +181,7 @@ public class Hlbdy extends Spider {
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
-		vod.setContent("vodid="+ ids.get(0) +"--div.dplayer.video:" +json1.toString()+ "-----playUrl:"+playUrl);
+		vod.setVodContent("vodid="+ ids.get(0) +"--div.dplayer.video:" +json1.toString()+ "-----playUrl:"+playUrl);
         vod.setVodPlayFrom("Hlbdy");
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
