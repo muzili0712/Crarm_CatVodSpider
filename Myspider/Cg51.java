@@ -57,9 +57,9 @@ public class Cg51 extends Spider {
     }
 
 
-private List<Vod> parseVods(Document doc, String keyString, String ivString) {
+private List<Vod> parseVods(Document doc) {
     List<ArticleData> articlesData = extractArticlesData(doc);
-    return processImagesInParallel(articlesData, keyString, ivString);
+    return processImagesInParallel(articlesData);
 }
 
 // 第一步：提取数据
@@ -87,8 +87,7 @@ private List<ArticleData> extractArticlesData(Document doc) {
 }
 
 // 第二步：并行处理图片
-private List<Vod> processImagesInParallel(List<ArticleData> dataList, 
-                                          String keyString, String ivString) {
+private List<Vod> processImagesInParallel(List<ArticleData> dataList) {
     ExecutorService executor = Executors.newFixedThreadPool(
         Math.min(dataList.size(), 20)
     );
@@ -144,7 +143,7 @@ private List<Vod> processImagesInParallel(List<ArticleData> dataList,
             classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        List<Vod> list = parseVods(doc, keyString, ivString);
+        List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
     }
 
@@ -152,7 +151,7 @@ private List<Vod> processImagesInParallel(List<ArticleData> dataList,
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         String target = cateUrl + tid + "/" + pg + "/";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-        List<Vod> list = parseVods(doc, keyString, ivString);
+        List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
 
@@ -189,7 +188,7 @@ private List<Vod> processImagesInParallel(List<ArticleData> dataList,
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
-        List<Vod> list = parseVods(doc, keyString, ivString);
+        List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
 
