@@ -159,9 +159,11 @@ public class Hlbdy extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)), getHeaders()));
         String playUrl = "";
         int index = 1;
+		JSONObject json1 ;
         for (Element element : doc.select("div.dplayer")) {
             String play = element.attr("data-config");
             JSONObject jsonObject = new JSONObject(play);
+			json1 = jsonObject
             JSONObject video = jsonObject.getJSONObject("video");
             if (playUrl == ""){
                 playUrl = "视频" + index + "$" + video.get("url");
@@ -179,7 +181,7 @@ public class Hlbdy extends Spider {
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
-		vod.setContent("vodid="+ ids.get(0) +"--div.dplayer.video:" +jsonObject.toString()+ "-----playUrl:"+playUrl);
+		vod.setContent("vodid="+ ids.get(0) +"--div.dplayer.video:" +json1.toString()+ "-----playUrl:"+playUrl);
         vod.setVodPlayFrom("Hlbdy");
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
