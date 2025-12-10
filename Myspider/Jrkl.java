@@ -89,7 +89,7 @@ public class Jrkl extends Spider {
         String playUrl = "";
 		int n=1;
         while (matcher.find()) {
-			if( n == 1 ){
+			if( playUrl == "" ){
 				playUrl = "视频"+ String.valueOf(n) + "$" + matcher.group(1).replace("\\/", "/");
 			}else{
 				playUrl +="#视频"+ String.valueOf(n) + "$" + matcher.group(1).replace("\\/", "/");
