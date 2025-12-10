@@ -139,7 +139,7 @@ public class Cg51 extends Spider {
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
 		Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        for (Element element : doc.select("ul.menu.navbar-nav")) {
+        for (Element element : doc.select("ul[id=menu-menu-1]")) {
 			String stringId = element.select("a").attr("href");
 			String typeName = element.select("a").text();
             if( stringId.contains("category") && !typeName.isEmpty() && !stringId.contains("mrdg")){
