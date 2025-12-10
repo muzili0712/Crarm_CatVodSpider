@@ -159,7 +159,7 @@ public class Hlbdy extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)), getHeaders()));
         String playUrl = "";
         int index = 1;
-		JSONObject json1 ;
+		JSONObject json1 = new JSONObject() ;
         for (Element element : doc.select("div.dplayer")) {
             String play = element.attr("data-config");
             JSONObject jsonObject = new JSONObject(play);
