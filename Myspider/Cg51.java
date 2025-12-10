@@ -26,6 +26,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Cg51 extends Spider {
+    private static final String ivString = "97b60394abc2fbe1";
+    private static final String keyString = "f5d965df75336270";
 
     private static final String siteUrl = "https://carrier.ujaumgp.cc";
     private static final String cateUrl = siteUrl + "/category/";
@@ -52,9 +54,9 @@ public class Cg51 extends Spider {
             Matcher matcher = regex.matcher(pic);
             String PicAddress = "";
 
-            if (matcher.find()) {
+            if (!pic.contains(".gif") && matcher.find() ) {
                 String imageUrl = matcher.group(1);
-                tasks.add(() -> CgImageUtil.loadBackgroundImage(imageUrl)); // 创建一个任务，并将其添加到任务列表中
+                tasks.add(() -> CgImageUtil.loadBackgroundImage(imageUrl,keyString,ivString,CgImageUtil.CBC_PKCS_7_PADDING)); // 创建一个任务，并将其添加到任务列表中
             }
 
             String url = element.select("a").attr("href");
