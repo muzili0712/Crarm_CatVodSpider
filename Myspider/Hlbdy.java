@@ -75,7 +75,7 @@ public class Hlbdy extends Spider {
                 continue;
             }
             
-            String id = url.split("/")[2].replace(".html","");
+            String id = url.split("/")[2];
             Matcher matcher = Pattern.compile("loadBannerDirect\\s*\\(\\s*['\"]([^'\"]+)['\"]")
                 .matcher(String.valueOf(element.select("script")));
             
@@ -159,7 +159,6 @@ public class Hlbdy extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)), getHeaders()));
         String playUrl = "";
         int index = 1;
-		JSONObject json1 = new JSONObject() ;
         for (Element element : doc.select("div.dplayer")) {
             String play = element.attr("data-config");
             JSONObject jsonObject = new JSONObject(play);
@@ -181,7 +180,6 @@ public class Hlbdy extends Spider {
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
-		vod.setVodContent("vodid="+ ids.get(0) +"--div.dplayer.video:" +json1.toString()+ "-----playUrl:"+playUrl);
         vod.setVodPlayFrom("Hlbdy");
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
