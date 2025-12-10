@@ -54,7 +54,7 @@ public class Cg51 extends Spider {
             Matcher matcher = regex.matcher(pic);
             String PicAddress = "";
 
-            if (!pic.contains(".gif") && matcher.find() ) {
+            if ( matcher.find() ) {
                 String imageUrl = matcher.group(1);
                 tasks.add(() -> CgImageUtil.loadBackgroundImage(imageUrl,keyString,ivString,CgImageUtil.CBC_PKCS_7_PADDING)); // 创建一个任务，并将其添加到任务列表中
             }
@@ -62,7 +62,7 @@ public class Cg51 extends Spider {
             String url = element.select("a").attr("href");
             String name = element.select(".post-card-title").text();
             String id = url.split("/")[2];
-            if (!name.isEmpty() && !url.isEmpty()) {
+            if (!pic.contains(".gif") && !name.isEmpty() && !url.isEmpty()) {
                 list.add(new Vod(id, name, PicAddress));
             }
         }
