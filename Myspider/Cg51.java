@@ -138,17 +138,12 @@ public class Cg51 extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-		Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        for (Element element : doc.select("ul[id=menu-menu-1]")) {
-			String stringId = element.select("a").attr("href");
-			String typeName = element.select("a").text();
-            if( stringId.contains("category") ){
-				String typeId = stringId.split("/")[2];
-				classes.add(new Class(typeId, typeName));
-			
-			}
+        String[] typeIdList = {"wpcz","whhl","xsxy","bkdg","rdsj","ysyl","lldd","mrds","whhj","cbdj","ldcg","snsn","hwcg","whmx","rrcg","qubk","dcbq","cgxw","zzs" ,"yczq","51djc","51by"};
+        String[] typeNameList = {"今日吃瓜","网红黑料","学生校园","必看大瓜","热门大瓜","看片娱乐","伦理道德","每日大赛","网黄合集","免费短剧","领导干部","骚男骚女","海外吃瓜","明星黑料","人人吃瓜","吃瓜看戏","擦边聊骚","吃瓜新闻","51涨知识","原创博主","51剧场","51品茶"};
+        for (int i = 0; i < typeNameList.length; i++) {
+            classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
-
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
     }
@@ -171,9 +166,9 @@ public class Cg51 extends Spider {
             JSONObject jsonObject = new JSONObject(play);
             JSONObject video = jsonObject.getJSONObject("video");
             if (playUrl == ""){
-                playUrl = "视频" + index + "$" + video.get("url");
+                playUrl = "第" + index + "集$" + video.get("url");
             }else {
-                playUrl = playUrl + "#视频" + index + "$" + video.get("url");
+                playUrl = playUrl + "#第" + index + "集$" + video.get("url");
             }
             index++;
         }
@@ -203,4 +198,3 @@ public class Cg51 extends Spider {
         return Result.get().url(id).header(getHeaders()).string();
     }
 }
-
