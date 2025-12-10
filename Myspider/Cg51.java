@@ -138,11 +138,14 @@ public class Cg51 extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-        String[] typeIdList = {"wpcz","mrdg","rdsj","bkdg","whhl","xsxy","whmx"};
-        String[] typeNameList = {"今日吃瓜","每日大瓜","热门吃瓜","必看大瓜","网红黑料","学生学校","明星黑料"};
-        for (int i = 0; i < typeNameList.length; i++) {
-            classes.add(new Class(typeIdList[i], typeNameList[i]));
+		Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
+        for (Element element : doc.select("ul.menu-menu-1")) {
+            String typeId = element.select("a").attr("href").split("/")[2];
+			if( typeId.isEmpty() || typeId.equals("mrdg")) continue;
+            String typeName = element.select("a").text();
+            classes.add(new Class(typeId, typeName));
         }
+
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
