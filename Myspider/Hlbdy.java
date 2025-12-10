@@ -162,7 +162,6 @@ public class Hlbdy extends Spider {
         for (Element element : doc.select("div.dplayer")) {
             String play = element.attr("data-config");
             JSONObject jsonObject = new JSONObject(play);
-			json1 = jsonObject;
             JSONObject video = jsonObject.getJSONObject("video");
             if (playUrl == ""){
                 playUrl = "视频" + index + "$" + video.get("url");
