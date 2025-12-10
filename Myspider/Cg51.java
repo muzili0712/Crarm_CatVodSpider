@@ -146,7 +146,6 @@ public class Cg51 extends Spider {
             classes.add(new Class(typeId, typeName));
         }
 
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
     }
