@@ -9,11 +9,11 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
-import java.security.Security;
+//import java.security.Security;
 
 import android.util.Base64;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
+//import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 
 public class CgImageUtil {
@@ -22,14 +22,14 @@ public class CgImageUtil {
 
     private static String aesDecrypt(String word) {
         try {
-            Security.addProvider(new BouncyCastleProvider());
+            //Security.addProvider(new BouncyCastleProvider());
 
             byte[] srcBytes = Base64.decode(word, Base64.DEFAULT);
             byte[] keyBytes = KEY.getBytes("UTF-8");
             byte[] ivBytes = IV.getBytes("UTF-8");
 
             SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, new IvParameterSpec(ivBytes));
 
             byte[] decryptedBytes = cipher.doFinal(srcBytes);
