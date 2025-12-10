@@ -140,11 +140,12 @@ public class Cg51 extends Spider {
         List<Class> classes = new ArrayList<>();
 		Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element : doc.select("ul.menu.navbar-nav")) {
-            String typeId = element.select("a[target=_self]").attr("href").split("/")[2];
+			String stringId = element.select("a").attr("href")
 			String typeName = element.select("a").text();
-			if( typeId.isEmpty()  || typeName.isEmpty() || typeId.equals("mrdg") || typeName.equals("百万现金扶持")) continue;
-            
-            classes.add(new Class(typeId, typeName));
+            if( !stringId.contains("category")|| typeName.isEmpty() || stringId.contains("mrdg") || typeName.equals("百万现金扶持")) continue;
+
+			String typeId = stringId.split("/")[2];
+			classes.add(new Class(typeId, typeName));
         }
 
         List<Vod> list = parseVods(doc);
