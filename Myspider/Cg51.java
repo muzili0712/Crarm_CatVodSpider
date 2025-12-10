@@ -142,7 +142,7 @@ public class Cg51 extends Spider {
         for (Element element : doc.select("ul.menu.navbar-nav")) {
 			String stringId = element.select("a").attr("href");
 			String typeName = element.select("a").text();
-            if( stringId.contains("category") && typeName.isEmpty() && !stringId.contains("mrdg")){
+            if( stringId.contains("category") && !typeName.isEmpty() && !stringId.contains("mrdg")){
 				String typeId = stringId.split("/")[2];
 				classes.add(new Class(typeId, typeName));
 			
