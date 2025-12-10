@@ -146,12 +146,6 @@ public class CgImageUtil {
 			content.contains("xmlns=\"http://www.w3.org/2000/svg\"");
 	}
 
-	// Base64检测
-	private static boolean isSVGBase64(String base64) {
-		String decoded = new String(Base64.getDecoder().decode(base64));
-		return isSVG(decoded);
-	}
-
 	// Java检测ICO
 	private static boolean isICO(byte[] data) {
 		if (data.length < 4) return false;
