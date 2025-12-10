@@ -139,8 +139,8 @@ public class HEILIAO extends Spider {
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
 		Document doc = Jsoup.parse(OkHttp.string(siteUrl+"/", getHeaders()));
-        for (Element element : doc.select("div.slider-content.fixed")) {
-            String typeId = element.select("a").attr("href");
+        for (Element element : doc.select("a.slider-item ")) {
+            String typeId = element.attr("href");
 			if( typeId.equals("/")) continue;
             String typeName = element.select("a").text();
             classes.add(new Class(typeId, typeName));
