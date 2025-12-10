@@ -139,7 +139,7 @@ public class Cg51 extends Spider {
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
 		Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        for (Element element : doc.select("ul[id=menu-menu-1]")) {
+        for (Element element : doc.select("ul.menu.navbar-nav")) {
             String typeId = element.select("a").attr("href").split("/")[2];
 			if( typeId.isEmpty() || typeId.equals("mrdg")) continue;
             String typeName = element.select("a").text();
@@ -168,9 +168,9 @@ public class Cg51 extends Spider {
             JSONObject jsonObject = new JSONObject(play);
             JSONObject video = jsonObject.getJSONObject("video");
             if (playUrl == ""){
-                playUrl = "第" + index + "集$" + video.get("url");
+                playUrl = "视频" + index + "$" + video.get("url");
             }else {
-                playUrl = playUrl + "#第" + index + "集$" + video.get("url");
+                playUrl = playUrl + "#视频" + index + "$" + video.get("url");
             }
             index++;
         }
