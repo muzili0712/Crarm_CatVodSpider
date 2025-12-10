@@ -13,6 +13,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -196,7 +197,7 @@ public class HEILIAO extends Spider {
     }
 	
 	private static String postString(String url,String key) throws Exception {
-        String postData = "word=" + key +"&page=1";
+        String postData = "word=" + URLEncoder.encode(key) +"&page=1";
         
         URL obj = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
