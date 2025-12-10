@@ -166,9 +166,9 @@ public class Cg51 extends Spider {
             JSONObject jsonObject = new JSONObject(play);
             JSONObject video = jsonObject.getJSONObject("video");
             if (playUrl == ""){
-                playUrl = "第" + index + "集$" + video.get("url");
+                playUrl = "视频" + index + "$" + video.get("url");
             }else {
-                playUrl = playUrl + "#第" + index + "集$" + video.get("url");
+                playUrl = playUrl + "#视频" + index + "$" + video.get("url");
             }
             index++;
         }
