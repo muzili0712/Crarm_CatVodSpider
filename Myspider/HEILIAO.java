@@ -287,4 +287,20 @@ public class HEILIAO extends Spider {
             return response.toString();
         }
     }
+
+	private static String searchVods(String data){
+    	List<Vod> dataList = new ArrayList<>();
+    	JSONObject searchObject = new JSONObject(data);
+        JSONObject searchResult = new JSONObject();
+    	if(searchObject.getJSONObject("msg").equals("ok")) {
+    		searchResult = searchObject.getJSONObject("data").getJSONObject("list");
+    		searchResult.forEach(item -> {
+    			String name = item.get("title");
+    			String pic = item.get("thumb");
+    			String id = item.get("id");
+    			dataList.add(new Vod(id, name, pic));	
+            });
+    	}
+    	return dataList;
+    }
 }
