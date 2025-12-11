@@ -176,7 +176,7 @@ public class HEILIAO extends Spider {
         Map<String, String> params = new HashMap<>();
 		params.put("word", "乱伦");
 		params.put("page", "1");
-        String searchstring = searchContent(searchUrl,params);
+        String searchstring = searchContent(searchUrl,true,params);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
