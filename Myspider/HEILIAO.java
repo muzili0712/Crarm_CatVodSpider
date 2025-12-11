@@ -14,6 +14,8 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.net.URLDecoder;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -173,7 +175,7 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
-        String searchstring = searchContent("乱伦",false,"1");
+        String searchstring = searchContent("乱伦",true,"1");
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
@@ -188,7 +190,13 @@ public class HEILIAO extends Spider {
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
-		params.put("word", key);
+		byte[] = key.getBytes();
+		if( byte[0] == '%' && byte[2] == '%') {
+			String words = URLDecoder.decode(key, "UTF-8");
+			params.put("word", words);
+		}else {
+			params.put("word", key);
+		}
 		params.put("page", pg);
 		String searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
