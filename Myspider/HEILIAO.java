@@ -29,10 +29,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
 public class HEILIAO extends Spider {
     private static final String ivString = "97b60394abc2fbe1";
@@ -191,7 +187,11 @@ public class HEILIAO extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
-        String searchstring = postString(searchUrl,key,pg);
+        Map<String, String> params = new HashMap<>();
+		params.put("word", key);
+		params.put("page", pg);
+		
+		String searchstring = OkHttp.post(searchUrl,params);
         return searchVods(searchstring);
     }
 
@@ -200,92 +200,7 @@ public class HEILIAO extends Spider {
         return Result.get().url(id).header(getHeaders()).string();
     }
 	
-    private static String postString(String url, String key, String pg) throws Exception {
-        String postData = "word=" + URLEncoder.encode(key, "UTF-8") + "&page=" + pg;
-        
-        URL obj = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
-        
-        try {
-            // ==================== 1. 超时设置 ====================
-            conn.setConnectTimeout(15000);    // 连接超时 15秒
-            conn.setReadTimeout(30000);       // 读取超时 30秒
-            
-            // ==================== 2. 请求方法 ====================
-            conn.setRequestMethod("POST");
-            conn.setInstanceFollowRedirects(true); // 自动处理重定向
-            
-            // ==================== 3. 请求头设置 ====================
-            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-            conn.setRequestProperty("Content-Length", String.valueOf(postData.getBytes("UTF-8").length));
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36");
-            conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
-
-            
-            // ==================== 4. 发送请求体 ====================
-            conn.setDoOutput(true);
-            try (OutputStream os = conn.getOutputStream()) {
-                byte[] input = postData.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
-                os.flush();
-            }
-            
-            // ==================== 5. 处理响应 ====================
-            int responseCode = conn.getResponseCode();
-            String responseBody;
-            
-            if (responseCode >= 200 && responseCode < 300) {
-                // 成功响应
-                responseBody = readResponse(conn.getInputStream());
-            } else if (responseCode >= 300 && responseCode < 400) {
-                // 重定向（通常自动处理，这里记录日志）
-                String redirectUrl = conn.getHeaderField("Location");
-                throw new IOException("请求被重定向到: " + redirectUrl + " (状态码: " + responseCode + ")");
-            } else {
-                // 错误响应 - 读取错误流获取更多信息
-                String errorResponse = readResponse(conn.getErrorStream());
-                throw new IOException("HTTP " + responseCode + " - " + errorResponse);
-            }
-            
-            return responseBody;
-            
-        } catch (Exception e) {
-            // 记录日志（实际项目中应该用日志框架）
-            System.err.println("POST请求失败: " + url + " - " + e.getMessage());
-            throw e; // 重新抛出异常
-            
-        } finally {
-            // ==================== 6. 清理资源 ====================
-            // 注意：不要在这里关闭流，readResponse应该负责关闭
-            if (conn != null) {
-                conn.disconnect();
-            }
-        }
-    }
-    
-    /**
-     * 读取响应流并确保关闭
-     */
-    private static String readResponse(InputStream inputStream) throws IOException {
-        if (inputStream == null) {
-            return "";
-        }
-        
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            
-            StringBuilder response = new StringBuilder();
-            char[] buffer = new char[8192];
-            int charsRead;
-            
-            while ((charsRead = reader.read(buffer)) != -1) {
-                response.append(buffer, 0, charsRead);
-            }
-            
-            return response.toString();
-        }
-    }
-
+ 
     private static String searchVods(String data){
     	List<Vod> list = new ArrayList<>();
 		try {
