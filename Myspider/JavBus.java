@@ -54,32 +54,20 @@ public class JavBus extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         List<Vod> list = new ArrayList<>();
-		if (tid == "all"){
-			String target = siteUrl + "/vod/show/id/all/page/" + Integer.parseInt(pg)+ "/";
-			Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-			//Document doc = Jsoup.parse(doca.select("ul.myui-vodlist.clearfix").first().outerHtml());
-			for (Element element : doc.select("li.col-md-4.col-sm-3.col-xs-2")) {
-				String pic = element.select("a.myui-vodlist__thumb").attr("data-original");
-				String url = element.select("a.myui-vodlist__thumb").attr("href");
-				String name = element.select("a.myui-vodlist__thumb").attr("title");
-				if (pic.endsWith(".gif") || name.isEmpty()) continue;
-				String id = url.split("/")[4];
-				list.add(new Vod(id, name, pic));
-			}			
-		} else {
-			String target = cateUrl + tid + "/page/" + Integer.parseInt(pg)+ "/";
-			Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-			//Document doc = Jsoup.parse(doca.select("ul.myui-vodlist.clearfix").first().outerHtml());
-			for (Element element : doc.select("li.col-md-4.col-sm-3.col-xs-2")) {
-				String pic = element.select("a.myui-vodlist__thumb").attr("data-original");
-				String url = element.select("a.myui-vodlist__thumb").attr("href");
-				String name = element.select("a.myui-vodlist__thumb").attr("title");
-				if (pic.endsWith(".gif") || name.isEmpty()) continue;
-				String id = url.split("/")[4];
-				list.add(new Vod(id, name, pic));
-			}
+		String target = cateUrl + tid + "/page/" + Integer.parseInt(pg)+ "/";
+		if (tid == "all") target = siteUrl + "/vod/show/id/all/page/" + Integer.parseInt(pg)+ "/";
+
+		Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+		for (Element element : doc.select("li.col-md-4.col-sm-3.col-xs-2")) {
+			String pic = element.select("a.myui-vodlist__thumb").attr("data-original");
+			String url = element.select("a.myui-vodlist__thumb").attr("href");
+			String name = element.select("a.myui-vodlist__thumb").attr("title");
+			if (pic.endsWith(".gif") || name.isEmpty()) continue;
+			String id = url.split("/")[4];
+			list.add(new Vod(id, name, pic));
 		}
-        return Result.string(list);
+
+		return Result.string(list);
     }
 
     @Override
