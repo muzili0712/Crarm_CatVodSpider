@@ -296,9 +296,9 @@ public class HEILIAO extends Spider {
     		searchResult = searchObject.getJSONObject("data").getJSONArray("list");
 			for (int i = 0; i < searchResult.length(); i++) {
             	JSONObject item = searchResult.getJSONObject(i);
-            	String name = item.get("title");
-    			String pic = item.get("thumb");
-    			String id = item.get("id").toString();
+            	String name = "" + item.get("title");
+    			String pic = "" + item.get("thumb");
+    			String id = "" + item.get("id");
     			list.add(new Vod(id, name, pic));
         	}
     	}
