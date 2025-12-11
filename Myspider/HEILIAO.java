@@ -174,13 +174,17 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
-
+        Map<String, String> params = new HashMap<>();
+		params.put("word", URLEncoder.encode("乱伦"));
+		params.put("page", pg);
+        String searchstring = OkHttp.post(searchUrl,params);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
+		vod.setVodContent(searchstring);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
