@@ -174,17 +174,12 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
-        Map<String, String> params = new HashMap<>();
-		params.put("page", "1");
-		params.put("word", "乱伦");
-        String searchstring = OkHttp.post(searchUrl,params);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
-		vod.setVodContent("params:"+params.toString()+"-----------searchstring:" + searchstring);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
@@ -193,7 +188,7 @@ public class HEILIAO extends Spider {
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
 		params.put("page", pg);
-		params.put("word", URLEncoder.encode(key));
+		params.put("word", key);
 		String searchstring = OkHttp.post(searchUrl,params);
         return searchVods(searchstring);
     }
