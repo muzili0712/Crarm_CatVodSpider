@@ -191,12 +191,7 @@ public class HEILIAO extends Spider {
 		params.put("word", key);
 		params.put("page", pg);
 		String searchstring = OkHttp.post(searchUrl,params);
-		List<Vod> list = searchVods(searchstring);
-        List<ArticleData> dataList = new ArrayList<>();
-		
-		for(Vod item:list) {
-			dataList.add(new ArticleData(item.vodId, item.vodName, item.vodPic));
-		}
+        List<ArticleData> dataList = searchVods(searchstring);
 		return Result.string(processImagesInParallel(dataList));
     }
 
@@ -206,8 +201,8 @@ public class HEILIAO extends Spider {
     }
 	
  
-    private static List<Vod> searchVods(String data){
-    	List<Vod> list = new ArrayList<>();
+    private static List<ArticleData> searchVods(String data){
+    	List<ArticleData> list = new ArrayList<>();
 		try {
     		JSONObject searchObject = new JSONObject(data);
         	JSONArray searchResult = new JSONArray();
@@ -218,7 +213,7 @@ public class HEILIAO extends Spider {
         	    	String name = "" + item.get("title");
     				String pic = "" + item.get("thumb");
     				String id = "" + item.get("id");
-    				list.add(new Vod(id, name, pic));
+    				list.add(new ArticleData(id, name, pic));
         		}
     		}
     		return list;
