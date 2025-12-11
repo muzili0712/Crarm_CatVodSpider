@@ -174,12 +174,17 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
+        Map<String, String> params = new HashMap<>();
+		params.put("word", "乱伦");
+		params.put("page", "1");
+        String searchstring = OkHttp.post(searchUrl,params);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
+		vod.setVodContent(searchstring);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
@@ -187,10 +192,11 @@ public class HEILIAO extends Spider {
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
-		params.put("page", pg);
 		params.put("word", key);
+		params.put("page", pg);
+		
 		String searchstring = OkHttp.post(searchUrl,params);
-        return searchVods(searchstring);
+        return search(searchstring);
     }
 
     @Override
@@ -215,6 +221,21 @@ public class HEILIAO extends Spider {
         		}
     		}
     		return Result.string(list);
+		} catch (Exception  e) {
+			return Result.string(list);
+		}
+    }
+	
+	    private static String search(String data){
+    	List<Vod> list = new ArrayList<>();
+		try {
+    		JSONObject searchObject = new JSONObject(data);
+        	String searchResult = "";
+    		if(searchObject.getString("msg").equals("ok")) {
+    			searchResult = searchObject.getJSONObject("data").getJSONArray("list").toString();
+				
+    		}
+    		return searchResult;
 		} catch (Exception  e) {
 			return Result.string(list);
 		}
