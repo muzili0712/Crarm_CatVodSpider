@@ -195,7 +195,7 @@ public class HEILIAO extends Spider {
         List<ArticleData> dataList = new ArrayList<>();
 		
 		for(Vod item:list) {
-			dataList.add(new ArticleData(item.id, item.name, item.imageUrl));
+			dataList.add(new ArticleData(item.vodId, item.vodName, item.vodPic));
 		}
 		return Result.string(processImagesInParallel(dataList));
     }
