@@ -190,8 +190,8 @@ public class HEILIAO extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
-        Document doc = Jsoup.parse(postString(searchUrl,key,pg));
-        List<Vod> list = parseVods(doc);
+        String doc = postString(searchUrl,key,pg);
+        List<Vod> list = searchVods(doc);
         return Result.string(list);
     }
 
