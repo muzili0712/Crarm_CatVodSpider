@@ -304,7 +304,7 @@ public class HEILIAO extends Spider {
         		}
     		}
     		return Result.string(list);
-		} catch (JSONException e) {
+		} catch (Exception  e) {
 			return Result.string(list);
 		}
     }
