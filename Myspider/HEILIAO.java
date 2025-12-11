@@ -9,6 +9,7 @@ import com.github.catvod.utils.CgImageUtil;
 import com.github.catvod.utils.Util;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
