@@ -290,18 +290,22 @@ public class HEILIAO extends Spider {
 
     private static String searchVods(String data){
     	List<Vod> list = new ArrayList<>();
-    	JSONObject searchObject = new JSONObject(data);
-        JSONArray searchResult = new JSONArray();
-    	if(searchObject.getJSONObject("msg").equals("ok")) {
-    		searchResult = searchObject.getJSONObject("data").getJSONArray("list");
-			for (int i = 0; i < searchResult.length(); i++) {
-            	JSONObject item = searchResult.getJSONObject(i);
-            	String name = "" + item.get("title");
-    			String pic = "" + item.get("thumb");
-    			String id = "" + item.get("id");
-    			list.add(new Vod(id, name, pic));
-        	}
-    	}
-    	return Result.string(list);
+		try {
+    		JSONObject searchObject = new JSONObject(data);
+        	JSONArray searchResult = new JSONArray();
+    		if(searchObject.getJSONObject("msg").equals("ok")) {
+    			searchResult = searchObject.getJSONObject("data").getJSONArray("list");
+				for (int i = 0; i < searchResult.length(); i++) {
+        	    	JSONObject item = searchResult.getJSONObject(i);
+        	    	String name = "" + item.get("title");
+    				String pic = "" + item.get("thumb");
+    				String id = "" + item.get("id");
+    				list.add(new Vod(id, name, pic));
+        		}
+    		}
+    		return Result.string(list);
+		} catch () {
+			return Result.string(list);
+		}
     }
 }
