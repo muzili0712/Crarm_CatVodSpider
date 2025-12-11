@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -175,14 +176,14 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
-        String searchstring = searchContent("乱伦",true,"1");
+        String searchstring = searchContent(URLEncoder.encode("乱伦"),true,"1");
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
-		vod.setVodContent(searchstring);
+		//vod.setVodContent(searchstring);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
