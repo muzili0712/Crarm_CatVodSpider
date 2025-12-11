@@ -183,7 +183,7 @@ public class HEILIAO extends Spider {
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
-		//vod.setVodContent(searchstring);
+		vod.setVodContent(searchstring);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
