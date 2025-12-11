@@ -80,7 +80,11 @@ public class Cg51 extends Spider {
                 .matcher(String.valueOf(element.select("script")));
             
             String imageUrl = matcher.find() ? matcher.group(1) : "";
-            
+			
+            if (imageUrl.contains(".gif")) {
+                continue;
+            }
+			
             dataList.add(new ArticleData(id, name, imageUrl));
         }
         
@@ -96,24 +100,19 @@ public class Cg51 extends Spider {
         Map<ArticleData, CompletableFuture<String>> futures = new LinkedHashMap<>();
         
         for (ArticleData data : dataList) {
-            if (data.imageUrl.isEmpty() || data.imageUrl.contains(".gif") || data.name.isEmpty() ) {
-                // 没有图片或是GIF，直接完成
-                futures.put(data, CompletableFuture.completedFuture(data.imageUrl));
-            } else {
-                // 需要解密的图片
-                CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
-                    try {
-                        return CgImageUtil.loadBackgroundImage(
-                            data.imageUrl, keyString, ivString, padding
-                        );
-                    } catch (Exception e) {
-                        System.err.println("解密失败: " + data.imageUrl);
-                        return data.imageUrl; // 返回原始URL
-                    }
-                }, executor);
-                
-                futures.put(data, future);
-            }
+            // 需要解密的图片
+            CompletableFuture<String> future = CompletableFuture.supplyAsync(() -> {
+                try {
+                    return CgImageUtil.loadBackgroundImage(
+                        data.imageUrl, keyString, ivString, padding
+                    );
+                } catch (Exception e) {
+                    System.err.println("解密失败: " + data.imageUrl);
+                    return data.imageUrl; // 返回原始URL
+                }
+            }, executor);
+            futures.put(data, future);
+            
         }
         
         // 收集结果
@@ -138,8 +137,8 @@ public class Cg51 extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-        String[] typeIdList = {"wpcz","whhl","xsxy","bkdg","rdsj","ysyl","lldd","mrds","whhj","cbdj","ldcg","snsn","hwcg","whmx","rrcg","qubk","dcbq","cgxw","zzs" ,"yczq","51djc","51by"};
-        String[] typeNameList = {"今日吃瓜","网红黑料","学生校园","必看大瓜","热门大瓜","看片娱乐","伦理道德","每日大赛","网黄合集","免费短剧","领导干部","骚男骚女","海外吃瓜","明星黑料","人人吃瓜","吃瓜看戏","擦边聊骚","吃瓜新闻","51涨知识","原创博主","51剧场","51品茶"};
+        String[] typeIdList = {"wpcz","whhl","xsxy","bkdg","rdsj","ysyl","lldd","mrds","cbdj","ldcg","snsn","hwcg","whmx","rrcg","qubk","dcbq","cgxw","zzs" ,"yczq","51djc","51by"};
+        String[] typeNameList = {"今日吃瓜","网红黑料","学生校园","必看大瓜","热门大瓜","看片娱乐","伦理道德","每日大赛","免费短剧","领导干部","骚男骚女","海外吃瓜","明星黑料","人人吃瓜","吃瓜看戏","擦边聊骚","吃瓜新闻","51涨知识","原创博主","51剧场","51品茶"};
         for (int i = 0; i < typeNameList.length; i++) {
             classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
@@ -151,7 +150,7 @@ public class Cg51 extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         String target = cateUrl + tid + "/" + pg + "/";
-        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+		Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
