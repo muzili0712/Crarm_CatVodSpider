@@ -294,12 +294,13 @@ public class HEILIAO extends Spider {
         JSONArray searchResult = new JSONArray();
     	if(searchObject.getJSONObject("msg").equals("ok")) {
     		searchResult = searchObject.getJSONObject("data").getJSONArray("list");
-    		searchResult.forEach(item -> {
-    			String name = item.get("title");
+			for (int i = 0; i < searchResult.length(); i++) {
+            	JSONObject item = searchResult.getJSONObject(i);
+            	String name = item.get("title");
     			String pic = item.get("thumb");
     			String id = item.get("id").toString();
-    			list.add(new Vod(id, name, pic));	
-            });
+    			list.add(new Vod(id, name, pic));
+        	}
     	}
     	return Result.string(list);
     }
