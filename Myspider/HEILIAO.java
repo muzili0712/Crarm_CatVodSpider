@@ -190,8 +190,8 @@ public class HEILIAO extends Spider {
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
-		byte[] = key.getBytes();
-		if( byte[0] == '%' && byte[2] == '%') {
+		byte[] bbb = key.getBytes();
+		if( bbb[0] == '%' && bbb[2] == '%') {
 			String words = URLDecoder.decode(key, "UTF-8");
 			params.put("word", words);
 		}else {
