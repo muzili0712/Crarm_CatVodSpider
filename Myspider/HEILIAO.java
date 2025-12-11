@@ -48,7 +48,7 @@ public class HEILIAO extends Spider {
             this.imageUrl = imageUrl;
         }
     }
-
+	private static  String kkk="";
     private static final String siteUrl = "https://heiliao.com";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/index/search_article";
@@ -183,7 +183,7 @@ public class HEILIAO extends Spider {
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
-		vod.setVodContent(searchstring);
+		vod.setVodContent("kkk:"+ kkk + "------------------searchstring:" + searchstring);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
@@ -191,6 +191,7 @@ public class HEILIAO extends Spider {
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
+		kkk=key;
 		byte[] bbb = key.getBytes();
 		if( bbb[0] == '%' && bbb[3] == '%') {
 			String words = URLDecoder.decode(key, "UTF-8");
