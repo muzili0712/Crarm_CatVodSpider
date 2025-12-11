@@ -218,11 +218,9 @@ public class HEILIAO extends Spider {
             // ==================== 3. 请求头设置 ====================
             conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
             conn.setRequestProperty("Content-Length", String.valueOf(postData.getBytes("UTF-8").length));
-            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36");
-            conn.setRequestProperty("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-            conn.setRequestProperty("Accept-Charset", "UTF-8");
-            conn.setRequestProperty("Accept-Language", "zh-CN,zh;q=0.9,en;q=0.8");
-            conn.setRequestProperty("Connection", "keep-alive");
+            conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36");
+            conn.setRequestProperty("Accept", "application/json, text/javascript, */*; q=0.01");
+
             
             // ==================== 4. 发送请求体 ====================
             conn.setDoOutput(true);
