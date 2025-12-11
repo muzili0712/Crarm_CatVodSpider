@@ -291,13 +291,13 @@ public class HEILIAO extends Spider {
     private static String searchVods(String data){
     	List<Vod> list = new ArrayList<>();
     	JSONObject searchObject = new JSONObject(data);
-        JSONObject searchResult = new JSONObject();
+        JSONArray searchResult = new JSONArray();
     	if(searchObject.getJSONObject("msg").equals("ok")) {
-    		JSONArray searchResult = searchObject.getJSONObject("data").getJSONObject("list");
+    		searchResult = searchObject.getJSONObject("data").getJSONArray("list");
     		searchResult.forEach(item -> {
     			String name = item.get("title");
     			String pic = item.get("thumb");
-    			String id = item.get("id");
+    			String id = item.get("id").toString();
     			list.add(new Vod(id, name, pic));	
             });
     	}
