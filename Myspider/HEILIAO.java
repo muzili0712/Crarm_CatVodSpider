@@ -191,7 +191,7 @@ public class HEILIAO extends Spider {
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
 		byte[] bbb = key.getBytes();
-		if( bbb[0] == '%' && bbb[2] == '%') {
+		if( bbb[0] == '%' && bbb[3] == '%') {
 			String words = URLDecoder.decode(key, "UTF-8");
 			params.put("word", words);
 		}else {
