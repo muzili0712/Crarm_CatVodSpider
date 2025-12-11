@@ -1,8 +1,8 @@
 name: clone lushunming/AndroidCatVodSpider
 
 on:
-  #push:
-  #  branches: [ "multiThread" ]
+  schedule:
+    - cron: 0 0 * * * 
   workflow_dispatch:
 
 jobs:
