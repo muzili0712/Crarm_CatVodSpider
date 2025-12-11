@@ -206,7 +206,7 @@ public class HEILIAO extends Spider {
 		try {
     		JSONObject searchObject = new JSONObject(data);
         	JSONArray searchResult = new JSONArray();
-    		if(searchObject.getJSONObject("msg").equals("ok")) {
+    		if(searchObject.getString("msg").equals("ok")) {
     			searchResult = searchObject.getJSONObject("data").getJSONArray("list");
 				for (int i = 0; i < searchResult.length(); i++) {
         	    	JSONObject item = searchResult.getJSONObject(i);
