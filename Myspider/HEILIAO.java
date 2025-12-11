@@ -173,9 +173,6 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
-        Map<String, String> params = new HashMap<>();
-		params.put("word", "乱伦");
-		params.put("page", "1");
         String searchstring = searchContent("乱伦",true,"1");
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
@@ -193,9 +190,14 @@ public class HEILIAO extends Spider {
         Map<String, String> params = new HashMap<>();
 		params.put("word", key);
 		params.put("page", pg);
-		
 		String searchstring = OkHttp.post(searchUrl,params);
-        return searchVods(searchstring);
+		List<Vod> list = searchVods(searchstring);
+        List<ArticleData> dataList = new ArrayList<>();
+		
+		for(Vod item:list) {
+			dataList.add(new ArticleData(item.id, item.name, item.imageUrl));
+		}
+		return Result.string(processImagesInParallel(dataList));
     }
 
     @Override
@@ -204,7 +206,7 @@ public class HEILIAO extends Spider {
     }
 	
  
-    private static String searchVods(String data){
+    private static List<Vod> searchVods(String data){
     	List<Vod> list = new ArrayList<>();
 		try {
     		JSONObject searchObject = new JSONObject(data);
@@ -219,24 +221,11 @@ public class HEILIAO extends Spider {
     				list.add(new Vod(id, name, pic));
         		}
     		}
-    		return Result.string(list);
+    		return list;
 		} catch (Exception  e) {
-			return Result.string(list);
+			return list;
 		}
     }
 	
-	    private static String listarray(String data){
-    	List<Vod> list = new ArrayList<>();
-		try {
-    		JSONObject searchObject = new JSONObject(data);
-        	String searchResult = "";
-    		if(searchObject.getString("msg").equals("ok")) {
-    			searchResult = searchObject.getJSONObject("data").getJSONArray("list").toString();
-				
-    		}
-    		return searchResult;
-		} catch (Exception  e) {
-			return Result.string(list);
-		}
-    }
+
 }
