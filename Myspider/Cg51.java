@@ -49,7 +49,7 @@ public class Cg51 extends Spider {
     private static final String siteUrl = "https://carrier.ujaumgp.cc";
     private static final String cateUrl = siteUrl + "/category/";
     private static final String detailUrl = siteUrl + "/archives/";
-    private static final String searchUrl = siteUrl + "/search?keywords=";
+    private static final String searchUrl = siteUrl + "/search/";
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
@@ -187,7 +187,7 @@ public class Cg51 extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/"), getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
