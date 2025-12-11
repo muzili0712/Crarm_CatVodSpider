@@ -184,7 +184,7 @@ public class HEILIAO extends Spider {
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
-		vod.setVodContent(searchstring);
+		vod.setVodContent("searchstring:" + searchstring + "---------list[]" + listarray(searchstring));
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
@@ -196,7 +196,7 @@ public class HEILIAO extends Spider {
 		params.put("page", pg);
 		
 		String searchstring = OkHttp.post(searchUrl,params);
-        return search(searchstring);
+        return searchVods(searchstring);
     }
 
     @Override
@@ -226,7 +226,7 @@ public class HEILIAO extends Spider {
 		}
     }
 	
-	    private static String search(String data){
+	    private static String listarray(String data){
     	List<Vod> list = new ArrayList<>();
 		try {
     		JSONObject searchObject = new JSONObject(data);
