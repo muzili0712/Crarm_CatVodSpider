@@ -190,9 +190,8 @@ public class HEILIAO extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
-        String doc = postString(searchUrl,key,pg);
-        List<Vod> list = searchVods(doc);
-        return Result.string(list);
+        String searchstring = postString(searchUrl,key,pg);
+        return searchVods(searchstring);
     }
 
     @Override
@@ -288,8 +287,8 @@ public class HEILIAO extends Spider {
         }
     }
 
-	private static String searchVods(String data){
-    	List<Vod> dataList = new ArrayList<>();
+    private static String searchVods(String data){
+    	List<Vod> list = new ArrayList<>();
     	JSONObject searchObject = new JSONObject(data);
         JSONObject searchResult = new JSONObject();
     	if(searchObject.getJSONObject("msg").equals("ok")) {
@@ -301,6 +300,6 @@ public class HEILIAO extends Spider {
     			dataList.add(new Vod(id, name, pic));	
             });
     	}
-    	return dataList;
+    	return Result.string(list);
     }
 }
