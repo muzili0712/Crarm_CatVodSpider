@@ -14,9 +14,6 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -48,7 +45,7 @@ public class HEILIAO extends Spider {
             this.imageUrl = imageUrl;
         }
     }
-	private static  String kkk="";
+
     private static final String siteUrl = "https://heiliao.com";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/index/search_article";
@@ -176,14 +173,12 @@ public class HEILIAO extends Spider {
         String name = doc.select("meta[name=description]").attr("content");
         String pic = doc.select("meta[property=og:image]").attr("content");
         String year = doc.select("meta[property=article:published_time]").attr("content");
-        //String searchstring = searchContent(URLEncoder.encode("乱伦"),true,"1");
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("HEILIAO");
-		vod.setVodContent("kkk:"+ kkk);
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
@@ -191,14 +186,7 @@ public class HEILIAO extends Spider {
     @Override
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
-		kkk=key;
-		byte[] bbb = key.getBytes();
-		if( bbb[0] == '%' && bbb[3] == '%') {
-			String words = URLDecoder.decode(key, "UTF-8");
-			params.put("word", words);
-		}else {
-			params.put("word", key);
-		}
+		params.put("word", key);
 		params.put("page", pg);
 		String searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
