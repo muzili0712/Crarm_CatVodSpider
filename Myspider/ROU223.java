@@ -92,7 +92,7 @@ public class ROU223 extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders()));
         String name = doc.select("title").text().split("-")[0];
-		String replaceUrl = OkHttp.string(siteUrl.concat("/static/js/replace.js"), getHeaders()).split("\"")[4];
+		String replaceUrl = OkHttp.string(siteUrl.concat("/static/js/replace.js"), getHeaders()).split("\"")[3];
         String url =  Util.getVar(doc.html(), "playUrl").replace("+@movivecom@+",replaceUrl);
             
         Vod vod = new Vod();
