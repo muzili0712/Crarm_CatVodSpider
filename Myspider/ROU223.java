@@ -105,7 +105,7 @@ public class ROU223 extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String poststring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":" + key + ",\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20}";
+        String poststring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":\"" + key + "\",\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20}";
         //JSONObject postjson = new JSONObject(poststring);
         String result = OkHttp.post(searchUrl, poststring);
 		List<Vod> list = searchVods(result);
@@ -120,7 +120,7 @@ public class ROU223 extends Spider {
     		resultarray = resultObject.getJSONObject("hits").getJSONArray("hits");
 			for (int i = 0; i < resultarray.length(); i++) {
         	   	JSONObject item = resultarray.getJSONObject(i);
-				String id = siteUrl + "/htm/" + item.getJSONObject("_source").get("year") + "/" + item.getJSONObject("_source").get("month") + "/" + item.getJSONObject("_source").get("day") + item.get("_id") +".html";
+				String id = "/htm/" + item.getJSONObject("_source").get("year") + "/" + item.getJSONObject("_source").get("month") + "/" + item.getJSONObject("_source").get("day") + item.get("_id") +".html";
         	   	String name = "" + item.getJSONObject("_source").get("data_name");
     			String pic = siteUrl + item.getJSONObject("_source").get("data_picbig");
     			list.add(new Vod(id, name, pic));
