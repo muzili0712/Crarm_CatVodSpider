@@ -45,7 +45,7 @@ public class HEILIAO extends Spider {
             this.imageUrl = imageUrl;
         }
     }
-    private static  String searchstring ="";
+
     private static final String siteUrl = "https://heiliao.com";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/index/search_article";
@@ -178,27 +178,29 @@ public class HEILIAO extends Spider {
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
-		Map<String, String> params = new HashMap<>();
-		params.put("word", "乱伦");
-		params.put("page", "1");
-		String aaaa = OkHttp.post(searchUrl,params);
-		searchContent("乱伦", true ,"1");
-		//vod.setVodContent("--------searchContent:" + searchstring +"searchstring:" + aaaa   );
         vod.setVodPlayFrom("HEILIAO");
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
     }
+	
+	@Override
+    public String searchContent(String key, boolean quick) throws Exception {
+        return searchContent(key, "1");
+    }
 
     @Override
-    public String searchContent(String key, boolean quick) throws Exception {
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
+        return searchContent(key, pg);
+    }
+	
+
+    @Override
+    public String searchContent(String key, String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
 		params.put("word", key);
-		params.put("page", "1");
-		searchstring = OkHttp.post(searchUrl,params);
+		params.put("page", pg);
+		String searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
-		List<Vod> result = new ArrayList<>();
-		result.add(new Vod("55555","key:"+key ,"https://c-ssl.duitang.com/uploads/blog/202211/05/20221105120033_705b9.jpg"));
-		//return Result.string(result);
 		return Result.string(processImagesInParallel(dataList));
     }
 
