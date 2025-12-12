@@ -197,7 +197,7 @@ public class HEILIAO extends Spider {
 		searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
 		List<Vod> result = new ArrayList<>();
-		result.add(new Vod("55555","key:"+key + "---pg:" + pg,"https://c-ssl.duitang.com/uploads/blog/202211/05/20221105120033_705b9.jpg"));
+		result.add(new Vod("55555","key:"+key ,"https://c-ssl.duitang.com/uploads/blog/202211/05/20221105120033_705b9.jpg"));
 		//return Result.string(result);
 		return Result.string(processImagesInParallel(dataList));
     }
