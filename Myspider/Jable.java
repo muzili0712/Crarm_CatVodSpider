@@ -86,7 +86,7 @@ public class Jable extends Spider {
     @Override
     public String searchContent(String key, boolean quick) {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(key).concat("/"), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/"), getHeaders()));
         for (Element element : doc.select("div.video-img-box")) {
             String pic = element.select("img").attr("data-src");
             String url = element.select("h6.title > a").attr("href");
