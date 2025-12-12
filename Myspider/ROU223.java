@@ -105,7 +105,7 @@ public class ROU223 extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String poststring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":"{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":"+key+ ,\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20}";
+        String poststring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":"{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":"+key+ ",\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20}";
         JSONObject postjson = new JSONObject(poststring);
         String result = OkHttp.post(searchUrl, postjson);
 		List<Vod> list = searchVods(result);
