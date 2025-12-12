@@ -89,8 +89,8 @@ public class Jable extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/"), getHeaders()));
         for (Element element : doc.select("div.video-img-box")) {
             String pic = element.select("img").attr("data-src");
-            String url = element.select("a").attr("href");
-            String name = element.select("div.detail > h6").text();
+            String url = element.select("h6.title > a").attr("href");
+            String name = element.select("h6.title").text();
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
