@@ -10,6 +10,8 @@ import com.github.catvod.utils.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.net.URLEncoder;
 
@@ -20,7 +22,7 @@ import java.util.List;
 public class ROU223 extends Spider {
 
     private static final String siteUrl = "http://223rou.com";
-    private static final String searchUrl = siteUrl + "/search.html?q=";
+    private static final String searchUrl = "https://ser.m3u8111222333.com/.netlify/functions/search";
     private int totalpage = 1;
 
     private HashMap<String, String> getHeaders() {
@@ -91,7 +93,6 @@ public class ROU223 extends Spider {
         Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders()));
         String name = doc.select("title").text().split("-")[0];
         String url =  Util.getVar(doc.html(), "playUrl").replace("+@movivecom@+","vmyjhl.com");
-        //String pic = doc.select("div.player-poster.clickable").attr("style").split("\"")[1];
             
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
@@ -104,19 +105,30 @@ public class ROU223 extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
-        for (Element element : doc.select("li.sui-result")) {
-            try {
-                String pic = element.select("img").attr("src");
-                String url = element.select("div.sui-result__image > a").attr("href");
-                String name = element.select("div.sui-result__image > a").attr("title").replace("<em>","").replace("</em>","");
-                String id = url.replace(siteUrl,"");
-                list.add(new Vod(id, name,pic));
-            } catch (Exception e) {
-            }
-        }
+        String poststring = """{"highlight":{"fragment_size":200,"number_of_fragments":1,"fields":{"data_name":{},"data_intro":{}}},"_source":["id","data_name","data_intro","data_actor","class_dir","data_picbig","year","month","day"],"aggs":{"class_name":{"terms":{"field":"class_name","size":30}}},"query":{"bool":{"must":[{"multi_match":{"query":"%s","fields":["data_name","data_intro","data_actor"]}}]}},"sort":[],"size":20}""".formatted(key);
+        JSONObject postjson = new JSONObject(poststring);
+        String result = OkHttp.post(searchUrl, postjson);
+		List<Vod> list = searchVods(result);
         return Result.string(list);
+    }
+	
+	private static List<ArticleData> searchVods(String data){
+    	List<ArticleData> list = new ArrayList<>();
+		try {
+    		JSONObject resultObject = new JSONObject(data);
+        	JSONArray resultarray = new JSONArray();
+    		resultarray = resultObject.getJSONObject("hits").getJSONArray("hits");
+			for (int i = 0; i < resultarray.length(); i++) {
+        	   	JSONObject item = resultarray.getJSONObject(i);
+				String id = siteUrl + "/htm/" + item.getJSONObject("_source").get("year") + "/" + item.getJSONObject("_source").get("month") + "/" + item.getJSONObject("_source").get("day") + item.get("_id") +".html";
+        	   	String name = "" + item.getJSONObject("_source").get("data_name");
+    			String pic = siteUrl + item.getJSONObject("_source").get("data_picbig");
+    			list.add(new ArticleData(id, name, pic));
+        	}
+    		return list;
+		} catch (Exception  e) {
+			return list;
+		}
     }
 
     @Override
