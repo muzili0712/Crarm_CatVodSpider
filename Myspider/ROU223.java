@@ -123,7 +123,7 @@ public class ROU223 extends Spider {
 				String id = siteUrl + "/htm/" + item.getJSONObject("_source").get("year") + "/" + item.getJSONObject("_source").get("month") + "/" + item.getJSONObject("_source").get("day") + item.get("_id") +".html";
         	   	String name = "" + item.getJSONObject("_source").get("data_name");
     			String pic = siteUrl + item.getJSONObject("_source").get("data_picbig");
-    			list.add(new ArticleData(id, name, pic));
+    			list.add(new Vod(id, name, pic));
         	}
     		return list;
 		} catch (Exception  e) {
