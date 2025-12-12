@@ -120,7 +120,7 @@ public class ROU223 extends Spider {
     		resultarray = resultObject.getJSONObject("hits").getJSONArray("hits");
 			for (int i = 0; i < resultarray.length(); i++) {
         	   	JSONObject item = resultarray.getJSONObject(i);
-				String id = "/htm/" + item.getJSONObject("_source").get("year") + "/" + item.getJSONObject("_source").get("month") + "/" + item.getJSONObject("_source").get("day") + item.get("_id") +".html";
+				String id = "/htm/" + item.getJSONObject("_source").get("year") + "/" + item.getJSONObject("_source").get("month") + "/" + item.getJSONObject("_source").get("day") + "/" +  item.getJSONObject("_source").get("class_dir") + "/" + item.get("_id") +".html";
         	   	String name = "" + item.getJSONObject("_source").get("data_name");
     			String pic = siteUrl + item.getJSONObject("_source").get("data_picbig");
     			list.add(new Vod(id, name, pic));
