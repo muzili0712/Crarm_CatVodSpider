@@ -13,7 +13,6 @@ import org.json.JSONArray;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import java.net.URLEncoder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -197,7 +196,7 @@ public class HEILIAO extends Spider {
 
     private String searchContent(String key, String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
-		params.put("word", URLEncoder.encode(key));
+		params.put("word", key);
 		params.put("page", pg);
 		String searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
