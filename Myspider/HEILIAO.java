@@ -178,7 +178,11 @@ public class HEILIAO extends Spider {
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
-		vod.setVodContent("searchstring:" + searchstring);
+		params.put("word", "乱伦");
+		params.put("page", "1");
+		String aaaa = OkHttp.post(searchUrl,params);
+		searchContent("乱伦", true ,"1");
+		vod.setVodContent("searchstring:" + aaaa + "--------searchContent:" + searchstring );
         vod.setVodPlayFrom("HEILIAO");
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
@@ -192,7 +196,7 @@ public class HEILIAO extends Spider {
 		searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
 		List<Vod> result = new ArrayList<>();
-		result.add(new Vod(key,"55555","https://c-ssl.duitang.com/uploads/blog/202211/05/20221105120033_705b9.jpg"));
+		result.add(new Vod("55555","key:"+key + "---pg:" + pg,"https://c-ssl.duitang.com/uploads/blog/202211/05/20221105120033_705b9.jpg"));
 		return Result.string(result);
 		//return Result.string(processImagesInParallel(dataList));
     }
