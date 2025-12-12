@@ -112,8 +112,8 @@ public class ROU223 extends Spider {
         return Result.string(list);
     }
 	
-	private static List<ArticleData> searchVods(String data){
-    	List<ArticleData> list = new ArrayList<>();
+	private static List<Vod> searchVods(String data){
+    	List<Vod> list = new ArrayList<>();
 		try {
     		JSONObject resultObject = new JSONObject(data);
         	JSONArray resultarray = new JSONArray();
