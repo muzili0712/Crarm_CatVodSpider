@@ -45,7 +45,7 @@ public class HEILIAO extends Spider {
             this.imageUrl = imageUrl;
         }
     }
-
+    private static  String searchstring ="";
     private static final String siteUrl = "https://heiliao.com";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/index/search_article";
@@ -178,6 +178,7 @@ public class HEILIAO extends Spider {
         vod.setVodPic(pic);
         vod.setVodYear(year);
         vod.setVodName(name);
+		vod.setVodContent("searchstring:" + searchstring);
         vod.setVodPlayFrom("HEILIAO");
         vod.setVodPlayUrl(playUrl);
         return Result.string(vod);
@@ -187,10 +188,13 @@ public class HEILIAO extends Spider {
     public String searchContent(String key, boolean quick,String pg) throws Exception {
         Map<String, String> params = new HashMap<>();
 		params.put("word", "乱伦");
-		params.put("page", pg);
-		String searchstring = OkHttp.post(searchUrl,params);
+		params.put("page", "1");
+		searchstring = OkHttp.post(searchUrl,params);
         List<ArticleData> dataList = searchVods(searchstring);
-		return Result.string(processImagesInParallel(dataList));
+		List<Vod> result = new ArrayList<>();
+		result.add(new Vod(key,"55555","https://c-ssl.duitang.com/uploads/blog/202211/05/20221105120033_705b9.jpg"));
+		return Result.string(result);
+		//return Result.string(processImagesInParallel(dataList));
     }
 
     @Override
