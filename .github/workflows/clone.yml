@@ -40,9 +40,6 @@ jobs:
         git clone --recurse-submodules https://github.com/lushunming/AndroidCatVodSpider project
         cp -rf ./project/* ./
         rm -rf ./project
-        git clone --recurse-submodules https://github.com/FongMi/CatVodSpider/ fongmi
-        cp -rf ./fongmi/app/src/main/java/com/github/catvod/spider/Jable.java ./Myspider/
-        rm -rf ./fongmi
 
     - name: Add & Commit
       uses: EndBug/add-and-commit@v9.1.4
