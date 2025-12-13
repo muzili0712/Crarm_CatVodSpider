@@ -13,12 +13,6 @@ import org.jsoup.nodes.Element;
 
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
-//import java.util.ArrayList;
-//import java.util.HashMap;
-//import java.util.List;
-
-//import org.json.JSONException;
-//import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -72,11 +66,7 @@ public class Doll extends Spider {
         String name = doc.select("meta[property=og:title]").attr("content");
 		Pattern pattern = Pattern.compile("var\\s+__PAGE__PARAMS__\\s*=\\s*\"([^\"]+)\"");
 		Matcher matcher = pattern.matcher(doc.html());
-		String page_params = "";
-		if (matcher.find()) {
-			String pageParams = matcher.group(1);
-			page_params= pageParams;
-		}
+		String page_params = matcher.find()?matcher.group(1):"";
 		String token =decryptPAGE_PARAMS_Totoken(page_params);
 		String playurl = decryptTokenToPlayurl(token);
         Vod vod = new Vod();
