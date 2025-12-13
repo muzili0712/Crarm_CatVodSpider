@@ -86,7 +86,8 @@ public class Pig extends Spider {
 		String config = "";
 		if (url.isEmpty()){
 			fullurl = doc.select("div.post-content iframe").attr("src");
-			uuid = fullurl.split("?")[0].split("/")[5];
+			host = fullurl.split("?")[0];
+			//uuid = fullurl.split("?")[0].split("/")[5];
 			//try {
 			//    URL urlurl = new URL(fullurl);
 			//    host = urlurl.getProtocol() + "://" + urlurl.getHost();
@@ -94,7 +95,7 @@ public class Pig extends Spider {
 			//    System.err.println("URL格式错误: " + e.getMessage());
 			//}
 			//config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
-			config = OkHttp.string(fullurl.replace("videos/embed","api/v1/videos"), getHeaders());
+			config = OkHttp.string(fullurl.split("?")[0].replace("videos/embed","api/v1/videos"), getHeaders());
 			String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(config);
