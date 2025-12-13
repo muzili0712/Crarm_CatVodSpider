@@ -4,8 +4,8 @@ import com.github.catvod.bean.Class;
 import com.github.catvod.bean.Result;
 import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
-import com.github.catvod.net.OkHttpUtil;
-import com.github.catvod.utils.Misc;
+import com.github.catvod.net.OkHttp;
+import com.github.catvod.utils.Util;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,7 +21,7 @@ public class Pig extends Spider {
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put("User-Agent", Misc.CHROME);
+        headers.put("User-Agent", Util.CHROME);
         return headers;
     }
 
@@ -41,7 +41,7 @@ public class Pig extends Spider {
     public String homeContent(boolean filter) throws Exception {
         
         List<Class> classes = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttpUtil.string(siteUrl, getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element : doc.select("li.menu-item > a")) {
             String typeId = element.attr("href").replace(siteUrl, "");
             String typeName = element.text();
@@ -55,14 +55,14 @@ public class Pig extends Spider {
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
         String target = siteUrl.concat(tid).concat("/page/").concat(pg);
-        Document doc = Jsoup.parse(OkHttpUtil.string(target, getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttpUtil.string(siteUrl.concat("/").concat(ids.get(0)), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat("/").concat(ids.get(0)), getHeaders()));
         String url = doc.select("source").attr("src");
         String name = doc.select("h1.is-title").text();
         String pic = doc.select("video.video-js").attr("poster");
