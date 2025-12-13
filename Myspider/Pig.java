@@ -45,11 +45,11 @@ public class Pig extends Spider {
         for (Element element1 : doc.select("ul.mobile-menu > li")) {
 			String typeId = "";
 			String typeName = "";
-            String classUrl = element.select("li > a").attr("href").replace(siteUrl, "");
-            String className = element.select("li > a").text();
-	        for (Element element : element1.select("a")) {
-				String typeId = element.attr("href").replace(siteUrl, "");
-				String typeName = "[" + className + "]" + element.text();
+            String classUrl = element1.select("li > a").attr("href").replace(siteUrl, "");
+            String className = element1.select("li > a").text();
+	        for (Element element : element1.select("ul.sub-menu > a")) {
+				typeId = element.attr("href").replace(siteUrl, "");
+				typeName = "[" + className + "]" + element.text();
 				classes.add(new Class(typeId, typeName));
 			}
             if(typeId.isEmpty()) classes.add(new Class(classUrl, className));
