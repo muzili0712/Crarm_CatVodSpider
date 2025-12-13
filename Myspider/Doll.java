@@ -11,12 +11,14 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 //import java.util.ArrayList;
 //import java.util.HashMap;
 //import java.util.List;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+//import org.json.JSONException;
+//import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -68,7 +70,13 @@ public class Doll extends Spider {
         Document doc = Jsoup.parse(html);
         String pic = doc.select("meta[property=og:image]").attr("content");
         String name = doc.select("meta[property=og:title]").attr("content");
-		String page_params = Util.getVar(doc.html(), "__PAGE__PARAMS__");
+		Pattern pattern = Pattern.compile("var\\s+__PAGE__PARAMS__\\s*=\\s*\"([^\"]+)\"");
+		Matcher matcher = pattern.matcher(doc.html());
+		String page_params = "";
+		if (matcher.find()) {
+			String pageParams = matcher.group(1);
+			page_params= pageParams;
+		}
 		//String token =decryptPAGE_PARAMS_Totoken(page_params);
 		//String playurl = decryptTokenToPlayurl(token);
         Vod vod = new Vod();
@@ -185,46 +193,9 @@ public class Doll extends Spider {
             
             String decrypted = result.toString();
             
-            // 7. 安全的JSON解析
-            try {
-                JSONObject decryptedjson = new JSONObject(decrypted);
-                
-                // 检查player字段
-                if (!decryptedjson.has("player")) {
-                    System.err.println("错误: JSON缺少player字段");
-                    return "";
-                }
-                
-                JSONObject player = decryptedjson.getJSONObject("player");
-                
-                // 检查embedUrl字段
-                if (!player.has("embedUrl")) {
-                    System.err.println("错误: player缺少embedUrl字段");
-                    return "";
-                }
-                
-                String embedUrl = player.getString("embedUrl");
-                
-                // 检查token参数
-                if (!embedUrl.contains("token=")) {
-                    System.err.println("错误: embedUrl不包含token参数");
-                    return "";
-                }
-                
-                String[] parts = embedUrl.split("token=");
-                if (parts.length < 2 || parts[1].isEmpty()) {
-                    System.err.println("错误: token参数值为空");
-                    return "";
-                }
-                
-                return parts[1];
-                
-            } catch (JSONException e) {
-                System.err.println("错误: 解密后的数据不是有效的JSON - " + e.getMessage());
-                // 可以打印解密后的内容用于调试
-                // System.err.println("解密内容: " + decrypted.substring(0, Math.min(100, decrypted.length())));
-                return "";
-            }
+			Pattern pattern = Pattern.compile("embedUrl\":\"[^\"]+\\?token=([^\"]+)\"");
+			Matcher matcher = pattern.matcher(decrypted);
+			return matcher.find()?matcher.group(1):"";
             
         } catch (Exception e) {
             // 记录详细异常信息
@@ -281,38 +252,11 @@ public class Doll extends Spider {
             if (decryptedJsonString == null || decryptedJsonString.isEmpty()) {
                 throw new IllegalStateException("解密结果为空");
             }
-            System.out.println("解密后的JSON: " + decryptedJsonString);
             
-            // 5. 解析JSON
-            try {
-                JSONObject decryptedjson = new JSONObject(decryptedJsonString);
-                
-                // 检查stream字段
-                if (!decryptedjson.has("stream")) {
-                    throw new IllegalArgumentException("JSON缺少stream字段");
-                }
-                
-                String stream = decryptedjson.getString("stream");
-                
-                // 验证stream字段值
-                if (stream == null || stream.trim().isEmpty()) {
-                    throw new IllegalArgumentException("stream字段值为空");
-                }
-                
-                return stream.trim();
-                
-            } catch (JSONException e) {
-                // 更详细的错误信息
-                String errorMsg = "无效的JSON格式: " + e.getMessage();
-                // 可选：输出部分解密内容用于调试
-                if (decryptedJsonString.length() > 100) {
-                    System.err.println("解密内容预览: " + decryptedJsonString.substring(0, 100) + "...");
-                } else {
-                    System.err.println("解密内容: " + decryptedJsonString);
-                }
-                throw new IllegalArgumentException(errorMsg, e);
-            }
-            
+			Pattern pattern = Pattern.compile("\"stream\":\"([^\"]+)\"");
+			Matcher matcher = pattern.matcher(decryptedJsonString);
+			return matcher.find()?matcher.group(1):"";
+			
         } catch (StringIndexOutOfBoundsException e) {
             throw new IllegalArgumentException("token格式异常，无法解析", e);
         } catch (IllegalArgumentException e) {
