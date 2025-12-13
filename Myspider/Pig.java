@@ -85,7 +85,7 @@ public class Pig extends Spider {
 		String host ="";
 		String config = "";
 		if (url.isEmpty()){
-			host = doc.select("div.post-content iframe").attr("src");
+			fullurl = doc.select("div.post-content iframe").attr("src");
 			//uuid = fullurl.split("/")[15].split("?")[0];
 			//try {
 			//    URL urlurl = new URL(fullurl);
@@ -105,7 +105,7 @@ public class Pig extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("朱古力");
         vod.setVodPlayUrl("播放$123546");
-		vod.setVodContent("fullurl:"+fullurl+"---------------html:"  + html.replace("<","[").replace("</","").replace(">","]"));
+		vod.setVodContent("fullurl:"+fullurl+"---------------uuid:"+ uuid+"---------------------host："+host + "----------------config:"+config + "-------------------url:"+url + "---------------html:"  + html.replace("<","[").replace("</","").replace(">","]"));
         return Result.string(vod);
     }
 
