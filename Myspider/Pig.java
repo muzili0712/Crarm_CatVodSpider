@@ -84,7 +84,7 @@ public class Pig extends Spider {
 		String uuid = "";
 		String host ="";
 		String config = "";
-		if (url.isEmpty()){
+		//if (url.isEmpty()){
 			fullurl = doc.select("div.post-content iframe").attr("src");
 			//host = fullurl.split("?")[0];
 			//uuid = fullurl.split("?")[0].split("/")[5];
@@ -100,7 +100,7 @@ public class Pig extends Spider {
 			//Pattern pattern = Pattern.compile(regex);
 			//Matcher matcher = pattern.matcher(config);
 			//url = matcher.find()?matcher.group(1):"";
-		}
+		//}
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
