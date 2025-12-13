@@ -69,8 +69,8 @@ public class Doll extends Spider {
         String pic = doc.select("meta[property=og:image]").attr("content");
         String name = doc.select("meta[property=og:title]").attr("content");
 		String page_params = Util.getVar(doc.html(), "__PAGE__PARAMS__");
-		String token =decryptPAGE_PARAMS_Totoken(page_params);
-		String playurl = decryptTokenToPlayurl(token);
+		//String token =decryptPAGE_PARAMS_Totoken(page_params);
+		//String playurl = decryptTokenToPlayurl(token);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
