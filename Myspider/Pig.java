@@ -74,7 +74,8 @@ public class Pig extends Spider {
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders()));
+        String html = OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders());
+		Document doc = Jsoup.parse(html);
         String fullurl = "";//doc.select("div.post-content iframe").attr("src");
         String name = doc.select("h1.is-title").text();
         String pic = doc.select("video.video-js").attr("poster");
@@ -96,8 +97,8 @@ public class Pig extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("朱古力");
-        vod.setVodPlayUrl("播放$" + doc.html());
-		vod.setVodContent("fullurl:" + fullurl + "------------uuid" + uuid + "------------url" + url);
+        vod.setVodPlayUrl("播放$1111111111111111");
+		vod.setVodContent("html:"  + html);
         return Result.string(vod);
     }
 
