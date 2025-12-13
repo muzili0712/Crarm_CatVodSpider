@@ -97,10 +97,10 @@ public class Pig extends Spider {
 			}
 			config = OkHttp.string(configUrl, getHeaders());
 			//config = OkHttp.string(fullurl.split("?")[0].replace("videos/embed","api/v1/videos"), getHeaders());
-			//String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
-			//Pattern pattern = Pattern.compile(regex);
-			//Matcher matcher = pattern.matcher(config);
-			//url = matcher.find()?matcher.group(1):"";
+			String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
+			Pattern pattern = Pattern.compile(regex);
+			Matcher matcher = pattern.matcher(config);
+			url = matcher.find()?matcher.group(1):"";
 		}
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
