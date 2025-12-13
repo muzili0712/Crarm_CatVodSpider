@@ -46,6 +46,7 @@ public class Pig extends Spider {
     public String homeContent(boolean filter) throws Exception {
         
         List<Class> classes = new ArrayList<>();
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
         for (Element element1 : doc.select("ul.menu > li")) {
 			String typeId = "";
 			String typeName = "";
@@ -58,7 +59,6 @@ public class Pig extends Spider {
 				typeName = "【" + className + "】" + element.text();
 				classes.add(new Class(typeId, typeName));
 			}
-            //if(typeId.isEmpty()) classes.add(new Class(classUrl, className));
         }
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
