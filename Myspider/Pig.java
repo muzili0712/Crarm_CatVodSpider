@@ -80,21 +80,24 @@ public class Pig extends Spider {
         String url = doc.select("source").attr("src");
         String name = doc.select("h1.is-title").text();
         String pic = doc.select("video.video-js").attr("poster");
+		String fullurl = "";
+		String uuid = "";
+		String host ="";
+		String config = "";
 		if (url.isEmpty()){
-			String fullurl = doc.select("div.post-content iframe").attr("src");
-			String uuid = fullurl.split("/")[5].split("?")[0];
-			String host ="";
-			try {
-			    URL urlurl = new URL(fullurl);
-			    host = urlurl.getProtocol() + "://" + urlurl.getHost();
-			} catch (MalformedURLException e) {
-			    System.err.println("URL格式错误: " + e.getMessage());
-			}
-			String config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
-			String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
-			Pattern pattern = Pattern.compile(regex);
-			Matcher matcher = pattern.matcher(config);
-			url = matcher.find()?matcher.group(1):"";
+			fullurl = doc.select("div.post-content iframe").attr("src");
+			uuid = fullurl.split("/")[5].split("?")[0];
+			//try {
+			//    URL urlurl = new URL(fullurl);
+			//    host = urlurl.getProtocol() + "://" + urlurl.getHost();
+			//} catch (MalformedURLException e) {
+			//    System.err.println("URL格式错误: " + e.getMessage());
+			//}
+			//config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
+			//String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
+			//Pattern pattern = Pattern.compile(regex);
+			//Matcher matcher = pattern.matcher(config);
+			//url = matcher.find()?matcher.group(1):"";
 		}
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
