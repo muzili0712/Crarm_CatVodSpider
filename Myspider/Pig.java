@@ -97,7 +97,7 @@ public class Pig extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("朱古力");
         vod.setVodPlayUrl("播放$" + fullurl);
-		vod.setContent("fullurl:" + fullurl + "------------uuid" + uuid + "------------url" + url);
+		vod.setVodContent("fullurl:" + fullurl + "------------uuid" + uuid + "------------url" + url);
         return Result.string(vod);
     }
 
