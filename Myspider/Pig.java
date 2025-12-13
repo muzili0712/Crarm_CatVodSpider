@@ -86,7 +86,7 @@ public class Pig extends Spider {
 		String config = "";
 		if (url.isEmpty()){
 			fullurl = doc.select("div.post-content iframe").attr("src");
-			host = fullurl.split("?")[0];
+			//host = fullurl.split("?")[0];
 			//uuid = fullurl.split("?")[0].split("/")[5];
 			//try {
 			//    URL urlurl = new URL(fullurl);
