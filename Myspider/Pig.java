@@ -46,20 +46,19 @@ public class Pig extends Spider {
     public String homeContent(boolean filter) throws Exception {
         
         List<Class> classes = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-		classes.add(new Class("最新av線上看", "最新11"));
         for (Element element1 : doc.select("ul.menu > li")) {
 			String typeId = "";
 			String typeName = "";
             String classUrl = element1.selectFirst("a").attr("href").replace(siteUrl, "");
             String className = element1.selectFirst("a").text();
+			classes.add(new Class(classUrl, className)
 			if (classUrl.contains("dbro.news")) break;
 	        for (Element element : element1.select("ul.sub-menu > li > a")) {
 				typeId = element.attr("href").replace(siteUrl, "");
 				typeName = "【" + className + "】" + element.text();
 				classes.add(new Class(typeId, typeName));
 			}
-            if(typeId.isEmpty()) classes.add(new Class(classUrl, className));
+            //if(typeId.isEmpty()) classes.add(new Class(classUrl, className));
         }
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
@@ -105,7 +104,7 @@ public class Pig extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("朱古力");
         vod.setVodPlayUrl("播放$"+url);
-		vod.setVodContent("fullurl:"+fullurl+"---------------------host："+host + "----------------configUrl:"+configUrl + "-------------------url:"+url+ "----------------config:"+config );
+		//vod.setVodContent("fullurl:"+fullurl+"---------------------host："+host + "----------------configUrl:"+configUrl + "-------------------url:"+url+ "----------------config:"+config );
         return Result.string(vod);
     }
 
