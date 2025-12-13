@@ -32,8 +32,8 @@ public class Doll extends Spider {
         for (Element div : doc.select("div.video-item")) {
             String id = div.select("a.video-title").attr("href").replace(url, "");
             String name = div.select("a.video-title").text();
-            String pic1 = div.select("div.thumb > a > img").attr("src");
-			String pic2 = div.select("div.thumb > a > img").attr("data-src");
+            String pic1 = div.select("div.thumb > a > img").attr("data-src");
+			String pic2 = div.select("div.thumb > a > img").attr("src");
 			String pic = pic1 ? pic1 : pic2;
             String remark = div.select("div.date").text();
             list.add(new Vod(id, name, pic, remark));
