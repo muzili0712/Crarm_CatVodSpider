@@ -42,12 +42,12 @@ public class Pig extends Spider {
         
         List<Class> classes = new ArrayList<>();
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        for (Element element1 : doc.select("ul.mobile-menu > li")) {
+        for (Element element1 : doc.select("ul.menu > li")) {
 			String typeId = "";
 			String typeName = "";
             String classUrl = element1.select("li > a").attr("href").replace(siteUrl, "");
             String className = element1.select("li > a").text();
-	        for (Element element : element1.select("ul.sub-menu > a")) {
+	        for (Element element : element1.select("ul.sub-menu > li > a")) {
 				typeId = element.attr("href").replace(siteUrl, "");
 				typeName = "[" + className + "]" + element.text();
 				classes.add(new Class(typeId, typeName));
