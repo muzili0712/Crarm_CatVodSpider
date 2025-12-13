@@ -70,13 +70,13 @@ public class Doll extends Spider {
         String name = doc.select("meta[property=og:title]").attr("content");
 		String page_params = Util.getVar(doc.html(), "__PAGE__PARAMS__");
 		String token =decryptPAGE_PARAMS_Totoken(page_params);
-		String url = decryptTokenToPlayurl(token);
+		String playurl = decryptTokenToPlayurl(token);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("Doll");
-        vod.setVodPlayUrl("播放$" + url);
+        vod.setVodPlayUrl("播放$" + page_params);
         return Result.string(vod);
     }
 
