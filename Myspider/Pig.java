@@ -14,6 +14,11 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
+
+import java.net.URL;
+import java.net.MalformedURLException;
 
 public class Pig extends Spider {
 
@@ -50,7 +55,7 @@ public class Pig extends Spider {
 			if (classUrl.contains("dbro.news")) break;
 	        for (Element element : element1.select("ul.sub-menu > li > a")) {
 				typeId = element.attr("href").replace(siteUrl, "");
-				typeName = "[" + className + "]" + element.text();
+				typeName = "【" + className + "】" + element.text();
 				classes.add(new Class(typeId, typeName));
 			}
             if(typeId.isEmpty()) classes.add(new Class(classUrl, className));
@@ -70,9 +75,22 @@ public class Pig extends Spider {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat("/").concat(ids.get(0)), getHeaders()));
-        String url = doc.select("source").attr("src");
+        String fullurl = doc.select("div.post-content iframe").attr("src");
         String name = doc.select("h1.is-title").text();
         String pic = doc.select("video.video-js").attr("poster");
+		String uuid = fullurl.split("/")[5].split("?")[0];
+		String host ="";
+		try {
+            URL url = new URL(fullurl);
+            host = url.getProtocol() + "://" + url.getHost();
+        } catch (MalformedURLException e) {
+            System.err.println("URL格式错误: " + e.getMessage());
+        }
+		String config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
+		String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(config);
+		String url = matcher.find()?matcher.group(1):"";
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
