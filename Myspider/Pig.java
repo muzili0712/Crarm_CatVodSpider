@@ -25,9 +25,21 @@ public class Pig extends Spider {
         return headers;
     }
 
+    private List<Vod> parseVods(Document doc) {
+        List<Vod> list = new ArrayList<>();
+        for (Element element : doc.select("div.media")) {
+            String pic = element.select("span").attr("data-bgsrc");
+            String url = element.select("a").attr("href");
+            String name = element.select("a").attr("title");
+            String id = url.replace(siteUrl, "");
+            list.add(new Vod(id, name, pic));
+        }
+        return list;
+    }
+    
     @Override
     public String homeContent(boolean filter) throws Exception {
-        List<Vod> list = new ArrayList<>();
+        
         List<Class> classes = new ArrayList<>();
         Document doc = Jsoup.parse(OkHttpUtil.string(siteUrl, getHeaders()));
         for (Element element : doc.select("li.menu-item > a")) {
@@ -36,28 +48,15 @@ public class Pig extends Spider {
             if (typeId.contains("goav.one")) break;
             classes.add(new Class(typeId, typeName));
         }
-        for (Element element : doc.select("div.media")) {
-            String pic = element.select("span").attr("data-bgsrc");
-            String url = element.select("a").attr("href");
-            String name = element.select("a").attr("title");
-            String id = url.replace(siteUrl, "");
-            list.add(new Vod(id, name, pic));
-        }
+        List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
     }
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        List<Vod> list = new ArrayList<>();
         String target = siteUrl.concat(tid).concat("/page/").concat(pg);
         Document doc = Jsoup.parse(OkHttpUtil.string(target, getHeaders()));
-        for (Element element : doc.select("div.media")) {
-            String pic = element.select("span").attr("data-bgsrc");
-            String url = element.select("a").attr("href");
-            String name = element.select("a").attr("title");
-            String id = url.replace(siteUrl, "");
-            list.add(new Vod(id, name, pic));
-        }
+        List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
 
