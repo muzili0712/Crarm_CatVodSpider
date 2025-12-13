@@ -75,27 +75,27 @@ public class Pig extends Spider {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         String html = OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders());
-		Document doc = Jsoup.parse(html);
-        String fullurl = "";//doc.select("div.post-content iframe").attr("src");
-        String name = doc.select("h1.is-title").text();
-        String pic = doc.select("video.video-js").attr("poster");
-		String uuid = fullurl.split("/")[5].split("?")[0];
-		String host ="";
-		try {
-            URL url = new URL(fullurl);
-            host = url.getProtocol() + "://" + url.getHost();
-        } catch (MalformedURLException e) {
-            System.err.println("URL格式错误: " + e.getMessage());
-        }
-		String config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
-		String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(config);
-		String url = matcher.find()?matcher.group(1):"";
+		//Document doc = Jsoup.parse(html);
+        //String fullurl = "";//doc.select("div.post-content iframe").attr("src");
+        //String name = doc.select("h1.is-title").text();
+        //String pic = doc.select("video.video-js").attr("poster");
+		//String uuid = fullurl.split("/")[5].split("?")[0];
+		//String host ="";
+		//try {
+        //    URL url = new URL(fullurl);
+        //    host = url.getProtocol() + "://" + url.getHost();
+        //} catch (MalformedURLException e) {
+        //    System.err.println("URL格式错误: " + e.getMessage());
+        //}
+		//String config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
+		//String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
+        //Pattern pattern = Pattern.compile(regex);
+        //Matcher matcher = pattern.matcher(config);
+		//String url = matcher.find()?matcher.group(1):"";
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
-        vod.setVodPic(pic);
-        vod.setVodName(name);
+        vod.setVodPic("aaa");
+        vod.setVodName("bbb");
         vod.setVodPlayFrom("朱古力");
         vod.setVodPlayUrl("播放$1111111111111111");
 		vod.setVodContent("html:"  + html);
