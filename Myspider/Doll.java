@@ -77,14 +77,14 @@ public class Doll extends Spider {
 			String pageParams = matcher.group(1);
 			page_params= pageParams;
 		}
-		//String token =decryptPAGE_PARAMS_Totoken(page_params);
-		//String playurl = decryptTokenToPlayurl(token);
+		String token =decryptPAGE_PARAMS_Totoken(page_params);
+		String playurl = decryptTokenToPlayurl(token);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("Doll");
-        vod.setVodPlayUrl("播放$" + page_params);
+        vod.setVodPlayUrl("播放$" + playurl);
         return Result.string(vod);
     }
 
