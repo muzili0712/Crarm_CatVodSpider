@@ -45,8 +45,8 @@ public class Pig extends Spider {
         for (Element element1 : doc.select("ul.menu > li")) {
 			String typeId = "";
 			String typeName = "";
-            String classUrl = element1.attr("href").replace(siteUrl, "");
-            String className = element1.text();
+            String classUrl = element1.selectFirst("a").attr("href").replace(siteUrl, "");
+            String className = element1.selectFirst("a").text();
 	        for (Element element : element1.select("li.menu-item > a")) {
 				typeId = element.attr("href").replace(siteUrl, "");
 				typeName = "[" + className + "]" + element.text();
