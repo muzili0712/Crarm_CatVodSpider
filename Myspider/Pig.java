@@ -86,8 +86,6 @@ public class Pig extends Spider {
 		String config = "";
 		if (url.isEmpty()){
 			fullurl = doc.select("div.post-content iframe").attr("src");
-			//host = fullurl.split("?")[0];
-			//uuid = fullurl.split("?")[0].split("/")[5];
 			try {
 			    URL urlurl = new URL(fullurl);
 			    host = urlurl.getProtocol() + "://" + urlurl.getHost() + urlurl.getPath();
@@ -96,7 +94,6 @@ public class Pig extends Spider {
 			    System.err.println("URL格式错误: " + e.getMessage());
 			}
 			config = OkHttp.string(configUrl, getHeaders());
-			//config = OkHttp.string(fullurl.split("?")[0].replace("videos/embed","api/v1/videos"), getHeaders());
 			String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
 			Pattern pattern = Pattern.compile(regex);
 			Matcher matcher = pattern.matcher(config);
@@ -108,7 +105,7 @@ public class Pig extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("朱古力");
         vod.setVodPlayUrl("播放$123546");
-		vod.setVodContent("fullurl:"+fullurl+"---------------------host："+host + "----------------configUrl:"+configUrl + "----------------config:"+config + "-------------------url:"+url + "---------------html:"  + html.replace("<","[").replace("</","").replace(">","]"));
+		vod.setVodContent("fullurl:"+fullurl+"---------------------host："+host + "----------------configUrl:"+configUrl + "-------------------url:"+url+ "----------------config:"+config );
         return Result.string(vod);
     }
 
