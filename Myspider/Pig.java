@@ -81,7 +81,6 @@ public class Pig extends Spider {
         String name = doc.select("h1.is-title").text();
         String pic = doc.select("video.video-js").attr("poster");
 		String fullurl = "";
-		String uuid = "";
 		String host ="";
 		String config = "";
 		if (url.isEmpty()){
@@ -91,7 +90,7 @@ public class Pig extends Spider {
 			try {
 			    URL urlurl = new URL(fullurl);
 			    host = urlurl.getProtocol() + "://" + urlurl.getHost() + urlurl.getPath();
-			//    config = OkHttp.string(host.replace("videos/embed","api/v1/videos"), getHeaders());
+			    config = OkHttp.string(host.replace("videos/embed","api/v1/videos"), getHeaders());
 			} catch (MalformedURLException e) {
 			    System.err.println("URL格式错误: " + e.getMessage());
 			}
@@ -107,7 +106,7 @@ public class Pig extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("朱古力");
         vod.setVodPlayUrl("播放$123546");
-		vod.setVodContent("fullurl:"+fullurl+"---------------uuid:"+ uuid+"---------------------host："+host + "----------------config:"+config + "-------------------url:"+url + "---------------html:"  + html.replace("<","[").replace("</","").replace(">","]"));
+		vod.setVodContent("fullurl:"+fullurl+"---------------------host："+host + "----------------config:"+config + "-------------------url:"+url + "---------------html:"  + html.replace("<","[").replace("</","").replace(">","]"));
         return Result.string(vod);
     }
 
