@@ -42,11 +42,18 @@ public class Pig extends Spider {
         
         List<Class> classes = new ArrayList<>();
         Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
-        for (Element element : doc.select("li.menu-item > a")) {
-            String typeId = element.attr("href").replace(siteUrl, "");
-            String typeName = element.text();
-            if (typeId.contains("goav.one")) break;
-            classes.add(new Class(typeId, typeName));
+        for (Element element1 : doc.select("ul.mobile-menu > li")) {
+			String typeId = "";
+			String typeName = "";
+            String classUrl = element.select("li > a").attr("href").replace(siteUrl, "");
+            String className = element.select("li > a").text();
+	        for (Element element : element1.select("a")) {
+				String typeId = element.attr("href").replace(siteUrl, "");
+				String typeName = "[" + className + "]" + element.text();
+				classes.add(new Class(typeId, typeName));
+			}
+            if(typeId.isEmpty()) classes.add(new Class(classUrl, className));
+            if (className.contains("好站")) break;
         }
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
