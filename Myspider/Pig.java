@@ -84,23 +84,23 @@ public class Pig extends Spider {
 		String uuid = "";
 		String host ="";
 		String config = "";
-		//if (url.isEmpty()){
+		if (url.isEmpty()){
 			fullurl = doc.select("div.post-content iframe").attr("src");
 			//host = fullurl.split("?")[0];
 			//uuid = fullurl.split("?")[0].split("/")[5];
-			//try {
-			//    URL urlurl = new URL(fullurl);
-			//    host = urlurl.getProtocol() + "://" + urlurl.getHost();
-			//} catch (MalformedURLException e) {
-			//    System.err.println("URL格式错误: " + e.getMessage());
-			//}
-			//config = OkHttp.string(host.concat("/api/v1/videos/").concat(uuid), getHeaders());
+			try {
+			    URL urlurl = new URL(fullurl);
+			    host = urlurl.getProtocol() + "://" + urlurl.getHost() + urlurl.getPath();
+			//    config = OkHttp.string(host.replace("videos/embed","api/v1/videos"), getHeaders());
+			} catch (MalformedURLException e) {
+			    System.err.println("URL格式错误: " + e.getMessage());
+			}
 			//config = OkHttp.string(fullurl.split("?")[0].replace("videos/embed","api/v1/videos"), getHeaders());
 			//String regex = "\"playlistUrl\"\\s*:\\s*\"([^\"]+)\"";
 			//Pattern pattern = Pattern.compile(regex);
 			//Matcher matcher = pattern.matcher(config);
 			//url = matcher.find()?matcher.group(1):"";
-		//}
+		}
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
