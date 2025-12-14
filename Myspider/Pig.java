@@ -79,12 +79,14 @@ public class Pig extends Spider {
         String url = doc.select("source").attr("src");
         String name = doc.select("h1.is-title").text();
         String pic = doc.select("video.video-js").attr("poster");
+		
 		if (url.isEmpty()){
 			String fullurl = doc.select("div.post-content iframe").attr("src");
+			String configUrl = "";
 			try {
 			    URL urlurl = new URL(fullurl);
 			    String host = urlurl.getProtocol() + "://" + urlurl.getHost() + urlurl.getPath();
-			    String configUrl = host.replace("videos/embed","api/v1/videos");
+			    configUrl = host.replace("videos/embed","api/v1/videos");
 			} catch (MalformedURLException e) {
 			    System.err.println("URL格式错误: " + e.getMessage());
 			}
