@@ -23,7 +23,14 @@ public class Eighteen extends Spider {
     private static Map<String, String> cookies = new HashMap<>();
     private final String url = "https://mjv002.com/zh/";
     private final String starturl = "https://mjv002.com/zh/chinese_IamOverEighteenYearsOld/19/index.html";
-
+	private String tmvarr ="";
+	private String argdeqweqweqwe ="";
+	private String tkeyString ="";
+	private String tivString = "";
+	private String txorcode = "";
+	private String tsplitcode = "";
+	private String tencryptedString = "";
+	private String turlpre = "";
     /**
      * 获取请求头（包含 Cookie）
      */
@@ -121,7 +128,7 @@ public class Eighteen extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
         vod.setVodPlayUrl("播放$" + url);
-		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "-----------------------------------doc" +doc.html() );
+		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "--------------------tmvarr:" +tmvarr + "--------------------argdeqweqweqwe:" +argdeqweqweqwe + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString + "--------------------turlpre:" +turlpre + "-----------------------------------doc" +doc.html().replace("<","[") );
         return Result.string(vod);
     }
 
@@ -166,6 +173,7 @@ public class Eighteen extends Spider {
 		String urlpre = "";
 		for(Element element : doc.select("script")){
 			if(element.html().contains("argdeqweqweqwe")){
+				argdeqweqweqwe = element.html();
 				keyString = Util.getVar(element.html(),"argdeqweqweqwe");
 				ivString = Util.getVar(element.html(),"hdddedg252");
 				String regex = "hadeedg252\\s*=\\s*(\\d+)";
@@ -178,6 +186,7 @@ public class Eighteen extends Spider {
 				splitcode = matcher.find()? matcher.group(1).trim():"";
 			}
 			if(element.html().contains("mvarr[\'10-1\']")){
+				tmvarr = element.html();
 				String regex = "mvarr\\['10_1'\\]\\s*=\\s*\\[\\[(.*?)\\]";
 				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
 				Matcher matcher = pattern.matcher(element.html());
@@ -187,6 +196,12 @@ public class Eighteen extends Spider {
 			}
 			if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
 		}
+		tkeyString =keyString;
+		tivString = ivString;
+		txorcode = xorcode;
+		tsplitcode = splitcode;
+		tencryptedString = encryptedString;
+		turlpre = urlpre;
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
 		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
 		return urlpre+urlend;
@@ -208,11 +223,9 @@ public class Eighteen extends Spider {
         splitcode = (splitcode <= 25) ? splitcode : splitcode % 25;
         
         char separator = (char) (splitcode + 97);
-        System.out.println("分隔符: '" + separator + "' (ASCII: " + (splitcode + 97) + ")");
         
         // 分割字符串
         String[] parts = cipherText.split(String.valueOf(separator));
-        System.out.println("分割后的数组长度: " + parts.length);
         
         List<Character> resultChars = new ArrayList<>();
         
@@ -226,18 +239,12 @@ public class Eighteen extends Spider {
             try {
                 // 解析base-splitcode数字
                 int num = Integer.parseInt(part, splitcode);
-                System.out.println(String.format("元素[%d]: \"%s\" -> base-%d -> %d", 
-                    i, part, splitcode, num));
                 
                 // XOR操作
                 int xorResult = num ^ xorcode;
-                System.out.println(String.format("XOR操作: %d ^ %d = %d", 
-                    num, xorcode, xorResult));
                 
                 // 转换为字符
                 char ch = (char) xorResult;
-                System.out.println(String.format("转换为字符: %c (ASCII: %d)", 
-                    ch, xorResult));
                 
                 resultChars.add(ch);
             } catch (NumberFormatException e) {
@@ -250,13 +257,6 @@ public class Eighteen extends Spider {
         for (char ch : resultChars) {
             result.append(ch);
         }
-        
-        String stage1Result = result.toString();
-        System.out.println("第一阶段解密完成");
-        System.out.println("结果: " + (stage1Result.length() > 50 ? 
-            stage1Result.substring(0, 50) + "..." : stage1Result));
-        System.out.println("结果长度: " + stage1Result.length() + " 字符");
-        System.out.println("=== 第一阶段解密结束 ===\n");
         
         return stage1Result;
     }
