@@ -129,7 +129,7 @@ public class Eighteen extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
         vod.setVodPlayUrl("播放$" + url);
-		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "--------------------tmvarr:" +tmvarr + "--------------------argdeqweqweqwe:" +argdeqweqweqwe + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString + "--------------------turlpre:" +turlpre + "-----------------------------------doc" +doc.html().replace("<","[") );
+		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "--------------------tmvarr:" +tmvarr + "--------------------argdeqweqweqwe:" +argdeqweqweqwe + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString + "--------------------turlpre:" +turlpre );
         return Result.string(vod);
     }
 
@@ -184,7 +184,7 @@ public class Eighteen extends Spider {
 				pattern = Pattern.compile(regex);
 				matcher = pattern.matcher(element.html());
 				splitcode = matcher.find()? matcher.group(1).trim():"";
-				regex = "argdeqweqweqww\\s*=\\s*'([^']+)'";
+				regex = "argdeqweqweqwe\\s*=\\s*'([^']+)'";
 				pattern = Pattern.compile(regex);
 				matcher = pattern.matcher(element.html());
 				keyString = matcher.find()? matcher.group(1).trim():"";
