@@ -172,13 +172,13 @@ public class Eighteen extends Spider {
 		String splitcode = "";
 		String encryptedString = "";
 		String urlpre = "";
-		Document doc = Jsoup.parse(html);
-		for(Element element : doc.select("script")){
-			if(element.html().contains("argdeqweqweqwe")){
-				argdeqweqweqwe = element.html();
+		//Document doc = Jsoup.parse(html);
+		//for(Element element : doc.select("script")){
+		//	if(element.html().contains("argdeqweqweqwe")){
+				argdeqweqweqwe = html;
 				String regex = "hadeedg252\\s*=\\s*(\\d+)";
 				Pattern pattern = Pattern.compile(regex);
-				Matcher matcher = pattern.matcher(element.html());
+				Matcher matcher = pattern.matcher(html);
 				xorcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "hcdeedg252\\s*=\\s*(\\d+)";
 				pattern = Pattern.compile(regex);
@@ -186,24 +186,24 @@ public class Eighteen extends Spider {
 				splitcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "argdeqweqweqww\\s*=\\s*'([^']+)'";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(element.html());
+				matcher = pattern.matcher(html);
 				keyString = matcher.find()? matcher.group(1).trim():"";
 				regex = "hdddedg252\\s*=\\s*'([^']+)'";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(element.html());
+				matcher = pattern.matcher(html);
 				ivString = matcher.find()? matcher.group(1).trim():"";
-			}
-			if(element.html().contains("mvarr[\'10-1\']")){
-				tmvarr = element.html();
+			//}
+			//if(element.html().contains("mvarr[\'10-1\']")){
+				tmvarr = html;
 				String regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
 				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
-				Matcher matcher = pattern.matcher(element.html());
+				Matcher matcher = pattern.matcher(html);
 				String mvarr = matcher.find()? matcher.group(1).trim():"";
 				encryptedString = mvarr.split(",")[1].replace("\'","");
 				urlpre = "https:" + mvarr.split(",")[3].replace("\'","");
-			}
-			if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
-		}
+			//}
+			//if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
+		//}
 		tkeyString =keyString;
 		tivString = ivString;
 		txorcode = xorcode;
