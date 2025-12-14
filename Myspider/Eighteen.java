@@ -121,6 +121,7 @@ public class Eighteen extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
         vod.setVodPlayUrl("播放$" + url);
+		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "-----------------------------------doc" +doc.html() );
         return Result.string(vod);
     }
 
@@ -184,6 +185,7 @@ public class Eighteen extends Spider {
 				encryptedString = mvarr.split(",")[1].replace("\'","");
 				urlpre = "https:" + mvarr.split(",")[3].replace("\'","");
 			}
+			if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
 		}
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
 		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
