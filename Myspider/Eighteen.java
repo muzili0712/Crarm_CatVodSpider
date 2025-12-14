@@ -218,7 +218,7 @@ public class Eighteen extends Spider {
 		turlpre = urlpre;
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
 		tstage1 = stage1;
-		String urlend = "";//aesDecrypt(stage1, keyString, ivString);
+		String urlend = aesDecrypt(stage1, keyString, ivString);
 		return urlpre+urlend;
     }
 	
@@ -290,8 +290,8 @@ public class Eighteen extends Spider {
             }
             
             // 将Base64字符串转换为字节数组
-            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
-            //byte[] encryptedBytes = encryptedBase64.getBytes("UTF-8");
+            //byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
+            byte[] encryptedBytes = encryptedBase64.getBytes("UTF-8");
             // 确保密钥长度为16、24或32字节（128、192或256位）
             byte[] keyBytes = key.getBytes("UTF-8");
             byte[] ivBytes = iv.getBytes("UTF-8");
