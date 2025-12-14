@@ -120,7 +120,7 @@ public class Eighteen extends Spider {
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
 		String frameurl = decryptFrameUrl(html);
-		String urltext = Jsoup.parse(OkHttp.string(frameurl,getHeaders())).html();
+		String urltext = OkHttp.string(frameurl,getHeaders());
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
 		String url =  matcher.find()? matcher.group(1):"";
@@ -213,7 +213,7 @@ public class Eighteen extends Spider {
 		turlpre = urlpre;
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
 		tstage1 = stage1;
-		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, "AES/CBC/PKCS7Padding");
+		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
 		return urlpre+urlend;
     }
 	
