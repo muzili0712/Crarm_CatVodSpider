@@ -113,11 +113,12 @@ public class Eighteen extends Spider {
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(url + ids.get(0),getHeaders()));
+        String html = OkHttp.string(url + ids.get(0),getHeaders());
+		Document doc = Jsoup.parse(html);
         Element wrap = doc.select("div.video-wrap").get(0);
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
-		String frameurl = decryptFrameUrl(doc);
+		String frameurl = decryptFrameUrl(html);
 		String urltext = Jsoup.parse(OkHttp.string(frameurl,getHeaders())).html();
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
@@ -164,18 +165,17 @@ public class Eighteen extends Spider {
         return Result.string(list);
     }
 
-	private String decryptFrameUrl(Document doc){
+	private String decryptFrameUrl(String html){
 		String keyString ="";
 		String ivString = "";
 		String xorcode = "";
 		String splitcode = "";
 		String encryptedString = "";
 		String urlpre = "";
+		Document doc = Jsoup.parse(html);
 		for(Element element : doc.select("script")){
 			if(element.html().contains("argdeqweqweqwe")){
 				argdeqweqweqwe = element.html();
-				keyString = Util.getVar(element.html(),"argdeqweqweqwe");
-				ivString = Util.getVar(element.html(),"hdddedg252");
 				String regex = "hadeedg252\\s*=\\s*(\\d+)";
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(element.html());
@@ -184,10 +184,18 @@ public class Eighteen extends Spider {
 				pattern = Pattern.compile(regex);
 				matcher = pattern.matcher(element.html());
 				splitcode = matcher.find()? matcher.group(1).trim():"";
+				regex = "argdeqweqweqww\\s*=\\s*'([^']+)'";
+				pattern = Pattern.compile(regex);
+				matcher = pattern.matcher(element.html());
+				keyString = matcher.find()? matcher.group(1).trim():"";
+				regex = "hdddedg252\\s*=\\s*'([^']+)'";
+				pattern = Pattern.compile(regex);
+				matcher = pattern.matcher(element.html());
+				ivString = matcher.find()? matcher.group(1).trim():"";
 			}
 			if(element.html().contains("mvarr[\'10-1\']")){
 				tmvarr = element.html();
-				String regex = "mvarr\\['10_1'\\]\\s*=\\s*\\[\\[(.*?)\\]";
+				String regex = "mvarr\\['10_1'\\]\\s*=\\s*\\[\\[(.*?)\\],\\]";
 				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
 				Matcher matcher = pattern.matcher(element.html());
 				String mvarr = matcher.find()? matcher.group(1).trim():"";
