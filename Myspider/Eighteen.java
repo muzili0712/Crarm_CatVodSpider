@@ -195,7 +195,7 @@ public class Eighteen extends Spider {
 			}
 			if(element.html().contains("mvarr[\'10-1\']")){
 				tmvarr = element.html();
-				String regex = "mvarr\\['10_1'\\]\\s*=\\s*\\[\\[(.*?)\\],\\]";
+				String regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
 				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
 				Matcher matcher = pattern.matcher(element.html());
 				String mvarr = matcher.find()? matcher.group(1).trim():"";
