@@ -172,38 +172,38 @@ public class Eighteen extends Spider {
 		String splitcode = "";
 		String encryptedString = "";
 		String urlpre = "";
-		//Document doc = Jsoup.parse(html);
-		//for(Element element : doc.select("script")){
-		//	if(element.html().contains("argdeqweqweqwe")){
-				argdeqweqweqwe = html;
+		Document doc = Jsoup.parse(html);
+		for(Element element : doc.select("script")){
+			if(element.html().contains("argdeqweqweqwe")){
+				argdeqweqweqwe = element.html();
 				String regex = "hadeedg252\\s*=\\s*(\\d+)";
 				Pattern pattern = Pattern.compile(regex);
-				Matcher matcher = pattern.matcher(html);
+				Matcher matcher = pattern.matcher(element.html());
 				xorcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "hcdeedg252\\s*=\\s*(\\d+)";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(html);
+				matcher = pattern.matcher(element.html());
 				splitcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "argdeqweqweqww\\s*=\\s*'([^']+)'";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(html);
+				matcher = pattern.matcher(element.html());
 				keyString = matcher.find()? matcher.group(1).trim():"";
 				regex = "hdddedg252\\s*=\\s*'([^']+)'";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(html);
+				matcher = pattern.matcher(element.html());
 				ivString = matcher.find()? matcher.group(1).trim():"";
-			//}
-			//if(element.html().contains("mvarr[\'10-1\']")){
-				tmvarr = html;
-				regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
-				pattern = Pattern.compile(regex, Pattern.DOTALL);
-				matcher = pattern.matcher(html);
+			}
+			if(element.html().contains("mvarr[\'10_1\']")){
+				tmvarr = element.html();
+				String regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
+				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+				Matcher matcher = pattern.matcher(element.html());
 				String mvarr = matcher.find()? matcher.group(1).trim():"";
 				encryptedString = mvarr.split(",")[1].replace("\'","");
 				urlpre = "https:" + mvarr.split(",")[3].replace("\'","");
-			//}
-			//if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
-		//}
+			}
+			if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
+		}
 		tkeyString =keyString;
 		tivString = ivString;
 		txorcode = xorcode;
