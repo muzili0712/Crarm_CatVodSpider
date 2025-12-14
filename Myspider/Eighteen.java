@@ -163,17 +163,17 @@ public class Eighteen extends Spider {
 		String splitcode = "";
 		String encryptedString = "";
 		String urlpre = "";
-		for(Element element : doc.s6elect("script")){
+		for(Element element : doc.select("script")){
 			if(element.html().contains("argdeqweqweqwe")){
 				keyString = Util.getVar(element.html(),"argdeqweqweqwe");
 				ivString = Util.getVar(element.html(),"hdddedg252");
 				String regex = "hadeedg252\\s*=\\s*(\\d+)";
 				Pattern pattern = Pattern.compile(regex);
-				Matcher matcher = pattern.matcher(input);
+				Matcher matcher = pattern.matcher(element.html());
 				xorcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "hcdeedg252\\s*=\\s*(\\d+)";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(input);
+				matcher = pattern.matcher(element.html());
 				splitcode = matcher.find()? matcher.group(1).trim():"";
 			}
 			if(element.html().contains("mvarr[\'10-1\']")){
@@ -198,9 +198,10 @@ public class Eighteen extends Spider {
      * 4. 与xorcode进行XOR运算
      * 5. 转换为字符
      */
-    private String stage1Decrypt(String cipherText ,String splitcode,String xorcode) {
+    private String stage1Decrypt(String cipherText ,String splitint,String xorcode) {
 
         // 计算分隔符
+		int splitcode = Integer.parseInt(splitint);
         splitcode = (splitcode <= 25) ? splitcode : splitcode % 25;
         
         char separator = (char) (splitcode + 97);
