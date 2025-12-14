@@ -114,7 +114,7 @@ public class Eighteen extends Spider {
 		String urltext = Jsoup.parse(OkHttp.string(frameurl,getHeaders())).html();
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
-		String url =  matcher.find()? matcher.group(1);
+		String url =  matcher.find()? matcher.group(1):"";
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
