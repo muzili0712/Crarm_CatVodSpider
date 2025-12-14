@@ -129,8 +129,8 @@ public class Eighteen extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
-        vod.setVodPlayUrl("播放$" + url);
-		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "--------------------tmvarr:" +tmvarr + "--------------------argdeqweqweqwe:" +argdeqweqweqwe + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
+        vod.setVodPlayUrl("播放$" + tencryptedString);
+		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext  + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
         return Result.string(vod);
     }
 
