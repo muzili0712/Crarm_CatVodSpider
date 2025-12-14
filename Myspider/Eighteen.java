@@ -257,7 +257,7 @@ public class Eighteen extends Spider {
         for (char ch : resultChars) {
             result.append(ch);
         }
-        
+        String stage1Result = result.toString();
         return stage1Result;
     }
 }
