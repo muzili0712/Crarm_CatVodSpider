@@ -198,10 +198,11 @@ public class Eighteen extends Spider {
      * 4. 与xorcode进行XOR运算
      * 5. 转换为字符
      */
-    private String stage1Decrypt(String cipherText ,String splitint,String xorcode) {
+    private String stage1Decrypt(String cipherText ,String splitintstring,String xorcodestring) {
 
         // 计算分隔符
-		int splitcode = Integer.parseInt(splitint);
+		int splitcode = Integer.parseInt(splitintstring);
+		int xorcode = Integer.parseInt(xorcodestring);
         splitcode = (splitcode <= 25) ? splitcode : splitcode % 25;
         
         char separator = (char) (splitcode + 97);
