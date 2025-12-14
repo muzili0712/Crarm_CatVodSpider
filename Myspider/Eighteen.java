@@ -134,7 +134,7 @@ public class Eighteen extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
-        vod.setVodPlayUrl("播放$" + tencryptedString);
+        vod.setVodPlayUrl("播放$" + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
 		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext  + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
         return Result.string(vod);
     }
@@ -290,8 +290,8 @@ public class Eighteen extends Spider {
             }
             
             // 将Base64字符串转换为字节数组
-            //byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
-            byte[] encryptedBytes = encryptedBase64.getBytes("UTF-8");
+            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
+            //byte[] encryptedBytes = encryptedBase64.getBytes("UTF-8");
             // 确保密钥长度为16、24或32字节（128、192或256位）
             byte[] keyBytes = key.getBytes("UTF-8");
             byte[] ivBytes = iv.getBytes("UTF-8");
