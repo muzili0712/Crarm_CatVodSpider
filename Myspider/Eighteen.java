@@ -182,7 +182,7 @@ public class Eighteen extends Spider {
 				xorcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "hcdeedg252\\s*=\\s*(\\d+)";
 				pattern = Pattern.compile(regex);
-				matcher = pattern.matcher(element.html());
+				matcher = pattern.matcher(html);
 				splitcode = matcher.find()? matcher.group(1).trim():"";
 				regex = "argdeqweqweqww\\s*=\\s*'([^']+)'";
 				pattern = Pattern.compile(regex);
@@ -195,9 +195,9 @@ public class Eighteen extends Spider {
 			//}
 			//if(element.html().contains("mvarr[\'10-1\']")){
 				tmvarr = html;
-				String regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
-				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
-				Matcher matcher = pattern.matcher(html);
+				regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
+				pattern = Pattern.compile(regex, Pattern.DOTALL);
+				matcher = pattern.matcher(html);
 				String mvarr = matcher.find()? matcher.group(1).trim():"";
 				encryptedString = mvarr.split(",")[1].replace("\'","");
 				urlpre = "https:" + mvarr.split(",")[3].replace("\'","");
