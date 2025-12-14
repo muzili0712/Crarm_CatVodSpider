@@ -17,6 +17,12 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
+
+
+
 public class Eighteen extends Spider {
 	
     private static Map<String, String> cookies = new HashMap<>();
