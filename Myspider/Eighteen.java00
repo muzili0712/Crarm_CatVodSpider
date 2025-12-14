@@ -8,6 +8,7 @@ import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Util;
+import com.github.catvod.utils.AESEncryption;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -109,16 +110,17 @@ public class Eighteen extends Spider {
         Element wrap = doc.select("div.video-wrap").get(0);
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
-		String url = "https" + wrap.select("div.mvspan_2 > div > iframe").attr("src");
-		String urltext = Jsoup.parse(OkHttp.string(url,getHeaders())).html();
+		String frameurl = decryptFrameUrl(doc);
+		String urltext = Jsoup.parse(OkHttp.string(frameurl,getHeaders())).html();
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
+		String url =  matcher.find()? matcher.group(1);
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
-        vod.setVodPlayUrl("播放$" + matcher.group(1));
+        vod.setVodPlayUrl("播放$" + url);
         return Result.string(vod);
     }
 
@@ -152,5 +154,106 @@ public class Eighteen extends Spider {
             list.add(new Vod(id, name, pic, remark));
         }
         return Result.string(list);
+    }
+
+	private String decryptFrameUrl(Document doc){
+		String keyString ="";
+		String ivString = "";
+		String xorcode = "";
+		String splitcode = "";
+		String encryptedString = "";
+		String urlpre = "";
+		for(Element element : doc.s6elect("script")){
+			if(element.html().contains("argdeqweqweqwe")){
+				keyString = Util.getVar(element.html(),"argdeqweqweqwe");
+				ivString = Util.getVar(element.html(),"hdddedg252");
+				String regex = "hadeedg252\\s*=\\s*(\\d+)";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(input);
+				xorcode = matcher.find()? matcher.group(1).trim():"";
+				regex = "hcdeedg252\\s*=\\s*(\\d+)";
+				pattern = Pattern.compile(regex);
+				matcher = pattern.matcher(input);
+				splitcode = matcher.find()? matcher.group(1).trim():"";
+			}
+			if(element.html().contains("mvarr[\'10-1\']")){
+				String regex = "mvarr\\['10_1'\\]\\s*=\\s*\\[\\[(.*?)\\]";
+				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+				Matcher matcher = pattern.matcher(element.html());
+				String mvarr = matcher.find()? matcher.group(1).trim():"";
+				encryptedString = mvarr.split(",")[1].replace("\'","");
+				urlpre = "https:" + mvarr.split(",")[3].replace("\'","");
+			}
+		}
+		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
+		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
+		return urlpre+urlend;
+    }
+	
+	    /**
+     * 第一阶段解密：自定义解密算法
+     * 1. 根据splitcode生成分隔符
+     * 2. 使用分隔符拆分字符串
+     * 3. 将每个部分按base-splitcode解析为整数
+     * 4. 与xorcode进行XOR运算
+     * 5. 转换为字符
+     */
+    private String stage1Decrypt(String cipherText ,String splitcode,String xorcode) {
+
+        // 计算分隔符
+        splitcode = (splitcode <= 25) ? splitcode : splitcode % 25;
+        
+        char separator = (char) (splitcode + 97);
+        System.out.println("分隔符: '" + separator + "' (ASCII: " + (splitcode + 97) + ")");
+        
+        // 分割字符串
+        String[] parts = cipherText.split(String.valueOf(separator));
+        System.out.println("分割后的数组长度: " + parts.length);
+        
+        List<Character> resultChars = new ArrayList<>();
+        
+        // 处理每个部分
+        for (int i = 0; i < parts.length; i++) {
+            String part = parts[i];
+            if (part == null || part.isEmpty()) {
+                continue;
+            }
+            
+            try {
+                // 解析base-splitcode数字
+                int num = Integer.parseInt(part, splitcode);
+                System.out.println(String.format("元素[%d]: \"%s\" -> base-%d -> %d", 
+                    i, part, splitcode, num));
+                
+                // XOR操作
+                int xorResult = num ^ xorcode;
+                System.out.println(String.format("XOR操作: %d ^ %d = %d", 
+                    num, xorcode, xorResult));
+                
+                // 转换为字符
+                char ch = (char) xorResult;
+                System.out.println(String.format("转换为字符: %c (ASCII: %d)", 
+                    ch, xorResult));
+                
+                resultChars.add(ch);
+            } catch (NumberFormatException e) {
+                System.out.println("警告: 无法解析部分 " + part + "，跳过");
+            }
+        }
+        
+        // 构建结果字符串
+        StringBuilder result = new StringBuilder();
+        for (char ch : resultChars) {
+            result.append(ch);
+        }
+        
+        String stage1Result = result.toString();
+        System.out.println("第一阶段解密完成");
+        System.out.println("结果: " + (stage1Result.length() > 50 ? 
+            stage1Result.substring(0, 50) + "..." : stage1Result));
+        System.out.println("结果长度: " + stage1Result.length() + " 字符");
+        System.out.println("=== 第一阶段解密结束 ===\n");
+        
+        return stage1Result;
     }
 }
