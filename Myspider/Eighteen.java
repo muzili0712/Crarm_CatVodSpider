@@ -31,6 +31,7 @@ public class Eighteen extends Spider {
 	private String tsplitcode = "";
 	private String tencryptedString = "";
 	private String turlpre = "";
+	private String tstage1="";
     /**
      * 获取请求头（包含 Cookie）
      */
@@ -129,7 +130,7 @@ public class Eighteen extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
         vod.setVodPlayUrl("播放$" + url);
-		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "--------------------tmvarr:" +tmvarr + "--------------------argdeqweqweqwe:" +argdeqweqweqwe + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString + "--------------------turlpre:" +turlpre );
+		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext + "--------------------tmvarr:" +tmvarr + "--------------------argdeqweqweqwe:" +argdeqweqweqwe + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
         return Result.string(vod);
     }
 
@@ -211,7 +212,8 @@ public class Eighteen extends Spider {
 		tencryptedString = encryptedString;
 		turlpre = urlpre;
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
-		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
+		tstage1 = stage1;
+		String urlend = AESEncryption.decrypt(stage1, keyString, ivString, "AES/CBC/PKCS5Padding");
 		return urlpre+urlend;
     }
 	
