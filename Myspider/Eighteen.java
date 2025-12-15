@@ -218,9 +218,6 @@ public class Eighteen extends Spider {
 		tencryptedString = encryptedString;
 		turlpre = urlpre;
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
-		stage1 = "WpUWofsGRpkAtfR3ZTomQeaD/lEscwyQ9Bm2c50TJM9/0NWlnWuV+/7MDOuycr/klPN8oLc/kFsSSAlMjKyTNVFHBXjPAtjw7eA+QOQXrOY=";
-		keyString ="783f374a2b7ec8b8";
-		ivString = "54deaa083bde9480";
 		tstage1 = stage1;
 		String urlend = aesDecrypt(stage1, keyString, ivString);
 		return urlpre+urlend;
