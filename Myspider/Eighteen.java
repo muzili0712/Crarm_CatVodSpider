@@ -29,15 +29,7 @@ public class Eighteen extends Spider {
     private static Map<String, String> cookies = new HashMap<>();
     private final String url = "https://mjv002.com/zh/";
     private final String starturl = "https://mjv002.com/zh/chinese_IamOverEighteenYearsOld/19/index.html";
-	private String tmvarr ="";
-	private String argdeqweqweqwe ="";
-	private String tkeyString ="";
-	private String tivString = "";
-	private String txorcode = "";
-	private String tsplitcode = "";
-	private String tencryptedString = "";
-	private String turlpre = "";
-	private String tstage1="";
+
     /**
      * 获取请求头（包含 Cookie）
      */
@@ -136,7 +128,6 @@ public class Eighteen extends Spider {
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
         vod.setVodPlayUrl("播放$" + url);
-		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext  + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
         return Result.string(vod);
     }
 
@@ -182,7 +173,6 @@ public class Eighteen extends Spider {
 		Document doc = Jsoup.parse(html);
 		for(Element element : doc.select("script")){
 			if(element.html().contains("argdeqweqweqwe")){
-				argdeqweqweqwe = element.html();
 				String regex = "hadeedg252\\s*=\\s*(\\d+)";
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(element.html());
@@ -201,7 +191,6 @@ public class Eighteen extends Spider {
 				ivString = matcher.find()? matcher.group(1).trim():"";
 			}
 			if(element.html().contains("mvarr[\'10_1\']")){
-				tmvarr = element.html();
 				String regex = "mvarr\\['10_1'\\]=\\[\\[(.*?)\\]\\s*,\\s*\\]";
 				Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
 				Matcher matcher = pattern.matcher(element.html());
@@ -211,14 +200,7 @@ public class Eighteen extends Spider {
 			}
 			if(!splitcode.isEmpty() && !encryptedString.isEmpty()) break;
 		}
-		tkeyString =keyString;
-		tivString = ivString;
-		txorcode = xorcode;
-		tsplitcode = splitcode;
-		tencryptedString = encryptedString;
-		turlpre = urlpre;
 		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
-		tstage1 = stage1;
 		String urlend = aesDecrypt(stage1, keyString, ivString);
 		return urlpre+urlend;
     }
