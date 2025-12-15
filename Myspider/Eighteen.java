@@ -285,7 +285,7 @@ public class Eighteen extends Spider {
      * AES解密函数
      * 使用AES/CBC/PKCS5Padding模式
      */
-    private String aesDecrypt(String encryptedBase64, String key, String iv) {
+    private String aesDecrypt11(String encryptedBase64, String key, String iv) {
         
         try {
             // 检查输入
@@ -294,7 +294,7 @@ public class Eighteen extends Spider {
             }
             
             // 将Base64字符串转换为字节数组
-            byte[] encryptedBytes = Base64.getUrlDecoder().decode(encryptedBase64);
+            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
 
             // 确保密钥长度为16、24或32字节（128、192或256位）
             byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
@@ -335,4 +335,52 @@ public class Eighteen extends Spider {
             return null;
         }
     }
+	private String aesDecrypt(String encryptedBase64, String key, String iv) {
+    try {
+        // 1. 入参校验
+        if (encryptedBase64 == null || encryptedBase64.isEmpty()) {
+            throw new IllegalArgumentException("加密文本不能为空");
+        }
+        if (key == null || key.isEmpty() || iv == null || iv.isEmpty()) {
+            throw new IllegalArgumentException("密钥/IV不能为空");
+        }
+
+        // 2. Base64解码（根据密文类型选择：UrlDecoder 或 Decoder）
+        byte[] encryptedBytes = Base64.Decoder().decode(encryptedBase64);
+
+        // 3. 密钥/IV转换+重复填充（与CryptoJS一致）
+        byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
+        byte[] ivBytes = iv.getBytes(StandardCharsets.UTF_8);
+        
+        // 统一填充至16字节（AES-128）
+        keyBytes = repeatPad(keyBytes, 16);
+        ivBytes = repeatPad(ivBytes, 16);
+
+        // 4. 创建密钥和IV
+        SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
+        IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
+
+        // 5. 初始化解密器（PKCS5Padding兼容PKCS7）
+        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
+
+        // 6. 解密并返回
+        byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
+        return new String(decryptedBytes, StandardCharsets.UTF_8);
+
+    } catch (Exception e) {
+        System.err.println("AES解密失败: " + e.getMessage());
+        e.printStackTrace();
+        return null;
+    }
+}
+
+// 重复填充逻辑（与CryptoJS一致）
+private byte[] repeatPad(byte[] src, int targetLength) {
+    byte[] result = new byte[targetLength];
+    for (int i = 0; i < targetLength; i++) {
+        result[i] = src[i % src.length];
+    }
+    return result;
+}
 }
