@@ -216,7 +216,7 @@ public class Eighteen extends Spider {
 		keyString ="783f374a2b7ec8b8";
 		ivString = "54deaa083bde9480";
 		tstage1 = xordecrypt;
-		String urlend = AESEncryption.decrypt(xordecrypt, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
+		String urlend = AESEncryption.decrypt(xordecrypt, keyString, ivString, "AES/CBC/PKCS5Padding");
 		return urlpre+urlend;
     }
 	
