@@ -126,7 +126,7 @@ public class Eighteen extends Spider {
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
 		String frameurl = decryptFrameUrl(html);
-		String urltext = "";//OkHttp.string(frameurl,getHeaders()));
+		String urltext = OkHttp.string(frameurl,getHeaders()));
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
 		String url =  matcher.find()? matcher.group(1):"";
@@ -135,7 +135,7 @@ public class Eighteen extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
-        vod.setVodPlayUrl("播放$" + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
+        vod.setVodPlayUrl("播放$" + url);
 		vod.setVodContent("frameurl:"+ frameurl + "--------------------urltext:" +urltext  + "--------------------tkeyString:" +tkeyString + "--------------------tivString:" +tivString + "--------------------txorcode:" +txorcode + "--------------------tsplitcode:" +tsplitcode + "--------------------tencryptedString:" +tencryptedString  + "--------------------turlpre:" +turlpre + "--------------------tstage1:" +tstage1);
         return Result.string(vod);
     }
