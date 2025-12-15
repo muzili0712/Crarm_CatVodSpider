@@ -126,7 +126,7 @@ public class Eighteen extends Spider {
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
 		String frameurl = decryptFrameUrl(html);
-		String urltext = OkHttp.string(frameurl,getHeaders()));
+		String urltext = OkHttp.string(frameurl,getHeaders());
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
 		String url =  matcher.find()? matcher.group(1):"";
