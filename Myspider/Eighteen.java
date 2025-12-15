@@ -8,21 +8,15 @@ import com.github.catvod.bean.Vod;
 import com.github.catvod.crawler.Spider;
 import com.github.catvod.net.OkHttp;
 import com.github.catvod.utils.Util;
+import com.github.catvod.utils.AESEncryption;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.*;
-import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.IvParameterSpec;
-import javax.crypto.spec.SecretKeySpec;
-import java.nio.charset.StandardCharsets;
-
 
 public class Eighteen extends Spider {
 	
@@ -126,7 +120,7 @@ public class Eighteen extends Spider {
         String name = wrap.select("div.archive-title > h1").text();
         String pic = wrap.select("div.player-wrap > img").attr("src");
 		String frameurl = decryptFrameUrl(html);
-		String urltext = "";//OkHttp.string(frameurl,getHeaders()));
+		String urltext = OkHttp.string(frameurl,getHeaders());
 		Pattern pattern = Pattern.compile("src\\s*:\\s*'([^']+)'");
         Matcher matcher = pattern.matcher(urltext);
 		String url =  matcher.find()? matcher.group(1):"";
@@ -217,12 +211,12 @@ public class Eighteen extends Spider {
 		tsplitcode = splitcode;
 		tencryptedString = encryptedString;
 		turlpre = urlpre;
-		String stage1 = stage1Decrypt(encryptedString ,splitcode,xorcode);
-		stage1 = "WpUWofsGRpkAtfR3ZTomQeaD/lEscwyQ9Bm2c50TJM9/0NWlnWuV+/7MDOuycr/klPN8oLc/kFsSSAlMjKyTNVFHBXjPAtjw7eA+QOQXrOY=";
+		String xordecrypt = xorDecrypt(encryptedString ,splitcode,xorcode);
+		xordecrypt = "WpUWofsGRpkAtfR3ZTomQeaD/lEscwyQ9Bm2c50TJM9/0NWlnWuV+/7MDOuycr/klPN8oLc/kFsSSAlMjKyTNVFHBXjPAtjw7eA+QOQXrOY=";
 		keyString ="783f374a2b7ec8b8";
 		ivString = "54deaa083bde9480";
-		tstage1 = stage1;
-		String urlend = aesDecrypt(stage1, keyString, ivString);
+		tstage1 = xordecrypt;
+		String urlend = AESEncryption.decrypt(xordecrypt, keyString, ivString, AESEncryption.CBC_PKCS_7_PADDING);
 		return urlpre+urlend;
     }
 	
@@ -234,7 +228,7 @@ public class Eighteen extends Spider {
      * 4. 与xorcode进行XOR运算
      * 5. 转换为字符
      */
-    private String stage1Decrypt(String cipherText ,String splitintstring,String xorcodestring) {
+    private String xorDecrypt(String cipherText ,String splitintstring,String xorcodestring) {
 
         // 计算分隔符
 		int splitcode = Integer.parseInt(splitintstring);
@@ -249,11 +243,7 @@ public class Eighteen extends Spider {
         List<Character> resultChars = new ArrayList<>();
         
         // 处理每个部分
-        for (int i = 0; i < parts.length; i++) {
-            String part = parts[i];
-            if (part == null || part.isEmpty()) {
-                continue;
-            }
+        for (String part : parts) {
             
             try {
                 // 解析base-splitcode数字
@@ -278,61 +268,5 @@ public class Eighteen extends Spider {
         }
         String stage1Result = result.toString();
         return stage1Result;
-    }
-
-	
-    /**
-     * AES解密函数
-     * 使用AES/CBC/PKCS5Padding模式
-     */
-    private String aesDecrypt(String encryptedBase64, String key, String iv) {
-        
-        try {
-            // 检查输入
-            if (encryptedBase64 == null || encryptedBase64.isEmpty()) {
-                throw new IllegalArgumentException("加密文本不能为空");
-            }
-            
-            // 将Base64字符串转换为字节数组
-            byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
-
-            // 确保密钥长度为16、24或32字节（128、192或256位）
-            byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
-            byte[] ivBytes = iv.getBytes(StandardCharsets.UTF_8);
-            
-            // 如果密钥长度不足，进行填充
-            if (keyBytes.length < 16) {
-                byte[] newKeyBytes = new byte[16];
-                System.arraycopy(keyBytes, 0, newKeyBytes, 0, keyBytes.length);
-                keyBytes = newKeyBytes;
-            } else if (keyBytes.length > 16 && keyBytes.length < 24) {
-                byte[] newKeyBytes = new byte[24];
-                System.arraycopy(keyBytes, 0, newKeyBytes, 0, keyBytes.length);
-                keyBytes = newKeyBytes;
-            } else if (keyBytes.length > 24 && keyBytes.length < 32) {
-                byte[] newKeyBytes = new byte[32];
-                System.arraycopy(keyBytes, 0, newKeyBytes, 0, keyBytes.length);
-                keyBytes = newKeyBytes;
-            }
-            
-            // 创建密钥和IV
-            SecretKeySpec secretKey = new SecretKeySpec(keyBytes, "AES");
-            IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
-            
-            // 创建解密器
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
-            
-            // 执行解密
-            byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-            String decryptedText = new String(decryptedBytes, StandardCharsets.UTF_8);
-            
-            return decryptedText;
-            
-        } catch (Exception e) {
-            System.err.println("AES解密失败: " + e.getMessage());
-            e.printStackTrace();
-            return null;
-        }
     }
 }
