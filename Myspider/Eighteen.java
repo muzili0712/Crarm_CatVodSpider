@@ -14,13 +14,14 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.util.*;
+import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-
+import java.nio.charset.StandardCharsets;
 
 
 public class Eighteen extends Spider {
@@ -294,10 +295,10 @@ public class Eighteen extends Spider {
             
             // 将Base64字符串转换为字节数组
             byte[] encryptedBytes = Base64.getDecoder().decode(encryptedBase64);
-            //byte[] encryptedBytes = encryptedBase64.getBytes("UTF-8");
+
             // 确保密钥长度为16、24或32字节（128、192或256位）
-            byte[] keyBytes = key.getBytes("UTF-8");
-            byte[] ivBytes = iv.getBytes("UTF-8");
+            byte[] keyBytes = key.getBytes(StandardCharsets.UTF_8);
+            byte[] ivBytes = iv.getBytes(StandardCharsets.UTF_8);
             
             // 如果密钥长度不足，进行填充
             if (keyBytes.length < 16) {
@@ -319,12 +320,12 @@ public class Eighteen extends Spider {
             IvParameterSpec ivSpec = new IvParameterSpec(ivBytes);
             
             // 创建解密器
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
             
             // 执行解密
             byte[] decryptedBytes = cipher.doFinal(encryptedBytes);
-            String decryptedText = new String(decryptedBytes, "UTF-8");
+            String decryptedText = new String(decryptedBytes, StandardCharsets.UTF_8);
             
             return decryptedText;
             
