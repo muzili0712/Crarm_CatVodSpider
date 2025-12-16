@@ -161,6 +161,42 @@ public class XMVideo extends Spider {
         return Result.string(list);
     }
 
+	@Override
+    public String searchContent(String key, boolean quick) throws Exception {
+        String jsonstring = "{\"command\":\"WEB_GET_INFO\",\"pageNumber\":1,\"RecordsPage\":20,\"typeId\":\"0\",\"typeMid\":\"1\",\"languageType\":\"CN\",\"content\":\""+
+                key + "\",\"type\":\"1\"}";
+		return searchContent(jsonstring);
+    }
+
+    @Override
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
+        String jsonstring = "{\"command\":\"WEB_GET_INFO\",\"pageNumber\":" + pg + ",\"RecordsPage\":20,\"typeId\":\"0\",\"typeMid\":\"1\",\"languageType\":\"CN\",\"content\":\""+
+                key + "\",\"type\":\"1\"}";
+		return searchContent(jsonstring);
+    }
+	
+    private String searchContent(String jsonstring) {
+
+        List<Vod> list = new ArrayList<>();
+        String data = OkHttp.post(cateUrl, jsonstring);
+
+        // json处理
+        Gson gson = new Gson();
+        JsonObject fromJson = gson.fromJson(data, JsonObject.class);
+        JsonObject data1 = fromJson.getAsJsonObject("data");
+        JsonArray menu0ListMap = data1.getAsJsonArray("resultList");
+        // 输出menu0ListMap的前三个元素
+        for (int i = 0; i < menu0ListMap.size(); i++) {
+            JsonObject object = menu0ListMap.get(i).getAsJsonObject();
+            String vod_name = object.get("vod_name").getAsString().replace("yy8ycom", "");
+            String vod_pic = object.get("vod_pic").getAsString();
+            String id = vod_name + "#" + vod_pic;
+            list.add(new Vod(id, vod_name, vod_pic));
+        }
+
+        return Result.string(list);
+    }
+
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         String url = id;
