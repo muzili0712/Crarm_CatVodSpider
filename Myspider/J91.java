@@ -129,7 +129,7 @@ public class J91 extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String target = searchUrl.(URLEncoder.encode(key)).concat("&page=").concat(pg);
+        String target = searchUrl.concat(URLEncoder.encode(key)).concat("&page=").concat(pg);
 		return searchContent(target);
     }
 	
