@@ -184,12 +184,6 @@ public class Hlbdy extends Spider {
         return Result.string(vod);
     }
 
-    @Override
-    public String searchContent(String key, boolean quick) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
-        List<Vod> list = parseVods(doc);
-        return Result.string(list);
-    }
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
