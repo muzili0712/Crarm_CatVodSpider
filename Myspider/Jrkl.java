@@ -107,13 +107,25 @@ public class Jrkl extends Spider {
         return Result.string(vod);
     }
 
-    @Override
+
+	@Override
     public String searchContent(String key, boolean quick) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(key), getHeaders()));
-        List<Vod> list = parseVods(doc);
-        return Result.string(list);
+        String target = searchUrl.concat(URLEncoder.encode(key));
+		return searchContent(target);
     }
 
+    @Override
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
+        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/").concat(pg).concat("/");
+		return searchContent(target);
+    }
+	
+    private String searchContent(String target) {
+        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
+        List<Vod> list = parseVods(doc);
+        return Result.string(list);
+	}
+	
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
         return Result.get().url(id).header(getHeaders()).string();
