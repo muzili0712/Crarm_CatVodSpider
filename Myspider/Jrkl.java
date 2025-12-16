@@ -110,13 +110,13 @@ public class Jrkl extends Spider {
 
 	@Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String target = searchUrl.concat(URLEncoder.encode(key));
+        String target = searchUrl.concat(key);
 		return searchContent(target);
     }
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/").concat(pg).concat("/");
+        String target = searchUrl.concat(key).concat("/").concat(pg).concat("/");
 		return searchContent(target);
     }
 	
