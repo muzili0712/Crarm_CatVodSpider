@@ -83,10 +83,22 @@ public class Jable extends Spider {
         return Result.string(vod);
     }
 
+
+	@Override
+    public String searchContent(String key, boolean quick) throws Exception {
+        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/");
+		return searchContent(target);
+    }
+
     @Override
-    public String searchContent(String key, boolean quick) {
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
+        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/").concat(pg).concat("/");
+		return searchContent(target);
+    }
+	
+    private String searchContent(String string) {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/"), getHeaders()));
+        Document doc = Jsoup.parse(string, getHeaders()));
         for (Element element : doc.select("div.video-img-box")) {
             String pic = element.select("img").attr("data-src");
             String url = element.select("h6.title > a").attr("href");
