@@ -22,7 +22,7 @@ public class JavBus extends Spider {
     private static final String siteUrl = "https://javbus.sbs";
     private static final String cateUrl = siteUrl + "/vod/type/id/";
     private static final String detailUrl = siteUrl + "/vod/detail/id/";
-    private static final String searchUrl = siteUrl + "/vod/search/?wd=";
+    private static final String searchUrl = siteUrl + "/vod/search/";
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
@@ -90,10 +90,22 @@ public class JavBus extends Spider {
         return Result.string(vod);
     }
 
-    @Override
+
+	@Override
     public String searchContent(String key, boolean quick) throws Exception {
+        String target = searchUrl.concat("?wd=").concat(URLEncoder.encode(key)).concat("/").concat("&submit=");
+		return searchContent(target);
+    }
+
+    @Override
+    public String searchContent(String key, boolean quick, String pg) throws Exception {https://javbus.sbs/vod/search/page/2/wd/%E5%A5%B3/
+        String target = searchUrl.concat("page/").concat(pg).concat("/wd/").concat(URLEncoder.encode(key)).concat("/");
+		return searchContent(target);
+    }
+	
+    private String searchContent(String target) {
         List<Vod> list = new ArrayList<>();
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/").concat("&submit="), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(target));
         for (Element element : doc.select("li.active.clearfix")) {
             String pic = element.select("a.myui-vodlist__thumb").attr("data-original");
             String url = element.select("a.myui-vodlist__thumb").attr("href");
@@ -102,7 +114,7 @@ public class JavBus extends Spider {
             list.add(new Vod(id, name, pic));
         }
         return Result.string(list);
-    }
+	}
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
