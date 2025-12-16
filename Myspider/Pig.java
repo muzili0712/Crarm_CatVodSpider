@@ -116,7 +116,7 @@ public class Pig extends Spider {
     }
 	
     private String searchContent(String key, String pg) {
-        String target = siteUrl.concat("?s=").concat(key);
+        String target = siteUrl.concat("page/").concat(pg).concat("?s=").concat(key);
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
