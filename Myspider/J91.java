@@ -120,9 +120,21 @@ public class J91 extends Spider {
         return Result.string(vod);
     }
 
+
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)), getHeaders()));
+        String target = searchUrl.concat(URLEncoder.encode(key));
+		return searchContent(target);
+    }
+
+    @Override
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
+        String target = searchUrl.(URLEncoder.encode(key)).concat("&page=").concat(pg);
+		return searchContent(target);
+    }
+	
+    private String searchContent(String string) {
+        Document doc = Jsoup.parse(OkHttp.string(string, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
     }
