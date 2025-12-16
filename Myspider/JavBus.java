@@ -98,7 +98,7 @@ public class JavBus extends Spider {
     }
 
     @Override
-    public String searchContent(String key, boolean quick, String pg) throws Exception {https://javbus.sbs/vod/search/page/2/wd/%E5%A5%B3/
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
         String target = searchUrl.concat("page/").concat(pg).concat("/wd/").concat(URLEncoder.encode(key)).concat("/");
 		return searchContent(target);
     }
