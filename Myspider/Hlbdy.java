@@ -196,7 +196,7 @@ public class Hlbdy extends Spider {
     }
 	
     private String searchContent(String key, String pg) {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(key).concat(pg).concat("/"), getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(key).concat("/").concat(pg).concat("/"), getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
 	}
