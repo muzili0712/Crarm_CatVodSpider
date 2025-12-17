@@ -68,7 +68,7 @@ public class Hstv extends Spider {
     public String detailContent(List<String> ids) throws Exception {
         String html = OkHttp.string(siteUrl.concat("video-").concat(ids.get(0)).concat(".htm"), getHeaders());
 		    Document doc = Jsoup.parse(html);
-        String url = doc.select("source.video-source").attr("src");
+        String url = doc.select("source[id=video-source]").attr("src");
         String name = doc.select("h3.panel-title").text();
         String pic = doc.select("video").attr("poster");
 		
