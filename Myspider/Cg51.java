@@ -68,16 +68,17 @@ public class Cg51 extends Spider {
         List<ArticleData> dataList = new ArrayList<>();
         
         for (Element element : doc.select("article")) {
-            String urlfull = element.select("a").attr("href");
-			String url = urlfull.contains("gfyxfdbt.cc")? urlfull.split("gfyxfdbt.cc")[1]:urlfull;
+            String url = element.select("a").attr("href");
+        	Matcher matcher = Pattern.compile("/archives/(\\d+)").matcher(url);
+			String id = matcher.find() ? matcher.group(1) : "";
             String name = element.select(".post-card-title").text();
             
-            if (url.isEmpty() || name.isEmpty()) {
+            if (id.isEmpty() || name.isEmpty()) {
                 continue;
             }
-            
-            String id = url.split("/")[2];
-            Matcher matcher = Pattern.compile("'(https?://[^']+)")
+			
+
+			matcher = Pattern.compile("'(https?://[^']+)")
                 .matcher(String.valueOf(element.select("script")));
             
             String imageUrl = matcher.find() ? matcher.group(1) : "";
