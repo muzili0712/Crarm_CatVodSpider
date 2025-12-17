@@ -188,19 +188,22 @@ public class Cg51 extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        return searchContent(key, "1");
+        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/");
+		return searchContent(target);
     }
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        return searchContent(key, pg);
+        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/").concat(pg).concat("/");
+		return searchContent(target);
     }
 	
-    private String searchContent(String key, String pg) {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(URLEncoder.encode(key)).concat("/").concat(pg).concat("/"), getHeaders()));
+    private String searchContent(String target) {
+        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
 	}
+	
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
