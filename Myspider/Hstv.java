@@ -94,7 +94,7 @@ public class Hstv extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String target = siteUrl + "search" + pg + ".htm?search=" + URLEncoder.encode(key);
+        String target = siteUrl + "search-" + pg + ".htm?search=" + URLEncoder.encode(key);
 		return searchContent(target);
     }
 	
