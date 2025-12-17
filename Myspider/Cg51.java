@@ -69,7 +69,7 @@ public class Cg51 extends Spider {
         
         for (Element element : doc.select("article")) {
             String url = element.select("a").attr("href");
-        	Matcher matcher = Pattern.compile("/archives/(\\d+)").matcher(url);
+        	Matcher matcher = Pattern.compile("/archives/([^/]+)").matcher(url);
 			String id = matcher.find() ? matcher.group(1) : "";
             String name = element.select(".post-card-title").text();
             
