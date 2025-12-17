@@ -46,7 +46,7 @@ public class Hlbdy extends Spider {
         }
     }
 
-    private static final String siteUrl = "https://across.odrepgn.cc";
+    private static final String siteUrl = "https://across.nxtucsy.cc";
     private static final String cateUrl = siteUrl + "/category/";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
@@ -187,16 +187,18 @@ public class Hlbdy extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        return searchContent(key, "1");
+        String target = searchUrl.concat(key).concat("/");
+		return searchContent(target);
     }
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        return searchContent(key, pg);
+        String target = searchUrl.concat(key).concat("/").concat(pg).concat("/");
+		return searchContent(target);
     }
 	
-    private String searchContent(String key, String pg) {
-        Document doc = Jsoup.parse(OkHttp.string(searchUrl.concat(key).concat("/").concat(pg).concat("/"), getHeaders()));
+    private String searchContent(String target) {
+        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
 	}
