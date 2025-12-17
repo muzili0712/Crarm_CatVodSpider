@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+import java.net.URLEncoder;
 import java.net.URL;
 import java.net.MalformedURLException;
 
@@ -67,10 +68,14 @@ public class Hstv extends Spider {
     @Override
     public String detailContent(List<String> ids) throws Exception {
         String html = OkHttp.string(siteUrl.concat("video-").concat(ids.get(0)).concat(".htm"), getHeaders());
-		    Document doc = Jsoup.parse(html);
-        String url = doc.select("source[id=video-source]").attr("src");
+		Document doc = Jsoup.parse(html);
+        String url = "" ;
         String name = doc.select("h3.panel-title").text();
         String pic = doc.select("video").attr("poster");
+		int i=1;
+		for (Element element : doc.select("source[id=video-source]")) {
+			url = url.isEmpty()? "视频" + i + "$"+element.attr("src") : "#视频" + i + "$"+element.attr("src");
+		}
 		
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
@@ -83,16 +88,17 @@ public class Hstv extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick) throws Exception {
-        return searchContent(key, "1");
+        String target = siteUrl + "search.htm?search=" + URLEncoder.encode(key);
+		return searchContent(target);
     }
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        return searchContent(key, pg);
+        String target = siteUrl + "search" + pg + ".htm?search=" + URLEncoder.encode(key);
+		return searchContent(target);
     }
 	
-    private String searchContent(String key, String pg) {
-        String target = siteUrl.concat("page/").concat(pg).concat("?s=").concat(key);
+    private String searchContent(String target) {
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
