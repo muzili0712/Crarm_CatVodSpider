@@ -119,7 +119,11 @@ public class ROU223 extends Spider {
 		return searchContent(jsonstring);
 	}
 
-	
+    private String searchContent(String jsonstring) {
+        String data = OkHttp.post(searchUrl, jsonstring);
+		List<Vod> list = searchVods(result);
+        return Result.string(list);
+	}
 	
 	private static List<Vod> searchVods(String data){
     	List<Vod> list = new ArrayList<>();
