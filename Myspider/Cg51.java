@@ -68,7 +68,7 @@ public class Cg51 extends Spider {
         List<ArticleData> dataList = new ArrayList<>();
         
         for (Element element : doc.select("article")) {
-            String url = element.select("a").attr("href");
+            String url = element.select("a").attr("href").replace(siteUrl,"");
             String name = element.select(".post-card-title").text();
             
             if (url.isEmpty() || name.isEmpty()) {
