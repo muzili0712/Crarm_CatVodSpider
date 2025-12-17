@@ -46,7 +46,7 @@ public class Cg51 extends Spider {
         }
     }
 
-    private static final String siteUrl = "https://carrier.ujaumgp.cc";
+    private static final String siteUrl = "https://5wikiwikj.pufhatm.com";
     private static final String cateUrl = siteUrl + "/category/";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
