@@ -58,7 +58,7 @@ public class Hstv extends Spider {
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        String target = siteUrl.concat(tid).concat("-").concat(pg).concat(".html");
+        String target = siteUrl.concat(tid).concat("-").concat(pg).concat(".htm");
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(list);
