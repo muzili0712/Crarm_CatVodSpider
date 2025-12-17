@@ -92,7 +92,8 @@ public class Jable extends Spider {
 
     @Override
     public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String target = searchUrl.concat(URLEncoder.encode(key)).concat("/").concat(pg).concat("/");
+        String target = searchUrl + key + "/?mode=async&function=get_block&block_id=list_videos_videos_list_search_result&q=ps&sort_by=&from=" 
+			  + String.format(Locale.getDefault(), "%02d", Integer.parseInt(pg)) + "&_=" + System.currentTimeMillis();
 		return searchContent(target);
     }
 	
@@ -102,7 +103,7 @@ public class Jable extends Spider {
         for (Element element : doc.select("div.video-img-box")) {
             String pic = element.select("img").attr("data-src");
             String url = element.select("h6.title > a").attr("href");
-            String name = element.select("h6.title").text();
+            String name = element.select("h6.title > a").text();
             String id = url.split("/")[4];
             list.add(new Vod(id, name, pic));
         }
