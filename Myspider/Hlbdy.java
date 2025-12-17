@@ -46,7 +46,7 @@ public class Hlbdy extends Spider {
         }
     }
 
-    private static final String siteUrl = "https://across.nxtucsy.cc";
+    private static final String siteUrl = "https://hl365.com";
     private static final String cateUrl = siteUrl + "/category/";
     private static final String detailUrl = siteUrl + "/archives/";
     private static final String searchUrl = siteUrl + "/search/";
@@ -68,7 +68,7 @@ public class Hlbdy extends Spider {
         List<ArticleData> dataList = new ArrayList<>();
         
         for (Element element : doc.select("article")) {
-            String url = element.select("a").attr("href");
+            String url = element.select("a").attr("href").replace(siteUrl,"");
             String name = element.select(".post-card-title").text();
             
             if (url.isEmpty() || name.isEmpty()) {
