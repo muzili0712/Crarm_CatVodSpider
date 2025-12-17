@@ -104,14 +104,22 @@ public class ROU223 extends Spider {
         return Result.string(vod);
     }
 
-    @Override
+
+	@Override
     public String searchContent(String key, boolean quick) throws Exception {
-        String poststring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":\"" + key + "\",\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20}";
-        //JSONObject postjson = new JSONObject(poststring);
-        String result = OkHttp.post(searchUrl, poststring);
-		List<Vod> list = searchVods(result);
-        return Result.string(list);
+        String jsonstring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":\""
+			                 + key + "\",\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20}";
+		return searchContent(jsonstring);
     }
+
+    @Override
+    public String searchContent(String key, boolean quick, String pg) throws Exception {
+        String jsonstring = "{\"highlight\":{\"fragment_size\":200,\"number_of_fragments\":1,\"fields\":{\"data_name\":{},\"data_intro\":{}}},\"_source\":[\"id\",\"data_name\",\"data_intro\",\"data_actor\",\"class_dir\",\"data_picbig\",\"year\",\"month\",\"day\"],\"aggs\":{\"class_name\":{\"terms\":{\"field\":\"class_name\",\"size\":30}}},\"query\":{\"bool\":{\"must\":[{\"multi_match\":{\"query\":\""
+			              + key + "\",\"fields\":[\"data_name\",\"data_intro\",\"data_actor\"]}}]}},\"sort\":[],\"size\":20,\"from\":" + String.valueOf(pg) + "}";
+		return searchContent(jsonstring);
+	}
+
+	
 	
 	private static List<Vod> searchVods(String data){
     	List<Vod> list = new ArrayList<>();
