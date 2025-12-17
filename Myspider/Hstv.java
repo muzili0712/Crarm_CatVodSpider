@@ -82,7 +82,7 @@ public class Hstv extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("Hstv");
-        vod.setVodPlayUrl("播放$"+url);
+        vod.setVodPlayUrl(url);
 		    return Result.string(vod);
     }
 
