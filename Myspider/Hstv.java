@@ -34,8 +34,8 @@ public class Hstv extends Spider {
         List<Vod> list = new ArrayList<>();
         for (Element element : doc.select("div.thumbnail")) {
             String pic = element.select("div.image").attr("style").split("'")[1];
-            String url = element.select("a").attr("href");
-            String name = element.select("a").attr("title");
+            String url = element.select("a[target=_self]").attr("href");
+            String name = element.select("div.image").attr("title");
             String id = url.replace("video-", "").replace(".htm", "");
             list.add(new Vod(id, name, pic));
         }
