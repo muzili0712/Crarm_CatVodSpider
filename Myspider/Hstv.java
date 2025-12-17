@@ -74,7 +74,8 @@ public class Hstv extends Spider {
         String pic = doc.select("video").attr("poster");
 		int i=1;
 		for (Element element : doc.select("source[id=video-source]")) {
-			url = url.isEmpty()? "视频" + i + "$"+element.attr("src") : "#视频" + i + "$"+element.attr("src");
+			url = url.isEmpty()? "视频" + i + "$"+element.attr("src") : url + "#视频" + i + "$"+element.attr("src");
+			i++;
 		}
 		
         Vod vod = new Vod();
