@@ -29,6 +29,7 @@ public class Eighteen extends Spider {
     private static Map<String, String> cookies = new HashMap<>();
     private final String url = "https://mjv002.com/zh/";
     private final String starturl = "https://mjv002.com/zh/chinese_IamOverEighteenYearsOld/19/index.html";
+	private final String proxyurl = "https://yellow-term-7549.crarm.workers.dev/?url=";
 
     /**
      * 获取请求头（包含 Cookie）
@@ -127,7 +128,7 @@ public class Eighteen extends Spider {
         vod.setVodPic(pic);
         vod.setVodName(name);
         vod.setVodPlayFrom("18AV");
-        vod.setVodPlayUrl("播放$" + url);
+        vod.setVodPlayUrl("播放$" + proxyurl + url);
         return Result.string(vod);
     }
 
