@@ -48,8 +48,8 @@ public class Ydbj extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-        String[] typeIdList = {"/ydc4_22", "/ydc4_28", "/ydc4_157", "/ydc4_24", "/ydc4_25", "/ydc4_29", "/ydc4_26", "/ydc4_33", "/ydc4_32", "/ydc4_36", "/ydc4_37"};
-        String[] typeNameList = {"日本无码", "日本有码", "中文字幕", "亚洲国产", "欧美性爱", "强暴迷奸", "三级伦理", "SM另类", "怀旧老片", "坚屏视频", "自拍短片"};
+        String[] typeIdList = {"/ydc4_22", "/ydc4_28", "/ydc4_157", "/ydc4_24", "/ydc4_25", "/ydc4_29", "/ydc4_26", "/ydc4_33", "/ydc4_32", "/ydc4_37"};
+        String[] typeNameList = {"日本无码", "日本有码", "中文字幕", "亚洲国产", "欧美性爱", "强暴迷奸", "三级伦理", "SM另类", "怀旧老片", "自拍短片"};
         for (int i = 0; i < typeNameList.length; i++) {
             classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
