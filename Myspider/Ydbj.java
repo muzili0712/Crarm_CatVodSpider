@@ -23,10 +23,7 @@ import java.util.regex.Pattern;
 
 public class Ydbj extends Spider {
 
-    private static final String siteUrl = "https://ikk.jiukun66.autos";
-    private static final String cateUrl = siteUrl + "/video/category/";
-    private static final String detailUrl = siteUrl + "/video/view/";
-    private static final String searchUrl = siteUrl + "/search?keywords=";
+    private static final String siteUrl = "http://www.ydcqq.pw";
 
     private HashMap<String, String> getHeaders() {
         HashMap<String, String> headers = new HashMap<>();
@@ -36,19 +33,13 @@ public class Ydbj extends Spider {
 
     private List<Vod> parseVods(Document doc) {
         List<Vod> list = new ArrayList<>();
-        for (Element element : doc.select("article")) {
-            String pic = element.select("img").attr("src");
-            String url = element.select("a").attr("href");
-            String name = element.select("h4").text();
-            if (pic.endsWith(".gif") || name.isEmpty()) continue;
-//            if (!url.startsWith("http")) {
-//                pic = pic.replace("background-image: url('", "").replace("')", "");
-//                if (!pic.startsWith("http")) pic = "https:" + pic;
-//                String id = url.split("/")[3];
-//                list.add(new Vod(id, name, pic));
-//            }
-            String id = url.split("/")[3];
-            list.add(new Vod(id, name, pic));
+        for (Element element : doc.select("div.box.width-full")) {
+          if (element.select("script") == null){
+			String pic = element.select("img").attr("src");
+            String url = element.select("div.videotitle > a").attr("href");
+            String name = element.select("div.videotitle > a").text();
+            list.add(new Vod(url, name, pic));
+		  }
         }
         return list;
     }
@@ -56,88 +47,43 @@ public class Ydbj extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-        String[] typeIdList = {"latest", "hd", "recent-favorite", "hot-list", "recent-rating", "nonpaid", "ori", "long-list", "longer-list", "month-discuss", "top-favorite", "most-favorite", "top-list", "top-last"};
-        String[] typeNameList = {"最近更新", "高清视频", "最近加精", "当前最热", "最近得分", "非付费", "91原创", "10分钟以上", "20分钟以上", "本月讨论", "本月收藏", "收藏最多", "本月最热", "上月最热"};
+        String[] typeIdList = {"/ydc4_22.jsp", "/ydc4_28.jsp", "/ydc4_157.jsp", "/ydc4_24.jsp", "/ydc4_25.jsp", "/ydc4_29.jsp", "/ydc4_26.jsp", "/ydc4_33.jsp", "/ydc4_32.jsp", "/ydc4_36.jsp", "/ydc4_37.jsp"};
+        String[] typeNameList = {"日本无码", "日本有码", "中文字幕", "亚洲国产", "欧美性爱", "强暴迷奸", "三级伦理", "SM另类", "怀旧老片", "坚屏视频", "自拍短片"};
         for (int i = 0; i < typeNameList.length; i++) {
             classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl, getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl + "ydc4_22.jsp", getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
     }
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        String target = cateUrl + tid + "/" + pg;
-//        System.out.printf("target ===> " + target);
+        String target = pg.equals("1") ? siteUrl  + tid : siteUrl  + tid.replace(".jsp","") + "_" + pg + ".jsp";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
-//        System.out.println("=============================>>>>> ");
-//        System.out.println(list);
-//        System.out.println("=============================>>>>> ");
-        Integer total = (Integer.parseInt(pg) + 1) * 20;
-        return Result.string(Integer.parseInt(pg), Integer.parseInt(pg) + 1, 20, total, list);
+        return Result.string( list);
     }
 
     @Override
     public String detailContent(List<String> ids) throws Exception {
-        Document doc = Jsoup.parse(OkHttp.string(detailUrl.concat(ids.get(0)), getHeaders()));
-        String name = doc.select("meta[property=og:title]").attr("content");
-        String pic = doc.select("meta[property=og:image]").attr("content");
-        String year = doc.select("meta[property=video:release_date]").attr("content");
-        String html = doc.html();
-        // 打印 HTML 到控制台
-//        System.out.println(html);
-        // 2. 正则提取 window.$avdt 的 JSON 内容
-        Pattern pattern = Pattern.compile("window\\.\\$avdt\\s*=\\s*(\\{.*?\\})\\s*</script>", Pattern.DOTALL);
-        Matcher matcher = pattern.matcher(html);
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl.concat(ids.get(0)), getHeaders()));
+        String name = doc.select("div.videocontentcell.titletablegreen6 > img").attr("title");
+        String pic = doc.select("div.videocontentcell.titletablegreen6 > img").attr("src");
+		String url = doc.select("a[title=HTML5(MP4)播放]").attr("href");
+        String html = OkHttp.string(siteUrl.concat(url), getHeaders());
 
-        String playUrl = "";
-        if (matcher.find()) {
-            String json = matcher.group(1).replaceAll("\\\\/", "/");
-//            System.out.println("✅ 提取到 JSON: " + json); // ✅ 调试输出
-
-            // 3. 解析 JSON 并构造播放地址
-            JSONObject avdt = new JSONObject(json);
-            String hls = avdt.optString("hls");
-            JSONArray cdns = avdt.optJSONArray("cdns");
-
-            if (cdns != null && cdns.length() > 0) {
-                String cdn = cdns.getString(0);
-                playUrl = "https://" + cdn + hls;
-            }
-        } else {
-            System.out.println("❌ 未提取到 window.$avdt JSON");
-        }
-
+        String playUrl = Util.getVar(html, "src").replace( "\\","");
+		
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
         vod.setVodPic(pic);
-        vod.setVodYear(year);
         vod.setVodName(name);
         vod.setVodPlayFrom("Ydbj");
         vod.setVodPlayUrl("播放$" + playUrl);
         return Result.string(vod);
     }
 
-
-    @Override
-    public String searchContent(String key, boolean quick) throws Exception {
-        String target = searchUrl.concat(URLEncoder.encode(key));
-		return searchContent(target);
-    }
-
-    @Override
-    public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String target = searchUrl.concat(URLEncoder.encode(key)).concat("&page=").concat(pg);
-		return searchContent(target);
-    }
-	
-    private String searchContent(String string) {
-        Document doc = Jsoup.parse(OkHttp.string(string, getHeaders()));
-        List<Vod> list = parseVods(doc);
-        return Result.string(list);
-    }
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
