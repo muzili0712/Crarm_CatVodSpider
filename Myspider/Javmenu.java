@@ -76,7 +76,7 @@ public class Javmenu extends Spider {
 		    int i=1;
 		    for (Element element : doc.select("script")) {
             if(element.text().contains("m3u8.push")){
-			          url = url.isEmpty()? "线路" + i + "$"+element.text().replace("m3u8.push(\"","").replace("\");") : url + "#线路" + i + "$"+element.text().replace("m3u8.push(\"","").replace("\");");
+			          url = url.isEmpty()? "线路" + i + "$"+element.text().replace("m3u8.push(\"","").replace("\");","") : url + "#线路" + i + "$"+element.text().replace("m3u8.push(\"","").replace("\");","");
 			          i++;
             }
 		    }
