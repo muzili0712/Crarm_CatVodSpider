@@ -90,23 +90,7 @@ public class Javmenu extends Spider {
 		return Result.string(vod);
     }
 
-    @Override
-    public String searchContent(String key, boolean quick) throws Exception {
-        String target = siteUrl + "search.htm?search=" + URLEncoder.encode(key);
-		return searchContent(target);
-    }
 
-    @Override
-    public String searchContent(String key, boolean quick, String pg) throws Exception {
-        String target = siteUrl + "search-" + pg + ".htm?search=" + URLEncoder.encode(key);
-		return searchContent(target);
-    }
-	
-    private String searchContent(String target) {
-        Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
-        List<Vod> list = parseVods(doc);
-        return Result.string(list);
-    }
 
     @Override
     public String playerContent(String flag, String id, List<String> vipFlags) throws Exception {
