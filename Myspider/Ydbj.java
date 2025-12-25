@@ -34,7 +34,7 @@ public class Ydbj extends Spider {
     private List<Vod> parseVods(Document doc) {
         List<Vod> list = new ArrayList<>();
         for (Element element : doc.select("div.box.width-full")) {
-          if (element.select("script") == null){
+          if (element.select("script").isEmpty()){
 			String pic = element.select("img").attr("src");
             String url = element.select("div.videotitle > a").attr("href");
             String name = element.select("div.videotitle > a").text();
