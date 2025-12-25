@@ -34,13 +34,13 @@ public class Ydbj extends Spider {
     private List<Vod> parseVods(Document doc) {
         List<Vod> list = new ArrayList<>();
         for (Element element : doc.select("div.box.width-full")) {
-          //if (element.select("script") == null){
+          if (element.select("script") == null){
 			String pic = element.select("img").attr("src");
             String url = element.select("div.videotitle > a").attr("href");
             String name = element.select("div.videotitle > a").text();
 			String year = element.select("div.videodate").text();
             list.add(new Vod(url, name, pic,year));
-		  //}
+		  }
         }
         return list;
     }
@@ -73,8 +73,14 @@ public class Ydbj extends Spider {
         String pic = doc.select("div.videocontentcell.titletablegreen6 > img").attr("src");
 		String url = doc.select("a[title=HTML5(MP4)播放]").attr("href");
         String html = OkHttp.string(siteUrl.concat(url), getHeaders());
-
-        String playUrl = Util.getVar(html, "src").replace( "\\","");
+		doc = Jsoup.parse(html);
+		String playUrl = "";
+        for (Element element : doc.select("script")) {
+          if (element.html().contains("function") && element.html().contains("var src") ){
+			playUrl = Util.getVar(element.html(), "src").replace( "\\","");
+			break;
+		  }
+        }
 		
         Vod vod = new Vod();
         vod.setVodId(ids.get(0));
