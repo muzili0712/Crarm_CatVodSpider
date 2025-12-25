@@ -34,12 +34,13 @@ public class Ydbj extends Spider {
     private List<Vod> parseVods(Document doc) {
         List<Vod> list = new ArrayList<>();
         for (Element element : doc.select("div.box.width-full")) {
-          if (element.select("script") == null){
+          //if (element.select("script") == null){
 			String pic = element.select("img").attr("src");
             String url = element.select("div.videotitle > a").attr("href");
             String name = element.select("div.videotitle > a").text();
-            list.add(new Vod(url, name, pic));
-		  }
+			String year = element.select("div.videodate").text();
+            list.add(new Vod(url, name, pic,year));
+		  //}
         }
         return list;
     }
@@ -47,19 +48,19 @@ public class Ydbj extends Spider {
     @Override
     public String homeContent(boolean filter) throws Exception {
         List<Class> classes = new ArrayList<>();
-        String[] typeIdList = {"/ydc4_22.jsp", "/ydc4_28.jsp", "/ydc4_157.jsp", "/ydc4_24.jsp", "/ydc4_25.jsp", "/ydc4_29.jsp", "/ydc4_26.jsp", "/ydc4_33.jsp", "/ydc4_32.jsp", "/ydc4_36.jsp", "/ydc4_37.jsp"};
+        String[] typeIdList = {"/ydc4_22", "/ydc4_28", "/ydc4_157", "/ydc4_24", "/ydc4_25", "/ydc4_29", "/ydc4_26", "/ydc4_33", "/ydc4_32", "/ydc4_36", "/ydc4_37"};
         String[] typeNameList = {"日本无码", "日本有码", "中文字幕", "亚洲国产", "欧美性爱", "强暴迷奸", "三级伦理", "SM另类", "怀旧老片", "坚屏视频", "自拍短片"};
         for (int i = 0; i < typeNameList.length; i++) {
             classes.add(new Class(typeIdList[i], typeNameList[i]));
         }
-        Document doc = Jsoup.parse(OkHttp.string(siteUrl + "ydc4_22.jsp", getHeaders()));
+        Document doc = Jsoup.parse(OkHttp.string(siteUrl + "/ydc4_22.jsp", getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string(classes, list);
     }
 
     @Override
     public String categoryContent(String tid, String pg, boolean filter, HashMap<String, String> extend) throws Exception {
-        String target = pg.equals("1") ? siteUrl  + tid : siteUrl  + tid.replace(".jsp","") + "_" + pg + ".jsp";
+        String target = pg.equals("1") ? siteUrl  + tid + ".jsp" : siteUrl  + tid + "_" + pg + ".jsp";
         Document doc = Jsoup.parse(OkHttp.string(target, getHeaders()));
         List<Vod> list = parseVods(doc);
         return Result.string( list);
